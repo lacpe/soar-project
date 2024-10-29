@@ -29,10 +29,6 @@ public class Meal {
         this.nutritionalInfo = nutritionalInfo;
     }
 
-    public NutritionalInfo getNutritionalInfo() {
-        return nutritionalInfo;
-    }
-
     // Getters for retrieving meal information
     public int getId() {
         return id;

@@ -14,7 +14,7 @@ import org.json.JSONObject;
 public class APIHandler {
     private static final String API_KEY = "YOUR_API_KEY_HERE";
 
-    /**
+    /*
      * Generates a meal plan based on user preferences such as diet, calorie target,
      * and ingredients to exclude (disliked or allergenic).
      * @param planType       either "daily" or "weekly" for the timeframe
