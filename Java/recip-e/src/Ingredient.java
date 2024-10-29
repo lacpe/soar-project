@@ -62,11 +62,6 @@ public class Ingredient {
         return name.equals(that.name) && unit.equals(that.unit);
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(name, unit);
-    }
-
     public void displayIngredientInfo() {
         System.out.println("Ingredient: " + name);
         System.out.println("Quantity: " + quantity + " " + unit);
