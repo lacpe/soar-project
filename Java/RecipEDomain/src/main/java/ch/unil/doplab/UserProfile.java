@@ -81,7 +81,7 @@ public class UserProfile {
     public void displayUserPreferences() {
         System.out.println("User: " + username + " (" + userId + ")");
         System.out.println("Diet Type: " + (dietType != null ? dietType : "None"));
-        System.out.println("Daily Calorie Target: " + (dailyCalorieTarget > 0 ? dailyCalorieTarget : "Not set"));
+        System.out.println("Daily Calorie Target: " + ((dailyCalorieTarget.get().intValue() > 0) ? dailyCalorieTarget : "Not set"));
         System.out.println("Allergies: " + String.join(", ", allergies));
         System.out.println("Disliked Ingredients: " + String.join(", ", dislikedIngredients));
     }
