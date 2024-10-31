@@ -1,3 +1,5 @@
+package ch.unil.doplab;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -6,6 +8,7 @@ public class MealPlan {
     private String planType; // e.g., "day" or "week"
     private Map<String, List<Meal>> dailyMeals; // Key: Day, Value: List of Meals (breakfast, lunch, dinner)
     private UserProfile userProfile; // reference to the user's profile for personalized adjustments
+    private int calorieTarget;
 
     // Constructor
     public MealPlan(String planType, UserProfile userProfile, Map<String, List<Meal>> dailyMeals) {

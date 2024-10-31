@@ -1,3 +1,5 @@
+package ch.unil.doplab;
+
 public class Ingredient {
     private String name;
     private double quantity;

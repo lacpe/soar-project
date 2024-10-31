@@ -1,3 +1,5 @@
+package ch.unil.doplab;
+
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
@@ -8,7 +10,7 @@ public class UserProfile {
     private String dietType;              // User's preferred diet (e.g., "vegetarian", "vegan")
     private Set<String> allergies;        // Set of ingredients the user is allergic to
     private Set<String> dislikedIngredients; // Set of ingredients the user dislikes
-    private Optional<Integer> dailyCalorieTarget       // User's daily calorie goal
+    private Optional<Integer> dailyCalorieTarget;     // User's daily calorie goal
 
     private static final Set<String> SUPPORTED_DIETS = Set.of("Vegetarian", "Vegan", "Paleo", "Ketogenic", "Gluten Free", "Lacto-Vegetarian", "Ovo-Vegetarian", "Pescetarian", "Primal", "Low FODMAP", "Whole30");
     // Constructor to initialize the user profile

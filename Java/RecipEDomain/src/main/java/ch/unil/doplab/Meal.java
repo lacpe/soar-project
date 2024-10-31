@@ -1,3 +1,5 @@
+package ch.unil.doplab;
+
 import java.util.List;
 
 public class Meal {

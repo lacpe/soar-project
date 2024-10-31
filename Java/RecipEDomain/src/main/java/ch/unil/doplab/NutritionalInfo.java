@@ -1,3 +1,5 @@
+package ch.unil.doplab;
+
 public class NutritionalInfo {
     private int calories;
     private int protein;
