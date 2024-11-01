@@ -1,0 +1,6 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="RecipEService">
+    <output-path>$PROJECT_DIR$/out/artifacts/RecipEService</output-path>
+    <root id="archive" name="RecipEService.war" />
+  </artifact>
+</component>
