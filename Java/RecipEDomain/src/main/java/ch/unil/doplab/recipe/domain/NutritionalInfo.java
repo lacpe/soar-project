@@ -1,4 +1,4 @@
-package ch.unil.doplab;
+package ch.unil.doplab.recipe.domain;
 
 public class NutritionalInfo {
     private int calories;

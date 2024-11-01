@@ -1,4 +1,4 @@
-package ch.unil.doplab;
+package ch.unil.doplab.recipe.domain;
 import org.mindrot.jbcrypt.BCrypt;
 
 public class Utils {
