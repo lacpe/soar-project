@@ -1,9 +1,5 @@
 package ch.unil.doplab.recipe.domain;
 
-import ch.unil.doplab.Ingredient;
-import ch.unil.doplab.Meal;
-import ch.unil.doplab.MealPlan;
-import ch.unil.doplab.UserProfile;
 import jakarta.annotation.PostConstruct;
 import jakarta.enterprise.context.ApplicationScoped;
 

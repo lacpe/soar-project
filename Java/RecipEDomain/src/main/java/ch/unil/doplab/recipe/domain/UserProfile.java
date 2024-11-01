@@ -4,7 +4,7 @@ import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
-import ch.unil.doplab.Utils;
+import ch.unil.doplab.recipe.domain.Utils;
 
 public class UserProfile {
     private UUID userId;                            // Unique identifier for the user
