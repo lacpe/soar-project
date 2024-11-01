@@ -1,6 +1,10 @@
 <component name="ArtifactManager">
-  <artifact type="exploded-war" name="RecipEService">
+  <artifact type="war" name="RecipEService">
     <output-path>$PROJECT_DIR$/out/artifacts/RecipEService</output-path>
-    <root id="root" />
+    <root id="archive" name="RecipEService.war">
+      <element id="directory" name="META-INF">
+        <element id="file-copy" path="$PROJECT_DIR$/WEB-INF/META-INF/MANIFEST.MF" />
+      </element>
+    </root>
   </artifact>
 </component>

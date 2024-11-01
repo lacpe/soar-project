@@ -1,12 +1,9 @@
-package ch.unil.doplab.rest;
+package ch.unil.doplab.recipe.rest;
 
-import ch.unil.doplab.UserProfile;
-import ch.unil.doplab.domain.ApplicationState;
+import ch.unil.doplab.recipe.domain.ApplicationState;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
-
-import java.util.*;
 
 @Path("/test")
 public class TestResource {

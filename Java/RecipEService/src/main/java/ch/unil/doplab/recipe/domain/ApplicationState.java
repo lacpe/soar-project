@@ -1,4 +1,4 @@
-package ch.unil.doplab.domain;
+package ch.unil.doplab.recipe.domain;
 
 import ch.unil.doplab.Ingredient;
 import ch.unil.doplab.Meal;
