@@ -79,5 +79,7 @@ public class MealPlan {
         return userProfile;
     }
 
-    public UUID getUserId() {return userId}
+    public UUID getUserId() {
+        return userId;
+    }
 }

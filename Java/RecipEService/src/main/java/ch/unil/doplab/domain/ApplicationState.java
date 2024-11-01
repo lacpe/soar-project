@@ -6,22 +6,32 @@ import ch.unil.doplab.MealPlan;
 import ch.unil.doplab.UserProfile;
 import jakarta.annotation.PostConstruct;
 import jakarta.enterprise.context.ApplicationScoped;
-import java.util.HashMap;
+import java.util.Map;
+import java.util.TreeMap;
 import java.util.UUID;
 
+@ApplicationScoped
 public class ApplicationState {
-    private HashMap<UUID, UserProfile> userProfiles;
-    private HashMap<UUID, MealPlan> mealPlans;
-    private HashMap<UUID, Meal> meals;
-    private HashMap<UUID, Ingredient> ingredients;
+    private Map<UUID, UserProfile> userProfiles;
+
 
     @PostConstruct
     public void init() {
-        userProfiles = new HashMap<>();
-        mealPlans = new HashMap<>();
-        meals = new HashMap<>();
-        ingredients = new HashMap<>();
+        userProfiles = new TreeMap<>();
     }
 
+    public UserProfile addUserProfile(UserProfile userProfile) {
+        if (userProfile.getUserId() != null) {
+            return addUserProfile(userProfile.getUserId(), userProfile);
+        }
+    }
 
+    public UserProfile addUserProfile(UUID id, UserProfile userProfile) {
+        userProfiles.put(id, userProfile);
+        return userProfile;
+    }
+
+    public UserProfile getUserProfile(UUID id) {return userProfiles.get(id);}
+
+    public Map<UUID, UserProfile> getAllUserProfiles() {return userProfiles;}
 }
