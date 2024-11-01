@@ -14,18 +14,25 @@ public class UserProfile {
     private Set<String> allergies;                  // Set of ingredients the user is allergic to
     private Set<String> dislikedIngredients;        // Set of ingredients the user dislikes
     private Optional<Integer> dailyCalorieTarget;   // User's daily calorie goal
-
     private static final Set<String> SUPPORTED_DIETS = Set.of("Vegetarian", "Vegan", "Paleo", "Ketogenic", "Gluten Free", "Lacto-Vegetarian", "Ovo-Vegetarian", "Pescetarian", "Primal", "Low FODMAP", "Whole30");
-    // Constructor to initialize the user profile
+    // Constructor to initialize the user profile (case where there is no UUID)
     public UserProfile(String username, String password) {
         this.userId = UUID.randomUUID();
         this.username = username;
         this.password = Utils.hashPassword(password);
         this.allergies = new HashSet<>();
         this.dislikedIngredients = new HashSet<>();
-        this.dailyCalorieTarget = Optional.empty();; // Default to 0 if not set
+        this.dailyCalorieTarget = Optional.empty();
     }
-
+    // Another constructor to handle the case where there IS a UUID provided
+    public UserProfile(UUID userId, String username, String password) {
+        this.userId = userId;
+        this.username = username;
+        this.password = Utils.hashPassword(password);
+        this.allergies = new HashSet<>();
+        this.dislikedIngredients = new HashSet<>();
+        this.dailyCalorieTarget = Optional.empty();
+    }
     // Setters for dietary preferences
     public void setDietType(String dietType) {
         if (SUPPORTED_DIETS.contains(dietType)) {

@@ -24,6 +24,7 @@ public class ApplicationState {
         if (userProfile.getUserId() != null) {
             return addUserProfile(userProfile.getUserId(), userProfile);
         }
+        return addUserProfile(UUID.randomUUID(), userProfile);
     }
 
     public UserProfile addUserProfile(UUID id, UserProfile userProfile) {
