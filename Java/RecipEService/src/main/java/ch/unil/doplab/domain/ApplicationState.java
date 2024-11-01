@@ -63,7 +63,7 @@ public class ApplicationState {
                 && !usernames.get(userProfile.getUsername()).equals(id)) {
             throw new IllegalArgumentException("A user with username " + userProfile.getUsername() + " already exists.");
         }
-        // TODO implement userProfile.updateUser() function
+        oldUserProfile.replaceWithUser(userProfile);
         return true;
     }
 

@@ -98,4 +98,12 @@ public class UserProfile {
         System.out.println("Allergies: " + String.join(", ", allergies));
         System.out.println("Disliked Ingredients: " + String.join(", ", dislikedIngredients));
     }
+
+    public void replaceWithUser(UserProfile newUserProfile) {
+        this.username = newUserProfile.getUsername();
+        this.password = newUserProfile.getPassword();
+        this.allergies = newUserProfile.getAllergies();
+        this.dislikedIngredients = newUserProfile.getDislikedIngredients();
+        this.dailyCalorieTarget = newUserProfile.getDailyCalorieTarget();
+    }
 }
