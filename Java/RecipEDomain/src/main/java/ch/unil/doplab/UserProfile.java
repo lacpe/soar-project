@@ -3,20 +3,23 @@ package ch.unil.doplab;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
+import java.util.UUID;
 
 public class UserProfile {
-    private String userId;                // Unique identifier for the user
-    private String username;              // Username of the user
-    private String dietType;              // User's preferred diet (e.g., "vegetarian", "vegan")
-    private Set<String> allergies;        // Set of ingredients the user is allergic to
-    private Set<String> dislikedIngredients; // Set of ingredients the user dislikes
-    private Optional<Integer> dailyCalorieTarget;     // User's daily calorie goal
+    private UUID userId;                            // Unique identifier for the user
+    private String username;                        // Username of the user
+    private String password;                        // Password, currently stored in plain text, but will be hashed later
+    private String dietType;                        // User's preferred diet (e.g., "vegetarian", "vegan")
+    private Set<String> allergies;                  // Set of ingredients the user is allergic to
+    private Set<String> dislikedIngredients;        // Set of ingredients the user dislikes
+    private Optional<Integer> dailyCalorieTarget;   // User's daily calorie goal
 
     private static final Set<String> SUPPORTED_DIETS = Set.of("Vegetarian", "Vegan", "Paleo", "Ketogenic", "Gluten Free", "Lacto-Vegetarian", "Ovo-Vegetarian", "Pescetarian", "Primal", "Low FODMAP", "Whole30");
     // Constructor to initialize the user profile
-    public UserProfile(String userId, String username) {
-        this.userId = userId;
+    public UserProfile(String username, String password) {
+        this.userId = UUID.randomUUID();
         this.username = username;
+        this.password = password;
         this.allergies = new HashSet<>();
         this.dislikedIngredients = new HashSet<>();
         this.dailyCalorieTarget = Optional.empty();; // Default to 0 if not set
@@ -53,13 +56,15 @@ public class UserProfile {
     }
 
     // Getters for user preferences and restrictions
-    public String getUserId() {
+    public UUID getUserId() {
         return userId;
     }
 
     public String getUsername() {
         return username;
     }
+
+    public String getPassword() {return password;}
 
     public String getDietType() {
         return dietType;
