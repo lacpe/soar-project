@@ -9,7 +9,7 @@ import jakarta.ws.rs.core.MediaType;
 import java.util.*;
 
 @Path("/userprofile")
-public class UserProfileService {
+public class UserProfileResource {
     @Inject
     private ApplicationState state;
 
