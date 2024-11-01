@@ -78,4 +78,6 @@ public class MealPlan {
     public UserProfile getUserProfile() {
         return userProfile;
     }
+
+    public UUID getUserId() {return userId}
 }
