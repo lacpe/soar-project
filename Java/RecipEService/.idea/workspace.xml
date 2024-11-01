@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ArtifactsWorkspaceSettings">
     <artifacts-to-build>
-      <artifact name="StudyBuddyService:war" />
+      <artifact name="RecipEService:war" />
     </artifacts-to-build>
   </component>
   <component name="AutoImportSettings">
@@ -46,6 +46,9 @@
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
+    "Maven.RecipEService [clean].executor": "Run",
+    "Maven.RecipEService [compile].executor": "Run",
+    "Maven.RecipEService [test].executor": "Run",
     "Maven.StudyBuddyService [clean].executor": "Run",
     "Payara Server.Payara 6.20.0.executor": "Run",
     "RunOnceActivity.ShowReadmeOnStart": "true",
@@ -57,7 +60,7 @@
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
-    "project.structure.last.edited": "Libraries",
+    "project.structure.last.edited": "Artifacts",
     "project.structure.proportion": "0.17",
     "project.structure.side.proportion": "0.2",
     "vue.rearranger.settings.migration": "true"
@@ -73,7 +76,7 @@
       <option name="LOCAL" value="false" />
       <option name="UPDATING_POLICY" value="hot-swap-classes" />
       <deployment>
-        <artifact name="RecipEService">
+        <artifact name="RecipEService:war">
           <settings />
         </artifact>
       </deployment>
@@ -96,7 +99,7 @@
         <option name="Make" enabled="true" />
         <option name="BuildArtifacts" enabled="true">
           <artifact name="StudyBuddyService:war" />
-          <artifact name="RecipEService" />
+          <artifact name="RecipEService:war" />
         </option>
       </method>
     </configuration>
@@ -160,6 +163,8 @@
       <workItem from="1730474687874" duration="314000" />
       <workItem from="1730475009797" duration="61000" />
       <workItem from="1730475196816" duration="81000" />
+      <workItem from="1730475304545" duration="39000" />
+      <workItem from="1730475351045" duration="391000" />
     </task>
     <servers />
   </component>
