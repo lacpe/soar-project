@@ -14,21 +14,22 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 public class APIHandler {
-    private static final String API_KEY = "abcde123456";
+    private static final String API_KEY = "855c7cae4e6f4ff69c586bb42b97e0c7";
 
     /*
      * Generates a meal plan based on user preferences such as diet, calorie target,
      * and ingredients to exclude (disliked or allergenic).
      * @param planType       either "daily" or "weekly" for the timeframe
-     * @param diet           the type of diet (e.g., "vegetarian", "vegan") per Spoonacular's diet list
-     * @param calorieTarget  daily calorie target for the meal plan
      * @param userProfile    UserProfile object containing user preferences
      * @return               a MealPlan object with generated meals
      */
-    public MealPlan generateMealPlan(String planType, UserProfile userProfile) {
+    public MealPlan generateMealPlan(UserProfile userProfile) {
+
+        String timeFrame = userProfile.getMealPlanPreference();  // "day" or "week"
+
         String url = "https://api.spoonacular.com/mealplanner/generate"
                      + "?apiKey=" + API_KEY
-                     + "&timeFrame=" + planType
+                     + "&timeFrame=" + timeFrame
                      + "&targetCalories=" + userProfile.getDailyCalorieTarget().orElse(0);
 
         // Include diet and exclusions based on user profile
@@ -49,135 +50,150 @@ public class APIHandler {
         }
 
         Map<String, List<Meal>> dailyMeals = new HashMap<>();
+        List<Integer> mealIds = new ArrayList<>();  // Collect all meal IDs for bulk request
         try {
-            // Make the API call to fetch meal plan data
+                // Make the API call to fetch meal plan data
             String response = makeApiRequest(url);
+            System.out.println("Raw JSON Response:\n" + response);
+
             JSONObject jsonResponse = new JSONObject(response);
 
-            // Parse the response for each meal and populate details
-            JSONArray mealsArray = jsonResponse.getJSONArray("meals");
-            for (int i = 0; i < mealsArray.length(); i++) {
-                JSONObject mealJson = mealsArray.getJSONObject(i);
-                Meal meal = new Meal(
-                        mealJson.getInt("id"),
-                        mealJson.getString("title"),
-                        mealJson.getString("image"),
-                        new NutritionalInfo(
-                            mealJson.getInt("calories"),
-                            mealJson.getInt("protein"),
-                            mealJson.getInt("fat"),
-                            mealJson.getInt("carbs")
-                        )
-                );
-
-                // Fetch and set detailed information for the meal
-                populateMealDetails(meal);
-
-                // Organize meals by day (based on daily or weekly plan)
-                String day = determineDay(planType, i);
-                dailyMeals.computeIfAbsent(day, k -> new ArrayList<>()).add(meal);
+            if (timeFrame.equals("day")) {
+                // Parsing a daily plan
+                JSONArray mealsArray = jsonResponse.getJSONArray("meals");
+                String day = "Day 1";
+                dailyMeals.put(day, parseMeals(mealsArray, mealIds));
+            } else {
+                // Parsing a weekly plan
+                JSONObject weekObject = jsonResponse.getJSONObject("week");
+                for (String day : weekObject.keySet()) {
+                    JSONArray mealsArray = weekObject.getJSONObject(day).getJSONArray("meals");
+                    dailyMeals.put(day.substring(0, 1).toUpperCase() + day.substring(1), parseMeals(mealsArray, mealIds)); // Capitalize day name
+                }
             }
+
+            // Fetch and set detailed information for all meals at once using the bulk endpoint
+            populateMealDetailsBulk(dailyMeals, mealIds);
+
+            // Fetch detailed nutritional info for each meal using individual API calls
+            for (List<Meal> meals : dailyMeals.values()) {
+                for (Meal meal : meals) {
+                    NutritionalInfo nutritionalInfo = fetchNutritionalInfo(meal.getId());
+                    meal.setNutritionalInfo(nutritionalInfo);
+                }
+            }
+
         } catch (java.net.SocketTimeoutException e) {
-            System.err.println("Request timed out. Please try again later."); }
-          catch (Exception e) {
+            System.err.println("Request timed out. Please try again later.");
+        } catch (Exception e) {
             e.printStackTrace();
             System.err.println("Error generating meal plan: " + e.getMessage());
         }
 
-        return new MealPlan(planType, userProfile, dailyMeals);
-    }
-
-    private String determineDay(String planType, int index) {
-        if (planType.equals("daily")) {
-            return "Day 1";
-        } else if (planType.equals("weekly")) {
-            return "Day " + ((index / 3) + 1); // assuming 3 meals per day
-        }
-        return "Unknown";
+        return new MealPlan(userProfile, dailyMeals);
     }
 
     /**
-     * Populates detailed information for a meal, including ingredients, nutritional info, and instructions.
-     */
-    public void populateMealDetails(Meal meal) {
-        String url = "https://api.spoonacular.com/recipes/" + meal.getId() + "/information"
-                + "?apiKey=" + API_KEY + "&includeNutrition=true";
+    * Helper method to parse meals from a JSON array and populate mealIds list.
+    * @param mealsArray The JSON array of meals.
+    * @param mealIds    List to collect meal IDs for later bulk request.
+    * @return           A list of Meal objects for a single day.
+    */
+    private List<Meal> parseMeals(JSONArray mealsArray, List<Integer> mealIds) {
+        List<Meal> meals = new ArrayList<>();
+        for (int i = 0; i < mealsArray.length(); i++) {
+            JSONObject mealJson = mealsArray.getJSONObject(i);
+            int id = mealJson.getInt("id");
+            mealIds.add(id);
+            String imageType = mealJson.getString("imageType");
+            String imageUrl = "https://spoonacular.com/recipeImages/" + id + "." + imageType;
 
-        try {
-            // Make API call to fetch recipe details
-            String response = makeApiRequest(url);
-            JSONObject jsonResponse = new JSONObject(response);
-
-            // Parse ingredients
-            List<Ingredient> ingredients = new ArrayList<>();
-            JSONArray ingredientsArray = jsonResponse.getJSONArray("extendedIngredients");
-            for (int i = 0; i < ingredientsArray.length(); i++) {
-                JSONObject ingredientJson = ingredientsArray.getJSONObject(i);
-                int ingredientId = ingredientJson.getInt("id");
-                Ingredient ingredient = fetchIngredientDetails(ingredientId); // Fetch detailed info
-                ingredient.setQuantity(ingredientJson.getDouble("amount"));
-                ingredient.setUnit(ingredientJson.getString("unit"));
-                ingredients.add(ingredient);
-            }
-            meal.setIngredients(ingredients);
-
-            // Fetch nutritional info and set it in the meal
-            NutritionalInfo nutritionalInfo = fetchNutritionalInfo(meal.getId());
-            meal.setNutritionalInfo(nutritionalInfo);
-
-            // Fetch instructions
-            List<String> instructions = fetchInstructions(meal.getId());
-            meal.setInstructions(instructions);
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            System.err.println("Error fetching meal details for meal ID " + meal.getId() + ": " + e.getMessage());
+            Meal meal = new Meal(id, mealJson.getString("title"), imageUrl, null);
+            meals.add(meal);
         }
+        return meals;
     }
- /**
-     * Fetches cooking instructions for a given meal by using the Analyze Recipe Instructions endpoint.
-     * @param mealId The ID of the meal to fetch instructions for.
-     * @return A list of cooking instructions as individual steps.
+
+    /**
+     * Populates detailed information for all meals at once using the Get Recipe Information Bulk endpoint.
+     * @param dailyMeals   Map of meals organized by day
+     * @param mealIds      List of meal IDs to fetch details for in bulk
      */
-    private List<String> fetchInstructions(int mealId) {
-        List<String> instructions = new ArrayList<>();
-        String url = "https://api.spoonacular.com/recipes/" + mealId + "/analyzedInstructions"
-                + "?apiKey=" + API_KEY;
+    public void populateMealDetailsBulk(Map<String, List<Meal>> dailyMeals, List<Integer> mealIds) {
+        if (mealIds.isEmpty()) return;
+
+        // Construct the URL for the bulk endpoint, joining all meal IDs with commas
+        String url = "https://api.spoonacular.com/recipes/informationBulk?apiKey=" + API_KEY
+                     + "&ids=" + String.join(",", mealIds.stream().map(String::valueOf).toArray(String[]::new));
 
         try {
             String response = makeApiRequest(url);
-            JSONArray instructionsArray = new JSONArray(response);
+            JSONArray bulkResponseArray = new JSONArray(response);
 
-            // Parsing the instruction steps from the response
-            if (instructionsArray.length() > 0) { // Check if there are instructions
-                JSONArray stepsArray = instructionsArray.getJSONObject(0).getJSONArray("steps");
-                for (int i = 0; i < stepsArray.length(); i++) {
-                    JSONObject stepObj = stepsArray.getJSONObject(i);
-                    String step = stepObj.getString("step");
-                    instructions.add(step);
+            // Create a map to associate each ID with its corresponding Meal object
+            Map<Integer, Meal> mealMap = new HashMap<>();
+            for (List<Meal> meals : dailyMeals.values()) {
+                for (Meal meal : meals) {
+                    mealMap.put(meal.getId(), meal);
+                }
+            }
+
+            // Populate each meal with ingredients and instructions from the bulk response
+            for (int i = 0; i < bulkResponseArray.length(); i++) {
+                JSONObject mealJson = bulkResponseArray.getJSONObject(i);
+                int mealId = mealJson.getInt("id");
+
+                Meal meal = mealMap.get(mealId);
+                if (meal != null) {
+                    // Set ingredients from `extendedIngredients`
+                    List<Ingredient> ingredients = new ArrayList<>();
+                    JSONArray ingredientsArray = mealJson.getJSONArray("extendedIngredients");
+                    for (int j = 0; j < ingredientsArray.length(); j++) {
+                        JSONObject ingredientJson = ingredientsArray.getJSONObject(j);
+                        Ingredient ingredient = new Ingredient(
+                            ingredientJson.getString("name"),
+                            ingredientJson.getDouble("amount"),
+                            ingredientJson.getString("unit")
+                        );
+                        ingredients.add(ingredient);
+                    }
+                    meal.setIngredients(ingredients);
+
+                    // Set instructions from `analyzedInstructions`
+                    List<String> instructions = new ArrayList<>();
+                    JSONArray analyzedInstructions = mealJson.optJSONArray("analyzedInstructions");
+                    if (analyzedInstructions != null && analyzedInstructions.length() > 0) {
+                        JSONArray stepsArray = analyzedInstructions.getJSONObject(0).getJSONArray("steps");
+                        for (int j = 0; j < stepsArray.length(); j++) {
+                            instructions.add(stepsArray.getJSONObject(j).getString("step"));
+                        }
+                    }
+                    meal.setInstructions(instructions);
                 }
             }
         } catch (Exception e) {
             e.printStackTrace();
-            System.err.println("Error fetching instructions for meal ID " + mealId + ": " + e.getMessage());
+            System.err.println("Error fetching meal details in bulk: " + e.getMessage());
         }
-
-        return instructions;
     }
 
-     private NutritionalInfo fetchNutritionalInfo(int mealId) {
-        String url = "https://api.spoonacular.com/recipes/" + mealId + "/nutritionWidget.json"
-                     + "?apiKey=" + API_KEY;
+    /**
+     * Fetches detailed nutritional info for a meal by making an API call to the Nutrition Widget endpoint.
+     * @param mealId   The ID of the meal to fetch nutritional info for
+     * @return         A NutritionalInfo object containing calories, protein, fat, and carbs
+     */
+    private NutritionalInfo fetchNutritionalInfo(int mealId) {
+        String url = "https://api.spoonacular.com/recipes/" + mealId + "/nutritionWidget.json" + "?apiKey=" + API_KEY;
 
         try {
             String response = makeApiRequest(url);
             JSONObject nutritionJson = new JSONObject(response);
 
-            // Parse nutrition details
-            int calories = nutritionJson.getInt("calories");
-            int protein = nutritionJson.getInt("protein");
-            int fat = nutritionJson.getInt("fat");
-            int carbs = nutritionJson.getInt("carbs");
+            // Parse nutrition details, using helper to convert string with units to integer
+            int calories = parseNutritionalValue(nutritionJson.getString("calories"));
+            int protein = parseNutritionalValue(nutritionJson.getString("protein"));
+            int fat = parseNutritionalValue(nutritionJson.getString("fat"));
+            int carbs = parseNutritionalValue(nutritionJson.getString("carbs"));
 
             return new NutritionalInfo(calories, protein, fat, carbs);
 
@@ -188,35 +204,19 @@ public class APIHandler {
         }
     }
 
-    private Ingredient fetchIngredientDetails(int ingredientId) {
-        String url = "https://api.spoonacular.com/food/ingredients/" + ingredientId + "/information"
-                + "?apiKey=" + API_KEY + "&amount=1";
-
+    /**
+     * Parses a nutritional value string (e.g., "6g") to an integer, removing non-numeric characters.
+     * @param valueWithUnit  The nutritional value string with units
+     * @return               The numeric part of the string as an integer
+     */
+    private int parseNutritionalValue(String valueWithUnit) {
         try {
-            String response = makeApiRequest(url);
-            JSONObject ingredientJson = new JSONObject(response);
-
-            // Parse detailed ingredient information
-            String name = ingredientJson.getString("name");
-            String image = "https://spoonacular.com/cdn/ingredients_100x100/" + ingredientJson.getString("image");
-            String description = ingredientJson.optString("original", "No description available");
-
-            // Parse additional nutritional details if available
-            JSONObject nutrition = ingredientJson.getJSONObject("nutrition");
-            double calories = nutrition.getJSONArray("nutrients").getJSONObject(0).getDouble("amount");
-            double protein = nutrition.getJSONArray("nutrients").getJSONObject(1).getDouble("amount");
-            double fat = nutrition.getJSONArray("nutrients").getJSONObject(2).getDouble("amount");
-            double carbs = nutrition.getJSONArray("nutrients").getJSONObject(3).getDouble("amount");
-
-            NutritionalInfo nutritionalInfo = new NutritionalInfo((int) calories, (int) protein, (int) fat, (int) carbs);
-
-            // Create and return the Ingredient object with detailed information
-            return new Ingredient(name, 0, "", image, description, nutritionalInfo);
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            System.err.println("Error fetching ingredient details for ingredient ID " + ingredientId + ": " + e.getMessage());
-            return new Ingredient("Unknown", 0, ""); // Fallback if data cannot be fetched
+            // Remove all non-numeric characters, e.g., "6g" -> "6"
+            String numericValue = valueWithUnit.replaceAll("[^0-9]", "");
+            return Integer.parseInt(numericValue);
+        } catch (NumberFormatException e) {
+            System.err.println("Could not parse nutritional value: " + valueWithUnit);
+            return 0; // Default to 0 if parsing fails
         }
     }
 
