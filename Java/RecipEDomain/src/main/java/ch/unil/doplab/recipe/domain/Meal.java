@@ -56,19 +56,38 @@ public class Meal {
         return instructions;
     }
 
+    public void displayMealIngredients() {
+        System.out.println("Ingredients for " + title + ":");
+        if (ingredients != null && !ingredients.isEmpty()) {
+            for (Ingredient ingredient : ingredients) {
+                System.out.println(" - " + ingredient.getQuantity() + " " + ingredient.getUnit() + " of " + ingredient.getName());
+            }
+        } else {
+            System.out.println("No ingredients available for this meal.");
+        }
+        System.out.println();
+    }
+
+
     // Additional method to display a summary of the meal for debugging or presentation
     public void displayMealInfo() {
         System.out.println("Meal: " + title);
         if (nutritionalInfo != null) {
             nutritionalInfo.displayNutritionalInfo();
         }
+        System.out.println("Image: " + imageUrl);  // Only if you want to display the meal image
+        System.out.println();
     }
 
     // Method to display instructions, useful for testing or debugging
     public void displayInstructions() {
         System.out.println("Instructions for " + title + ":");
-        for (int i = 0; i < instructions.size(); i++) {
-            System.out.println((i + 1) + ". " + instructions.get(i));
+        if (instructions != null && !instructions.isEmpty()) {
+            for (int i = 0; i < instructions.size(); i++) {
+                System.out.println((i + 1) + ". " + instructions.get(i));
+            }
+        } else {
+            System.out.println("No instructions available for this meal.");
         }
     }
 }
