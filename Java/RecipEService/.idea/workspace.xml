@@ -11,6 +11,8 @@
   <component name="ChangeListManager">
     <list default="true" id="2b0e7e59-a39e-497c-9255-1e031f6c1224" name="Changes" comment="It works... better?">
       <change afterPath="$PROJECT_DIR$/src/main/java/ch/unil/doplab/recipe/rest/RecipEService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ch/unil/doplab/recipe/domain/ApplicationState.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ch/unil/doplab/recipe/domain/ApplicationState.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ch/unil/doplab/recipe/rest/TestResource.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ch/unil/doplab/recipe/rest/TestResource.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -207,6 +209,11 @@
       <workItem from="1730563953959" duration="16000" />
       <workItem from="1730564023263" duration="77000" />
       <workItem from="1730564131843" duration="76000" />
+      <workItem from="1730641053462" duration="95000" />
+      <workItem from="1730647834941" duration="79000" />
+      <workItem from="1730647935340" duration="5000" />
+      <workItem from="1730647946514" duration="1172000" />
+      <workItem from="1730650436486" duration="222000" />
     </task>
     <task id="LOCAL-00001" summary="It works... better?">
       <option name="closed" value="true" />

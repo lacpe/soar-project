@@ -13,6 +13,6 @@ public class TestResource {
     @GET
     @Produces(MediaType.TEXT_PLAIN)
     public String test() {
-        return "Yeah";
+        return "This is the response to a test GET request. If you're reading this, your request was succesful. Made by Loïc.";
     }
 }

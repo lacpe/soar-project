@@ -15,6 +15,7 @@ public class ApplicationState {
     public void init() {
         userProfiles = new TreeMap<>();
         usernames = new TreeMap<>();
+        populateApplication();
     }
 
     // In order : getters, add operations, remove operations
@@ -72,5 +73,9 @@ public class ApplicationState {
         userProfiles.remove(id);
     }
 
+    private void populateApplication() {
+        UserProfile testuser = new UserProfile(UUID.randomUUID(), "test", "password123");
+        addUserProfile(testuser);
+    }
 
 }
