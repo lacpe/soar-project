@@ -1,6 +1,0 @@
-<component name="ArtifactManager">
-  <artifact type="war" name="recip-e">
-    <output-path>$PROJECT_DIR$/out/artifacts/recip_e</output-path>
-    <root id="archive" name="recip-e.war" />
-  </artifact>
-</component>

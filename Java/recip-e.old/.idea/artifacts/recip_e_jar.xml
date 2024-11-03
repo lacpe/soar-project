@@ -1,8 +1,0 @@
-<component name="ArtifactManager">
-  <artifact type="jar" name="recip-e:jar">
-    <output-path>$PROJECT_DIR$/out/artifacts/recip_e_jar</output-path>
-    <root id="archive" name="recip-e.jar">
-      <element id="module-output" name="recip-e" />
-    </root>
-  </artifact>
-</component>
