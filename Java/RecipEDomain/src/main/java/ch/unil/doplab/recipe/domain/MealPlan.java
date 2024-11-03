@@ -1,12 +1,8 @@
 package ch.unil.doplab.recipe.domain;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 public class MealPlan {
-    private String planType; // e.g., "day" or "week"
     private Map<String, List<Meal>> dailyMeals; // Key: Day, Value: List of Meals (breakfast, lunch, dinner)
     private UserProfile userProfile; // reference to the user's profile for personalized adjustments
     private UUID userId;
@@ -14,16 +10,15 @@ public class MealPlan {
     private int calorieTarget;
 
     // Constructor
-    public MealPlan(String planType, UserProfile userProfile, Map<String, List<Meal>> dailyMeals) {
-        this.planType = planType;
+    public MealPlan(UserProfile userProfile, Map<String, List<Meal>> dailyMeals) {
         this.userProfile = userProfile;
         this.userId = userProfile.getUserId();
         this.mealPlanId = UUID.randomUUID();
-        this.dailyMeals = dailyMeals != null ? dailyMeals : new HashMap<>();
+        this.dailyMeals = dailyMeals != null ? dailyMeals : new LinkedHashMap<>();
     }
 
-    public MealPlan(String planType, UserProfile userProfile) {
-        this(planType, userProfile, new HashMap<>());
+    public MealPlan(UserProfile userProfile) {
+        this(userProfile, new LinkedHashMap<>());
     }
 
     /**
@@ -36,9 +31,14 @@ public class MealPlan {
         // Iterate through each day and each meal
         for (List<Meal> meals : dailyMeals.values()) {
             for (Meal meal : meals) {
-                // Get ingredients of the meal and add each to the grocery list
-                for (Ingredient ingredient : meal.getIngredients()) {
-                    groceryList.addIngredient(ingredient);
+                // Check if ingredients are available for the meal
+                if (meal.getIngredients() != null) {
+                    // Get ingredients of the meal and add each to the grocery list
+                    for (Ingredient ingredient : meal.getIngredients()) {
+                        groceryList.addIngredient(ingredient);
+                    }
+                } else {
+                    System.out.println("No ingredients available for meal: " + meal.getTitle());
                 }
             }
         }
@@ -47,13 +47,6 @@ public class MealPlan {
     }
 
     // Getters and setters for each attribute
-    public String getPlanType() {
-        return planType;
-    }
-
-    public void setPlanType(String planType) {
-        this.planType = planType;
-    }
 
     public int getCalorieTarget() {
         return calorieTarget;
