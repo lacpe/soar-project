@@ -14,7 +14,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 public class APIHandler {
-    private static final String API_KEY = "d5f32705bfb64f0992a6786d1d98062d";
+    private static final String API_KEY = "abcde123456";
 
     /*
      * Generates a meal plan based on user preferences such as diet, calorie target,
