@@ -1,39 +1,36 @@
-import ch.unil.doplab.recipe.domain.*;
-
-import java.util.Arrays;
-import java.util.List;
-import java.util.Set;
+package ch.unil.doplab.recipe.domain;
 
 public class Main {
     public static void main(String[] args) {
-        // Create UserProfile
+        APIHandler apiHandler = new APIHandler();
+
+        // Set up a test user profile with meal plan preference set directly
         UserProfile userProfile = new UserProfile("testuser", "password123");
         userProfile.setDietType("Vegetarian");
         userProfile.setDailyCalorieTarget(2000);
-        userProfile.addAllergy("peanuts");
-        userProfile.addDislikedIngredient("broccoli");
+        userProfile.setMealPlanPreference("week"); // Set preference to "daily" or "weekly"
 
-        // Display user preferences
-        System.out.println("Testing UserProfile Display:");
-        userProfile.displayUserPreferences();
-        
-        // Generate Meal Plan
-        APIHandler apiHandler = new APIHandler();
-        MealPlan mealPlan = apiHandler.generateMealPlan("daily", userProfile);
+        // Generate the meal plan based on the user’s preference
+        MealPlan mealPlan = apiHandler.generateMealPlan(userProfile);
 
-        // Display Meal Plan
         System.out.println("\nGenerated Meal Plan:");
+
+        // Display meals day by day
         for (String day : mealPlan.getDailyMeals().keySet()) {
             System.out.println("Day: " + day);
             for (Meal meal : mealPlan.getDailyMeals().get(day)) {
-                meal.displayMealInfo();
-                meal.displayInstructions();
+                meal.displayMealInfo();         // Show basic meal info (title, calories, etc.)
+                meal.displayInstructions();      // Show instructions
+                meal.displayMealIngredients();   // Show ingredients
             }
+            System.out.println();
         }
 
-        // Generate Grocery List
-        GroceryList groceryList = mealPlan.generateGroceryList();
-        System.out.println("\nGenerated Grocery List:");
-        groceryList.displayGroceryList();
+        // If the meal plan preference is weekly, generate and display a consolidated grocery list
+        if (userProfile.getMealPlanPreference().equals("week")) {
+            GroceryList groceryList = mealPlan.generateGroceryList();
+            System.out.println("\nGenerated Grocery List for the Week:");
+            groceryList.displayGroceryList();
+        }
     }
 }
