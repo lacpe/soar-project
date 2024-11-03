@@ -4,6 +4,9 @@ import java.util.Map;
 import java.util.TreeMap;
 import java.util.HashMap;
 
+import java.util.Map;
+import java.util.HashMap;
+
 public class GroceryList {
     private Map<String, Ingredient> ingredientMap; // Map by ingredient name and unit for easy consolidation
 
@@ -38,14 +41,8 @@ public class GroceryList {
 
     // Method to display ingredients in a user-friendly format with detailed info
     public void displayGroceryList() {
-        Map<String, Ingredient> sortedMap = new TreeMap<>(ingredientMap);
-        for (Ingredient ingredient : sortedMap.values()) {
+        for (Ingredient ingredient : ingredientMap.values()) {
             System.out.println(ingredient.getQuantity() + " " + ingredient.getUnit() + " of " + ingredient.getName());
-            System.out.println("Description: " + ingredient.getDescription());
-            System.out.println("Image: " + ingredient.getImageUrl());
-            if (ingredient.getNutritionalInfo() != null) {
-                ingredient.getNutritionalInfo().displayNutritionalInfo();
-            }
             System.out.println();
         }
     }
