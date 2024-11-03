@@ -15,6 +15,8 @@ public class UserProfile {
     private Set<String> dislikedIngredients;        // Set of ingredients the user dislikes
     private Optional<Integer> dailyCalorieTarget;   // User's daily calorie goal
     private static final Set<String> SUPPORTED_DIETS = Set.of("Vegetarian", "Vegan", "Paleo", "Ketogenic", "Gluten Free", "Lacto-Vegetarian", "Ovo-Vegetarian", "Pescetarian", "Primal", "Low FODMAP", "Whole30");
+    private String mealPlanPreference = "daily";
+
     // Constructor to initialize the user profile (case where there is no UUID)
     public UserProfile(String username, String password) {
         this.userId = UUID.randomUUID();
@@ -90,6 +92,16 @@ public class UserProfile {
         return dailyCalorieTarget;
     }
 
+    public String getMealPlanPreference() {
+        return mealPlanPreference;}
+
+    public void setMealPlanPreference(String mealPlanPreference) {
+        if (!mealPlanPreference.equals("day") && !mealPlanPreference.equals("week")) {
+            throw new IllegalArgumentException("Invalid meal plan preference. Choose 'day' or 'week'.");
+        }
+        this.mealPlanPreference = mealPlanPreference;
+    }
+
     // Optional method to display user preferences for debugging or user settings
     public void displayUserPreferences() {
         System.out.println("User: " + username + " (" + userId + ")");
@@ -97,6 +109,7 @@ public class UserProfile {
         System.out.println("Daily Calorie Target: " + ((dailyCalorieTarget.get().intValue() > 0) ? dailyCalorieTarget : "Not set"));
         System.out.println("Allergies: " + String.join(", ", allergies));
         System.out.println("Disliked Ingredients: " + String.join(", ", dislikedIngredients));
+        System.out.println("Meal Plan Preference: " + mealPlanPreference);
     }
 
     public void replaceWithUser(UserProfile newUserProfile) {
@@ -105,5 +118,6 @@ public class UserProfile {
         this.allergies = newUserProfile.getAllergies();
         this.dislikedIngredients = newUserProfile.getDislikedIngredients();
         this.dailyCalorieTarget = newUserProfile.getDailyCalorieTarget();
+        this.mealPlanPreference = newUserProfile.getMealPlanPreference();
     }
 }
