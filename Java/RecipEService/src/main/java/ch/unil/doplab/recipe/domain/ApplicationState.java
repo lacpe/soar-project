@@ -74,8 +74,12 @@ public class ApplicationState {
     }
 
     private void populateApplication() {
-        UserProfile testuser = new UserProfile(UUID.randomUUID(), "test", "password123");
-        addUserProfile(testuser);
+        // Create 20 fake user profiles
+        for (int i = 1; i <= 20; i++) {
+            String username = "user" + i;
+            String password = "password" + i + "123";
+            UserProfile user = new UserProfile(UUID.randomUUID(), username, password);
+            addUserProfile(user);
     }
 
 }
