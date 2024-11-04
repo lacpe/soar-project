@@ -80,6 +80,8 @@ public class ApplicationState {
             String password = "password" + i + "123";
             UserProfile user = new UserProfile(UUID.randomUUID(), username, password);
             addUserProfile(user);
+        }
+
     }
 
 }
