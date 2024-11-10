@@ -2,16 +2,23 @@ package ch.unil.doplab.recipe.domain;
 
 public class Main {
     public static void main(String[] args) {
+        boolean apiPOINTS = false;
         APIHandler apiHandler = new APIHandler();
 
         // Set up a test user profile with meal plan preference set directly
         UserProfile userProfile = new UserProfile("testuser", "password123");
-        userProfile.setDietType("Vegetarian");
+        userProfile.setDietType(UserProfile.DietType.VEGETARIAN);
         userProfile.setDailyCalorieTarget(2000);
-        userProfile.setMealPlanPreference("week"); // Set preference to "daily" or "weekly"
+        userProfile.setMealPlanPreference(UserProfile.MealPlanPreference.WEEK); // Set preference to "daily" or "weekly"
 
         // Generate the meal plan based on the user’s preference
-        MealPlan mealPlan = apiHandler.generateMealPlan(userProfile);
+        // no more points left from APO
+        MealPlan mealPlan;
+        if (apiPOINTS) {
+            mealPlan = apiHandler.generateMealPlan(userProfile);
+        } else {
+            mealPlan = MealPlanGenerator.createDummyMealPlan(userProfile);
+        }
 
         System.out.println("\nGenerated Meal Plan:");
 

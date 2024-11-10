@@ -23,7 +23,7 @@ public class APIHandler {
      */
     public MealPlan generateMealPlan(UserProfile userProfile) {
         // Determine the time frame (day or week) for the meal plan
-        String timeFrame = userProfile.getMealPlanPreference();
+        String timeFrame = userProfile.getMealPlanPreference().toString().toLowerCase();
 
         // Build the initial URL for the meal plan request
         String url = buildMealPlanUrl(userProfile, timeFrame);
@@ -102,10 +102,11 @@ public class APIHandler {
                 + "&timeFrame=" + timeFrame
                 + "&targetCalories=" + userProfile.getDailyCalorieTarget().orElse(0);
 
-        // Add diet type to URL if specified
-        if (userProfile.getDietType() != null && !userProfile.getDietType().isEmpty()) {
-            url += "&diet=" + userProfile.getDietType();
+// Add diet type to URL if specified
+        if (userProfile.getDietType() != null) {
+            url += "&diet=" + userProfile.getDietType().toString().toLowerCase();
         }
+
 
         // Add ingredients to exclude based on dislikes/allergies
         StringJoiner excludeIngredients = new StringJoiner(",");
