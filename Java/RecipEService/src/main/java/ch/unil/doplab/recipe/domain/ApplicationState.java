@@ -3,18 +3,26 @@ package ch.unil.doplab.recipe.domain;
 import jakarta.annotation.PostConstruct;
 import jakarta.enterprise.context.ApplicationScoped;
 
+import java.nio.file.attribute.UserPrincipal;
 import java.util.*;
 
 @ApplicationScoped
 public class ApplicationState {
+    /* We use both a userProfiles and usernames list so requests can be made using both the UUID and the username. It
+    looks slightly worse but is significantly better for the end user, and makes for more readable tests.
+     */
     private Map<UUID, UserProfile> userProfiles;
     private Map<String, UUID> usernames;
-    // We use both a userProfiles and usernames list so requests can be made using both the UUID and the username
+    private Map<UUID, MealPlan> mealPlans;
+    // NOTE there is no list of meals, because this list already exists as a static final field in APIHandler.
+    private Map<UUID, GroceryList> groceryLists;
 
     @PostConstruct
     public void init() {
         userProfiles = new TreeMap<>();
         usernames = new TreeMap<>();
+        mealPlans = new TreeMap<>();
+        groceryLists = new TreeMap<>();
         populateApplication();
     }
 
@@ -71,6 +79,24 @@ public class ApplicationState {
     public void removeUserProfile(UUID id) {
         usernames.remove(userProfiles.get(id).getUsername());
         userProfiles.remove(id);
+    }
+
+    public GroceryList getGroceryList(UUID id) {return groceryLists.get(id);}
+
+    public Map<UUID, GroceryList> getAllGroceryLists() {return groceryLists;}
+
+    public GroceryList addGroceryList(GroceryList groceryList) {
+        groceryLists.put(UUID.randomUUID(), groceryList);
+        return groceryList;
+    }
+
+    // TODO: add function within the GroceryList domain class to update a grocery list
+    public GroceryList setGroceryList(UUID id, GroceryList groceryList) {
+        return groceryList;
+    }
+
+    public void removeGroceryList(UUID id) {
+        groceryLists.remove(id);
     }
 
     private void populateApplication() {
