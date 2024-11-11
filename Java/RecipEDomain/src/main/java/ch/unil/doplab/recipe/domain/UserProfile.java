@@ -130,5 +130,6 @@ public class UserProfile {
         this.dislikedIngredients = newUserProfile.getDislikedIngredients();
         this.dailyCalorieTarget = newUserProfile.getDailyCalorieTarget();
         this.mealPlanPreference = newUserProfile.getMealPlanPreference();
+        this.dietType = newUserProfile.getDietType();
     }
 }

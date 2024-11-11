@@ -36,7 +36,7 @@ public class MealPlanGenerator {
     }
 
     // Helper method to create a dummy Meal object
-    private static Meal createDummyMeal(int id, String title, String imageUrl, int calories) {
+    static Meal createDummyMeal(int id, String title, String imageUrl, int calories) {
         NutritionalInfo nutritionalInfo = new NutritionalInfo(calories, 10, 20, 30); // dummy nutritional values
 
         // Create the meal with basic details
