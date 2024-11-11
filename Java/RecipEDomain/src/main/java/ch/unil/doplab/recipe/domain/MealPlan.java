@@ -25,24 +25,12 @@ public class MealPlan {
      * Generates a consolidated grocery list from all ingredients in each meal in the meal plan.
      * @return GroceryList containing all ingredients needed for the meal plan
      */
-    public GroceryList generateGroceryList() {
-        GroceryList groceryList = new GroceryList();
-
-        // Iterate through each day and each meal
-        for (List<Meal> meals : dailyMeals.values()) {
-            for (Meal meal : meals) {
-                // Check if ingredients are available for the meal
-                if (meal.getIngredients() != null) {
-                    // Get ingredients of the meal and add each to the grocery list
-                    for (Ingredient ingredient : meal.getIngredients()) {
-                        groceryList.addIngredient(ingredient);
-                    }
-                } else {
-                    System.out.println("No ingredients available for meal: " + meal.getTitle());
-                }
-            }
+    public List<Meal> getMealsForWeek() {
+        List<Meal> allMeals = new ArrayList<>();
+        for (List<Meal> dailyMeals : dailyMeals.values()) {
+            allMeals.addAll(dailyMeals);
         }
-        return groceryList;
+        return allMeals;
     }
 
     // Getters and setters for each attribute

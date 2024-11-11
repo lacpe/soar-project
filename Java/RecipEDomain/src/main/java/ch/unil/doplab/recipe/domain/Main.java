@@ -1,5 +1,8 @@
 package ch.unil.doplab.recipe.domain;
 
+import java.util.List;
+
+
 public class Main {
     public static void main(String[] args) {
         APIHandler apiHandler = new APIHandler();
@@ -11,7 +14,6 @@ public class Main {
         userProfile.setMealPlanPreference(UserProfile.MealPlanPreference.WEEK); // Set preference to "daily" or "weekly"
 
         // Generate the meal plan based on the user’s preference
-        // no more points left from APO
         MealPlan mealPlan = apiHandler.generateMealPlan(userProfile); // Initialize mealPlan by calling the APIHandler method
 
         System.out.println("\nGenerated Meal Plan:");
@@ -29,7 +31,15 @@ public class Main {
 
         // If the meal plan preference is weekly, generate and display a consolidated grocery list
         if (userProfile.getMealPlanPreference().equals(UserProfile.MealPlanPreference.WEEK)) {
-            GroceryList groceryList = mealPlan.generateGroceryList();
+            // Generate the consolidated grocery list using APIHandler
+            List<Meal> weeklyMeals = mealPlan.getMealsForWeek();
+            List<Ingredient> consolidatedIngredients = apiHandler.generateConsolidatedShoppingList(weeklyMeals);
+
+            // Create and set the grocery list
+            GroceryList groceryList = new GroceryList();
+            groceryList.setIngredients(consolidatedIngredients);
+
+            // Display the consolidated grocery list
             System.out.println("\nGenerated Grocery List for the Week:");
             groceryList.displayGroceryList();
         }

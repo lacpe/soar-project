@@ -5,6 +5,7 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.*;
+import java.io.OutputStream;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -36,7 +37,7 @@ public class APIHandler {
 
         try {
             // Make API request to get meal plan data
-            String response = makeApiRequest(url);
+            String response = makeApiRequest(url, "GET", null);
             // System.out.println("Raw JSON Response:\n" + response);
 
             // Parse JSON response
@@ -157,8 +158,8 @@ public class APIHandler {
 
         try {
             // Make API request for bulk meal details
-            String response = makeApiRequest(url);
-            System.out.println("Raw JSON Response:\n" + response);
+            String response = makeApiRequest(url, "GET", null);
+            // System.out.println("Raw JSON Response:\n" + response);
 
             // Parse bulk response
             JSONArray bulkResponseArray = new JSONArray(response);
@@ -195,6 +196,55 @@ public class APIHandler {
             e.printStackTrace();
             System.err.println("Error fetching meal details in bulk: " + e.getMessage());
         }
+    }
+
+    /**
+    * Generates a consolidated shopping list using the Spoonacular Compute Shopping List API.
+    * @param meals The list of meals for the week
+    * @return Consolidated list of ingredients as per the API response
+    */
+    public List<Ingredient> generateConsolidatedShoppingList(List<Meal> meals) {
+        try {
+            // Collect all ingredients into a single JSON array
+            JSONArray itemsArray = new JSONArray();
+
+            for (Meal meal : meals) {
+                for (Ingredient ingredient : meal.getIngredients()) {
+                    if (ingredient.getName() != null && ingredient.getUnit() != null && ingredient.getQuantity() > 0) {
+                        // Format ingredient as a single string: "<quantity> <unit> <name>"
+                        String ingredientString = ingredient.getQuantity() + " " + ingredient.getUnit() + " " + ingredient.getName();
+                        itemsArray.put(ingredientString);
+                    }
+                }
+            }
+
+            // Construct the JSON payload as {"items": [ ... ]}
+            JSONObject payload = new JSONObject();
+            payload.put("items", itemsArray);
+
+            // Print payload for debugging
+            System.out.println("Sending JSON Payload: " + payload.toString());
+
+            // Construct the API request URL
+            String url = "https://api.spoonacular.com/mealplanner/shopping-list/compute?apiKey=" + API_KEY;
+
+            // Send the request and parse the response
+            String response = makeApiRequest(url, "POST", payload.toString());
+
+            // Print the received JSON response to inspect its structure
+            System.out.println("Received JSON Response: " + response);
+
+            // Convert the response to a JSON object
+            JSONObject jsonResponse = new JSONObject(response);
+
+            // Parse the response to extract the consolidated ingredient list
+            return parseShoppingListResponse(jsonResponse);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.err.println("Error generating shopping list: " + e.getMessage());
+        }
+        return new ArrayList<>();  // Return an empty list if there's an error
     }
 
     private NutritionalInfo extractNutritionalInfo(JSONObject mealJson) {
@@ -263,6 +313,43 @@ public class APIHandler {
         return new NutritionalInfo(calories, protein, fat, carbs, saturatedFat, fiber, sugar, sodium, vitaminC, calcium, iron, potassium, vitaminA, vitaminK, magnesium);
     }
 
+    /**
+    * Parses the JSON response from the Compute Shopping List API into a list of ingredients.
+    * @param jsonResponse JSON object containing the shopping list response
+    * @return List of consolidated ingredients
+    */
+    private List<Ingredient> parseShoppingListResponse(JSONObject jsonResponse) {
+        List<Ingredient> shoppingList = new ArrayList<>();
+
+        JSONArray aislesArray = jsonResponse.getJSONArray("aisles");  // The API organizes items by aisle
+        for (int i = 0; i < aislesArray.length(); i++) {
+            JSONArray aisleItems = aislesArray.getJSONObject(i).getJSONArray("items");
+
+            for (int j = 0; j < aisleItems.length(); j++) {
+                JSONObject item = aisleItems.getJSONObject(j);
+                String name = item.getString("name");
+                // Check for "measures" object to get "amount" and "unit" in metric
+                if (item.has("measures")) {
+                    JSONObject measures = item.getJSONObject("measures");
+
+                    // Use "metric" measure instead of "original"
+                    if (measures.has("metric")) {
+                        JSONObject metricMeasure = measures.getJSONObject("metric");
+                        double amount = metricMeasure.getDouble("amount");
+                        String unit = metricMeasure.optString("unit", "");
+
+                        shoppingList.add(new Ingredient(name, amount, unit));
+                    } else {
+                        System.err.println("No 'metric' measure found for item: " + name);
+                    }
+                } else {
+                    System.err.println("No 'measures' object found for item: " + name);
+                }
+            }
+        }
+
+        return shoppingList;
+    }
 
     /**
      * Creates a Meal object from JSON data, setting ingredients and instructions.
@@ -311,22 +398,37 @@ public class APIHandler {
     }
 
     /**
-     * Makes an HTTP GET request to the specified URL and returns the response as a string.
-     * @param urlString URL to send the GET request to
-     * @return response from the API as a String
-     * @throws Exception if there's an issue with the request
-     */
-    private String makeApiRequest(String urlString) throws Exception {
+    * Makes an HTTP request (GET or POST) to the specified URL and returns the response as a string.
+    * @param urlString URL to send the request to
+    * @param method    The HTTP method ("GET" or "POST")
+    * @param jsonPayload JSON payload for POST requests (null for GET requests)
+    * @return Response from the API as a String
+    * @throws Exception if there's an issue with the request
+    */
+    private String makeApiRequest(String urlString, String method, String jsonPayload) throws Exception {
         URL url = new URL(urlString);
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-        conn.setRequestMethod("GET");
+        conn.setRequestMethod(method);
 
-        // Check for successful HTTP response
+        if ("POST".equalsIgnoreCase(method)) {
+            conn.setRequestProperty("Content-Type", "application/json");
+            conn.setDoOutput(true);
+
+            if (jsonPayload != null) {
+                try (OutputStream os = conn.getOutputStream()) {
+                    byte[] input = jsonPayload.getBytes("utf-8");
+                    os.write(input, 0, input.length);
+                }
+            }
+        }
+
+        // Check for a successful response
         if (conn.getResponseCode() != 200) {
             throw new RuntimeException("Failed : HTTP error code : " + conn.getResponseCode());
         }
 
-        BufferedReader br = new BufferedReader(new InputStreamReader((conn.getInputStream())));
+        // Read the response
+        BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
         StringBuilder response = new StringBuilder();
         String output;
         while ((output = br.readLine()) != null) {
