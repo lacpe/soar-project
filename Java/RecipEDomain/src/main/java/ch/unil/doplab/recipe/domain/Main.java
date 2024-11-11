@@ -2,7 +2,6 @@ package ch.unil.doplab.recipe.domain;
 
 public class Main {
     public static void main(String[] args) {
-        boolean apiPOINTS = false;
         APIHandler apiHandler = new APIHandler();
 
         // Set up a test user profile with meal plan preference set directly
@@ -13,12 +12,7 @@ public class Main {
 
         // Generate the meal plan based on the user’s preference
         // no more points left from APO
-        MealPlan mealPlan;
-        if (apiPOINTS) {
-            mealPlan = apiHandler.generateMealPlan(userProfile);
-        } else {
-            mealPlan = MealPlanGenerator.createDummyMealPlan(userProfile);
-        }
+        MealPlan mealPlan = apiHandler.generateMealPlan(userProfile); // Initialize mealPlan by calling the APIHandler method
 
         System.out.println("\nGenerated Meal Plan:");
 
@@ -34,7 +28,7 @@ public class Main {
         }
 
         // If the meal plan preference is weekly, generate and display a consolidated grocery list
-        if (userProfile.getMealPlanPreference().equals("week")) {
+        if (userProfile.getMealPlanPreference().equals(UserProfile.MealPlanPreference.WEEK)) {
             GroceryList groceryList = mealPlan.generateGroceryList();
             System.out.println("\nGenerated Grocery List for the Week:");
             groceryList.displayGroceryList();

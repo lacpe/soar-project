@@ -63,9 +63,6 @@ public class APIHandler {
             // Populate details for each meal using bulk request
             populateMealDetailsBulk(dailyMeals, mealIds);
 
-            // Populate nutritional information for each meal
-            populateNutritionalInfo(dailyMeals);
-
             // Final ordered map to return
             Map<String, List<Meal>> orderedDailyMeals = new LinkedHashMap<>();
 
@@ -156,12 +153,12 @@ public class APIHandler {
 
         // Construct URL for bulk endpoint
         String url = "https://api.spoonacular.com/recipes/informationBulk?apiKey=" + API_KEY
-                + "&ids=" + String.join(",", mealIds.stream().map(String::valueOf).toArray(String[]::new));
+                + "&ids=" + String.join(",", mealIds.stream().map(String::valueOf).toArray(String[]::new)) + "&includeNutrition=true";
 
         try {
             // Make API request for bulk meal details
             String response = makeApiRequest(url);
-            // System.out.println("Raw JSON Response:\n" + response);
+            System.out.println("Raw JSON Response:\n" + response);
 
             // Parse bulk response
             JSONArray bulkResponseArray = new JSONArray(response);
@@ -170,8 +167,16 @@ public class APIHandler {
             for (int i = 0; i < bulkResponseArray.length(); i++) {
                 JSONObject mealJson = bulkResponseArray.getJSONObject(i);
                 int mealId = mealJson.getInt("id");
+
+                // If the meal isn't in the cache, cache it with all details, including nutritional info
                 if (!mealDetailsCache.containsKey(mealId)) {
-                    mealDetailsCache.put(mealId, createMealFromJson(mealJson));
+                    Meal meal = createMealFromJson(mealJson);
+
+                    // Parse and set nutritional information from the response
+                    NutritionalInfo nutritionalInfo = extractNutritionalInfo(mealJson);
+                    meal.setNutritionalInfo(nutritionalInfo);
+
+                    mealDetailsCache.put(mealId, meal);
                 }
             }
 
@@ -182,6 +187,7 @@ public class APIHandler {
                     if (cachedMeal != null) {
                         meal.setIngredients(cachedMeal.getIngredients());
                         meal.setInstructions(cachedMeal.getInstructions());
+                        meal.setNutritionalInfo(cachedMeal.getNutritionalInfo());
                     }
                 }
             }
@@ -190,6 +196,73 @@ public class APIHandler {
             System.err.println("Error fetching meal details in bulk: " + e.getMessage());
         }
     }
+
+    private NutritionalInfo extractNutritionalInfo(JSONObject mealJson) {
+        int calories = 0, protein = 0, fat = 0, carbs = 0;
+        double saturatedFat = 0, fiber = 0, sugar = 0, sodium = 0;
+        double vitaminC = 0, calcium = 0, iron = 0, potassium = 0, vitaminA = 0, vitaminK = 0, magnesium = 0;
+
+        if (mealJson.has("nutrition")) {
+            JSONArray nutrients = mealJson.getJSONObject("nutrition").getJSONArray("nutrients");
+
+            // Loop through nutrients to find relevant data
+            for (int j = 0; j < nutrients.length(); j++) {
+                JSONObject nutrient = nutrients.getJSONObject(j);
+                String name = nutrient.getString("name");
+                int amount = (int) nutrient.getDouble("amount"); // Assuming grams are integers
+
+                switch (name.toLowerCase()) {
+                    case "calories":
+                        calories = amount;
+                        break;
+                    case "protein":
+                        protein = amount;
+                        break;
+                    case "fat":
+                        fat = amount;
+                        break;
+                    case "saturated fat":
+                        saturatedFat = amount;
+                        break;
+                    case "carbohydrates":
+                        carbs = amount;
+                        break;
+                    case "fiber":
+                        fiber = amount;
+                        break;
+                    case "sugar":
+                        sugar = amount;
+                        break;
+                    case "sodium":
+                        sodium = amount;
+                        break;
+                    case "vitamin c":
+                        vitaminC = amount;
+                        break;
+                    case "calcium":
+                        calcium = amount;
+                        break;
+                    case "iron":
+                        iron = amount;
+                        break;
+                    case "potassium":
+                        potassium = amount;
+                        break;
+                    case "vitamin a":
+                        vitaminA = amount;
+                        break;
+                    case "vitamin k":
+                        vitaminK = amount;
+                        break;
+                    case "magnesium":
+                        magnesium = amount;
+                        break;
+                }
+            }
+        }
+        return new NutritionalInfo(calories, protein, fat, carbs, saturatedFat, fiber, sugar, sodium, vitaminC, calcium, iron, potassium, vitaminA, vitaminK, magnesium);
+    }
+
 
     /**
      * Creates a Meal object from JSON data, setting ingredients and instructions.
@@ -202,11 +275,8 @@ public class APIHandler {
         String title = mealJson.getString("title");
         String imageUrl = mealJson.optString("image", "");
 
-        // Initialize NutritionalInfo as null or with actual data if available
-        NutritionalInfo nutritionalInfo = null; // or get it from the JSON if available
-
         // Create Meal object using the constructor with required parameters
-        Meal meal = new Meal(id, title, imageUrl, nutritionalInfo);
+        Meal meal = new Meal(id, title, imageUrl, null);
 
         // Populate ingredients
         JSONArray ingredientsArray = mealJson.optJSONArray("extendedIngredients");
@@ -233,64 +303,11 @@ public class APIHandler {
         }
         meal.setInstructions(instructions);
 
+        // Extract and set nutritional information if available
+        NutritionalInfo nutritionalInfo = extractNutritionalInfo(mealJson);
+        meal.setNutritionalInfo(nutritionalInfo);
+
         return meal;
-    }
-
-
-    /**
-     * Fetches and sets nutritional information for each meal.
-     * @param dailyMeals Map of meals organized by day
-     */
-    private void populateNutritionalInfo(Map<String, List<Meal>> dailyMeals) {
-        for (List<Meal> meals : dailyMeals.values()) {
-            for (Meal meal : meals) {
-                NutritionalInfo nutritionalInfo = fetchNutritionalInfo(meal.getId());
-                meal.setNutritionalInfo(nutritionalInfo);
-            }
-        }
-    }
-
-    /**
-     * Fetches nutritional information for a meal.
-     * @param mealId The ID of the meal to fetch nutritional info for
-     * @return NutritionalInfo object with details on calories, protein, fat, and carbs
-     */
-    private NutritionalInfo fetchNutritionalInfo(int mealId) {
-        // URL for nutritional information endpoint
-        String url = "https://api.spoonacular.com/recipes/" + mealId + "/nutritionWidget.json" + "?apiKey=" + API_KEY;
-        try {
-            // Make API request
-            String response = makeApiRequest(url);
-            JSONObject nutritionJson = new JSONObject(response);
-
-            // Parse nutritional values
-            int calories = parseNutritionalValue(nutritionJson.getString("calories"));
-            int protein = parseNutritionalValue(nutritionJson.getString("protein"));
-            int fat = parseNutritionalValue(nutritionJson.getString("fat"));
-            int carbs = parseNutritionalValue(nutritionJson.getString("carbs"));
-
-            return new NutritionalInfo(calories, protein, fat, carbs);
-        } catch (Exception e) {
-            e.printStackTrace();
-            System.err.println("Error fetching nutritional info for meal ID " + mealId + ": " + e.getMessage());
-            return new NutritionalInfo(0, 0, 0, 0);
-        }
-    }
-
-    /**
-     * Parses a nutritional value string (e.g., "6g") to an integer by removing non-numeric characters.
-     * @param valueWithUnit The nutritional value string with units
-     * @return The numeric part of the string as an integer
-     */
-    private int parseNutritionalValue(String valueWithUnit) {
-        try {
-            // Remove all non-numeric characters, e.g., "6g" -> "6"
-            String numericValue = valueWithUnit.replaceAll("[^0-9]", "");
-            return Integer.parseInt(numericValue);
-        } catch (NumberFormatException e) {
-            System.err.println("Could not parse nutritional value: " + valueWithUnit);
-            return 0;
-        }
     }
 
     /**

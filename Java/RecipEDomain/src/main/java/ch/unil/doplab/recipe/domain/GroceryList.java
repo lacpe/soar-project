@@ -48,7 +48,7 @@ public class GroceryList {
     // Method to display ingredients in a user-friendly format with detailed info
     public void displayGroceryList() {
         for (Ingredient ingredient : ingredientMap.values()) {
-            System.out.println(ingredient.getQuantity() + " " + ingredient.getUnit() + " of " + ingredient.getName());
+            System.out.println(ingredient.getQuantity() + " " + ingredient.getUnit() + ingredient.getName());
             System.out.println();
         }
     }
