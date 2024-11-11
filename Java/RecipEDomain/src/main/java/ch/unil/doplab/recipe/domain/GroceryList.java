@@ -39,6 +39,12 @@ public class GroceryList {
         return ingredientMap;
     }
 
+    public Map<String, Ingredient> setIngredients(Map<String, Ingredient> ingredients) {
+        ingredientMap.clear();
+        ingredientMap = ingredients;
+        return ingredientMap;
+    }
+
     // Method to display ingredients in a user-friendly format with detailed info
     public void displayGroceryList() {
         for (Ingredient ingredient : ingredientMap.values()) {

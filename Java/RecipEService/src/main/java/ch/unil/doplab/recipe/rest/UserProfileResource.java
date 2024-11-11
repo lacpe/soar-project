@@ -31,8 +31,7 @@ public class UserProfileResource {
     @Consumes(MediaType.APPLICATION_JSON)
     @Path("/{id}")
     public UserProfile updateUserProfile(@PathParam("id") UUID id, UserProfile userProfile) {
-        state.setUserProfile(id, userProfile);
-        return state.getUserProfile(id);
+        return state.setUserProfile(id, userProfile);
     }
 
     @POST

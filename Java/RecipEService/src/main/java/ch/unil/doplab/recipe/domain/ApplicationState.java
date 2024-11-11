@@ -1,5 +1,7 @@
 package ch.unil.doplab.recipe.domain;
 
+import com.google.common.collect.BiMap;
+import com.google.common.collect.HashBiMap;
 import jakarta.annotation.PostConstruct;
 import jakarta.enterprise.context.ApplicationScoped;
 
@@ -8,21 +10,35 @@ import java.util.*;
 
 @ApplicationScoped
 public class ApplicationState {
-    /* We use both a userProfiles and usernames list so requests can be made using both the UUID and the username. It
-    looks slightly worse but is significantly better for the end user, and makes for more readable tests.
-     */
+    // Maps that will hold all CRUD-able items.
     private Map<UUID, UserProfile> userProfiles;
-    private Map<String, UUID> usernames;
     private Map<UUID, MealPlan> mealPlans;
-    // NOTE there is no list of meals, because this list already exists as a static final field in APIHandler.
     private Map<UUID, GroceryList> groceryLists;
+
+    // Object to handle all interactions with the Spoonacular API.
+    private APIHandler apiHandler;
+
+    /* Bidirectional maps (from Google's Guava Collections API) to match users to meal plans, and meal
+    plans to grocery lists, and vice versa. */
+    private BiMap<UUID, UUID> usersMealPlans;
+    private BiMap<UUID, UUID> mealPlansGroceryLists;
+
+    // Map to match usernames to their UUID. This simplifies API requests concerning users.
+    private Map<String, UUID> usernames;
 
     @PostConstruct
     public void init() {
         userProfiles = new TreeMap<>();
-        usernames = new TreeMap<>();
         mealPlans = new TreeMap<>();
         groceryLists = new TreeMap<>();
+
+        apiHandler = new APIHandler();
+
+        usersMealPlans = HashBiMap.create();
+        mealPlansGroceryLists = HashBiMap.create();
+
+        usernames = new TreeMap<>();
+
         populateApplication();
     }
 
@@ -53,12 +69,15 @@ public class ApplicationState {
         return userProfile;
     }
 
-    public boolean setUserProfile(UUID id, UserProfile userProfile) {
+    public UserProfile setUserProfile(UUID id, UserProfile userProfile) {
         // This function changes the data to whatever userProfile is saved at UUID id to whatever data
         // is in userProfile
         UserProfile oldUserProfile = userProfiles.get(id);
         if (userProfile == null) {
-            return false;
+            throw new IllegalArgumentException("User profile inputed is null.");
+        }
+        if (oldUserProfile == null) {
+            throw new IllegalArgumentException("User profile does not currently exist, cannot be updated.");
         }
         // Translating the following condition : if the old & new user profiles have the same (non-null) username
         // but their UUIDs are different (i.e. you are trying to set the same username for two different users
@@ -69,7 +88,7 @@ public class ApplicationState {
             throw new IllegalArgumentException("A user with username " + userProfile.getUsername() + " already exists.");
         }
         oldUserProfile.replaceWithUser(userProfile);
-        return true;
+        return userProfiles.get(id);
     }
 
     public void removeUserProfile(String username){
@@ -81,6 +100,32 @@ public class ApplicationState {
         userProfiles.remove(id);
     }
 
+    public MealPlan getMealPlan(UUID id) {
+        return mealPlans.get(id);
+    }
+
+    public Map<UUID, MealPlan> getAllMealPlans() {
+        return mealPlans;
+    }
+
+    public MealPlan addMealPlan(MealPlan mealPlan) {
+        return addMealPlan(UUID.randomUUID(), mealPlan);
+    }
+
+    public MealPlan addMealPlan(UUID id, MealPlan mealPlan) {
+        mealPlans.put(id, mealPlan);
+        return mealPlan;
+    }
+
+    public MealPlan setMealPlan(UUID id, MealPlan mealPlan) {
+        mealPlans.replace(id, mealPlan);
+        return mealPlan;
+    }
+
+    public void removeMealPlan(UUID id) {
+        mealPlans.remove(id);
+    }
+
     public GroceryList getGroceryList(UUID id) {return groceryLists.get(id);}
 
     public Map<UUID, GroceryList> getAllGroceryLists() {return groceryLists;}
@@ -90,8 +135,9 @@ public class ApplicationState {
         return groceryList;
     }
 
-    // TODO: add function within the GroceryList domain class to update a grocery list
-    public GroceryList setGroceryList(UUID id, GroceryList groceryList) {
+    public GroceryList setGroceryList(UUID id, Map<String, Ingredient> ingredients) {
+        GroceryList groceryList = groceryLists.get(id);
+        groceryList.setIngredients(ingredients);
         return groceryList;
     }
 
