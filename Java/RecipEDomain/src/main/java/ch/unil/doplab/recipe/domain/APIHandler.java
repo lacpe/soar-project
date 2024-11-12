@@ -75,7 +75,7 @@ public class APIHandler {
                 }
             }
 
-            return new MealPlan(orderedDailyMeals);
+            return new MealPlan(userProfile, orderedDailyMeals);
 
         } catch (java.net.SocketTimeoutException e) {
             System.err.println("Request timed out. Please try again later.");
@@ -84,7 +84,7 @@ public class APIHandler {
             System.err.println("Error generating meal plan: " + e.getMessage());
         }
 
-        return new MealPlan(dailyMeals);
+        return new MealPlan(userProfile, dailyMeals);
     }
 
     /**

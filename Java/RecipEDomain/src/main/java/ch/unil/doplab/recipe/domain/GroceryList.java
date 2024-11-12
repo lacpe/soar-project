@@ -24,6 +24,24 @@ public class GroceryList {
     }
 
     /**
+     * Adds an ingredient to the grocery list, consolidating quantities if the ingredient
+     * already exists in the list.
+     */
+    public void addIngredient(Ingredient ingredient) {
+        String key = ingredient.getName() + "_" + ingredient.getUnit(); // Unique key by name and unit
+
+        if (ingredientMap.containsKey(key)) {
+            // Consolidate quantities if ingredient with same name and unit already exists
+            Ingredient existingIngredient = ingredientMap.get(key);
+            double newQuantity = existingIngredient.getQuantity() + ingredient.getQuantity();
+            existingIngredient.setQuantity(newQuantity); // Update the quantity
+        } else {
+            // Add new ingredient if it doesn't exist in the list
+            ingredientMap.put(key, ingredient);
+        }
+    }
+
+    /**
      * Returns a Map of all ingredients in the grocery list, with consolidated quantities.
      */
     public Map<String, Ingredient> getIngredients() {
