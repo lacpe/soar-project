@@ -50,13 +50,34 @@ public class UserProfile {
         this.password = Utils.hashPassword(password);
     }
 
+    public void setUserId(UUID userId) {
+        this.userId = userId;
+    }
+    public void setUsername(String username) {
+        this.username = username;
+    }
+    public void setPassword(String password) {
+        this.password = Utils.hashPassword(password);
+    }
+
     // Setters for dietary preferences
     public void setDietType(DietType dietType) {
         this.dietType = dietType;
     }
 
+    public void setAllergies(Set<String> allergies) {
+        this.allergies = allergies;
+    }
+    public void setDislikedIngredients(Set<String> dislikedIngredients) {
+        this.dislikedIngredients = dislikedIngredients;
+    }
+
     public void setDailyCalorieTarget(int dailyCalorieTarget) {
         this.dailyCalorieTarget = Optional.of(dailyCalorieTarget);
+    }
+
+    public void setMealPlanPreference(MealPlanPreference mealPlanPreference) {
+        this.mealPlanPreference = mealPlanPreference;
     }
 
     // Methods to add allergies and disliked ingredients
@@ -107,10 +128,6 @@ public class UserProfile {
 
     public MealPlanPreference getMealPlanPreference() {
         return mealPlanPreference;
-    }
-
-    public void setMealPlanPreference(MealPlanPreference mealPlanPreference) {
-        this.mealPlanPreference = mealPlanPreference;
     }
 
     // Optional method to display user preferences for debugging or user settings
