@@ -41,10 +41,6 @@ public class UserProfile {
         this(null, null, null, null, null, 0, null);
     }
 
-    public UserProfile(String username, String password, DietType dietType) {
-        this(username, password, dietType, null, null, 0, null);
-    }
-
     // Constructor to initialize the user profile (case where there is no UUID)
     public UserProfile(String username, String password, DietType dietType, HashSet<String> allergies,
                        HashSet<String> dislikedIngredients, int dailyCalorieTarget,
@@ -66,33 +62,7 @@ public class UserProfile {
         this.mealPlanPreference = mealPlanPreference;
     }
 
-    // Setters for dietary preferences
-    public void setDietType(DietType dietType) {
-        this.dietType = dietType;
-    }
-
-    public void setDailyCalorieTarget(int dailyCalorieTarget) {
-        this.dailyCalorieTarget = Optional.of(dailyCalorieTarget);
-    }
-
-    // Methods to add allergies and disliked ingredients
-    public void addAllergy(String allergy) {
-        this.allergies.add(allergy);
-    }
-
-    public void removeAllergy(String allergy) {
-        this.allergies.remove(allergy);
-    }
-
-    public void addDislikedIngredient(String ingredient) {
-        this.dislikedIngredients.add(ingredient);
-    }
-
-    public void removeDislikedIngredient(String ingredient) {
-        this.dislikedIngredients.remove(ingredient);
-    }
-
-    // Getters for user preferences and restrictions
+    // Getters
     public UUID getUserId() {
         return userId;
     }
@@ -123,6 +93,32 @@ public class UserProfile {
 
     public MealPlanPreference getMealPlanPreference() {
         return mealPlanPreference;
+    }
+
+    // Setters for dietary preferences
+    public void setDietType(DietType dietType) {
+        this.dietType = dietType;
+    }
+
+    public void setDailyCalorieTarget(int dailyCalorieTarget) {
+        this.dailyCalorieTarget = Optional.of(dailyCalorieTarget);
+    }
+
+    // Methods to add allergies and disliked ingredients
+    public void addAllergy(String allergy) {
+        this.allergies.add(allergy);
+    }
+
+    public void removeAllergy(String allergy) {
+        this.allergies.remove(allergy);
+    }
+
+    public void addDislikedIngredient(String ingredient) {
+        this.dislikedIngredients.add(ingredient);
+    }
+
+    public void removeDislikedIngredient(String ingredient) {
+        this.dislikedIngredients.remove(ingredient);
     }
 
     public void setMealPlanPreference(MealPlanPreference mealPlanPreference) {
