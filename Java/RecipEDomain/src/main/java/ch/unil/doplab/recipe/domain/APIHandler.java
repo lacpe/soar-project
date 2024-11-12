@@ -223,7 +223,7 @@ public class APIHandler {
             payload.put("items", itemsArray);
 
             // Print payload for debugging
-            System.out.println("Sending JSON Payload: " + payload.toString());
+            //System.out.println("Sending JSON Payload: " + payload.toString());
 
             // Construct the API request URL
             String url = "https://api.spoonacular.com/mealplanner/shopping-list/compute?apiKey=" + API_KEY;
@@ -232,7 +232,7 @@ public class APIHandler {
             String response = makeApiRequest(url, "POST", payload.toString());
 
             // Print the received JSON response to inspect its structure
-            System.out.println("Received JSON Response: " + response);
+            //System.out.println("Received JSON Response: " + response);
 
             // Convert the response to a JSON object
             JSONObject jsonResponse = new JSONObject(response);
