@@ -5,6 +5,8 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
 
+import java.util.HashSet;
+
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
@@ -16,7 +18,8 @@ public class APIHandlerTest {
     @BeforeEach
     public void setUp() {
         apiHandler = Mockito.mock(APIHandler.class);
-        userProfile = new UserProfile("testUser", "testPassword");
+        userProfile = new UserProfile("testUser", "testPassword", UserProfile.DietType.VEGETARIAN,
+                new HashSet<>(), new HashSet<>(), 2000, UserProfile.MealPlanPreference.DAILY);
     }
 
     @Test

@@ -6,6 +6,7 @@ import ch.unil.doplab.recipe.domain.UserProfile.MealPlanPreference;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.HashSet;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -18,7 +19,8 @@ public class UserProfileTest {
 
     @BeforeEach
     public void setUp() {
-        userProfile = new UserProfile(USERNAME, PASSWORD);
+        userProfile = new UserProfile(USERNAME, PASSWORD, UserProfile.DietType.VEGETARIAN,
+                new HashSet<>(), new HashSet<>(), 2000, UserProfile.MealPlanPreference.DAILY);
     }
 
     @Test
@@ -67,7 +69,8 @@ public class UserProfileTest {
 
     @Test
     public void testReplaceWithUser() {
-        UserProfile newUserProfile = new UserProfile("newUser", "newPassword");
+        UserProfile newUserProfile = new UserProfile("newUser", "newPassword", UserProfile.DietType.VEGETARIAN,
+                new HashSet<>(), new HashSet<>(), 2000, UserProfile.MealPlanPreference.DAILY);
         newUserProfile.setDietType(DietType.PALEO);
         newUserProfile.setDailyCalorieTarget(1800);
         newUserProfile.addAllergy("Gluten");

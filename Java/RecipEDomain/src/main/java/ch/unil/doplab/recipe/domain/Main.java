@@ -1,12 +1,17 @@
 package ch.unil.doplab.recipe.domain;
 
+import java.util.HashSet;
+import java.util.Optional;
+
 public class Main {
     public static void main(String[] args) {
         boolean apiPOINTS = false;
         APIHandler apiHandler = new APIHandler();
 
         // Set up a test user profile with meal plan preference set directly
-        UserProfile userProfile = new UserProfile("testuser", "password123");
+        UserProfile userProfile = new UserProfile("testuser", "password123",
+                UserProfile.DietType.VEGETARIAN, new HashSet<>(), new HashSet<>(), 2000,
+                UserProfile.MealPlanPreference.WEEK);
         userProfile.setDietType(UserProfile.DietType.VEGETARIAN);
         userProfile.setDailyCalorieTarget(2000);
         userProfile.setMealPlanPreference(UserProfile.MealPlanPreference.WEEK); // Set preference to "daily" or "weekly"

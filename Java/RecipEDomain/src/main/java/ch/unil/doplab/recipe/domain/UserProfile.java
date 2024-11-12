@@ -5,6 +5,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
 import ch.unil.doplab.recipe.domain.Utils;
+import org.json.*;
 
 public class UserProfile {
     private UUID userId;                             // Unique identifier for the user
@@ -36,18 +37,33 @@ public class UserProfile {
         WHOLE30
     }
 
+    public UserProfile() {
+        this(null, null, null, null, null, 0, null);
+    }
+
+    public UserProfile(String username, String password, DietType dietType) {
+        this(username, password, dietType, null, null, 0, null);
+    }
+
     // Constructor to initialize the user profile (case where there is no UUID)
-    public UserProfile(String username, String password) {
-        this.userId = UUID.randomUUID();
-        this.username = username;
-        this.password = Utils.hashPassword(password);
+    public UserProfile(String username, String password, DietType dietType, HashSet<String> allergies,
+                       HashSet<String> dislikedIngredients, int dailyCalorieTarget,
+                       MealPlanPreference mealPlanPreference) {
+        this(UUID.randomUUID(), username, password, dietType, allergies, dislikedIngredients, dailyCalorieTarget, mealPlanPreference);
     }
 
     // Another constructor to handle the case where there IS a UUID provided
-    public UserProfile(UUID userId, String username, String password) {
+    public UserProfile(UUID userId, String username, String password, DietType dietType, HashSet<String> allergies,
+                       HashSet<String> dislikedIngredients, int dailyCalorieTarget,
+                       MealPlanPreference mealPlanPreference)  {
         this.userId = userId;
         this.username = username;
         this.password = Utils.hashPassword(password);
+        this.dietType = dietType;
+        this.allergies = allergies;
+        this.dislikedIngredients = dislikedIngredients;
+        this.dailyCalorieTarget = Optional.of(dailyCalorieTarget);
+        this.mealPlanPreference = mealPlanPreference;
     }
 
     // Setters for dietary preferences

@@ -55,17 +55,18 @@ public class ApplicationState {
     }
 
     public UserProfile addUserProfile(UUID id, UserProfile userProfile) {
-        if (userProfile.getUsername() == null | userProfile.getUsername().isEmpty()) {
-            throw new IllegalArgumentException("Username cannot be null or empty.");
-        }
+        /*if (userProfile.getUsername() == null) {
+            throw new IllegalArgumentException("Username cannot be null.");
+        }*/
         if (userProfiles.containsKey(id)) {
             throw new IllegalArgumentException("User with ID " + id + " already exists.");
         }
+        /*
         if (usernames.containsKey(userProfile.getUsername())) {
             throw new IllegalArgumentException("Username " + userProfile.getUsername() + " already in use.");
-        }
+        }*/
         userProfiles.put(id, userProfile);
-        usernames.put(userProfile.getUsername(), id);
+        /*usernames.put(userProfile.getUsername(), id);*/
         return userProfile;
     }
 
@@ -177,7 +178,8 @@ public class ApplicationState {
         for (int i = 1; i <= 20; i++) {
             String username = "user" + i;
             String password = "password" + i + "123";
-            UserProfile user = new UserProfile(UUID.randomUUID(), username, password);
+            UserProfile user = new UserProfile(UUID.randomUUID(), username, password, UserProfile.DietType.VEGETARIAN,
+                    new HashSet<>(), new HashSet<>(), 2000, UserProfile.MealPlanPreference.DAILY);
             addUserProfile(user);
         }
 

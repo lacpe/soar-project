@@ -2,10 +2,7 @@ package ch.unil.doplab.recipe.domain;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
-import java.util.LinkedHashMap;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -16,7 +13,8 @@ public class MealPlanTest {
 
     @BeforeEach
     public void setUp() {
-        userProfile = new UserProfile("testUser", "password");
+        userProfile = new UserProfile("testUser", "testPassword", UserProfile.DietType.VEGETARIAN,
+                new HashSet<>(), new HashSet<>(), 2000, UserProfile.MealPlanPreference.DAILY);
         mealPlan = new MealPlan(userProfile);
     }
 
