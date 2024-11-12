@@ -37,15 +37,14 @@ public class UserProfileResource {
     @POST
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    @Path("/{id}")
-    public UserProfile createUserProfile(@PathParam("id") UUID id, UserProfile userProfile) {
-        return state.addUserProfile(id, userProfile);
+    public UserProfile createUserProfile(UserProfile userProfile) {
+        return state.addUserProfile(userProfile);
     }
 
     @DELETE
-    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
     @Path("/{id}")
-    public void deleteUserProfile(@PathParam("id") UUID id) {
-        state.removeUserProfile(id);
+    public boolean deleteUserProfile(@PathParam("id") UUID id) {
+        return state.removeUserProfile(id);
     }
 }

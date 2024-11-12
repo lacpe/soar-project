@@ -10,7 +10,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="2b0e7e59-a39e-497c-9255-1e031f6c1224" name="Changes" comment="It works... better?">
+      <change afterPath="$PROJECT_DIR$/.idea/uiDesigner.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/ch/unil/doplab/recipe/rest/GroceryListResource.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/ch/unil/doplab/recipe/rest/MealPlanResource.java" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/src/main/java/ch/unil/doplab/recipe/rest/RecipEService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/ch/unil/doplab/recipe/rest/ServiceResource.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/ch/unil/doplab/recipe/domain/ApplicationState.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ch/unil/doplab/recipe/domain/ApplicationState.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/ch/unil/doplab/recipe/rest/TestResource.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ch/unil/doplab/recipe/rest/TestResource.java" afterDir="false" />
@@ -57,6 +61,9 @@
   &quot;associatedIndex&quot;: 3
 }</component>
   <component name="ProjectId" id="2oCNu1v0sEoYlQARo23JTsWHG4r" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
@@ -75,6 +82,7 @@
     "Repository.Attach.JavaDocs": "true",
     "Repository.Attach.Sources": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "git-widget-placeholder": "main",
     "kotlin-language-version-configured": "true",
     "last_opened_file_path": "/Users/lpernot/Documents/GitHub/soar-project/Java/RecipEService",
@@ -233,7 +241,35 @@
       <workItem from="1731328759652" duration="160000" />
       <workItem from="1731328945461" duration="549000" />
       <workItem from="1731329738536" duration="651000" />
-      <workItem from="1731330440565" duration="6309000" />
+      <workItem from="1731330440565" duration="6376000" />
+      <workItem from="1731399297651" duration="541000" />
+      <workItem from="1731399863186" duration="18000" />
+      <workItem from="1731399901006" duration="1144000" />
+      <workItem from="1731401194640" duration="600000" />
+      <workItem from="1731403265960" duration="977000" />
+      <workItem from="1731404298017" duration="395000" />
+      <workItem from="1731404720898" duration="510000" />
+      <workItem from="1731405968275" duration="91000" />
+      <workItem from="1731406137352" duration="3000" />
+      <workItem from="1731406217412" duration="401000" />
+      <workItem from="1731406811937" duration="159000" />
+      <workItem from="1731407133052" duration="87000" />
+      <workItem from="1731407244751" duration="62000" />
+      <workItem from="1731407551771" duration="67000" />
+      <workItem from="1731407678397" duration="30000" />
+      <workItem from="1731407813270" duration="130000" />
+      <workItem from="1731408057452" duration="160000" />
+      <workItem from="1731408735210" duration="428000" />
+      <workItem from="1731416840887" duration="102000" />
+      <workItem from="1731417149913" duration="311000" />
+      <workItem from="1731418847552" duration="278000" />
+      <workItem from="1731419165396" duration="240000" />
+      <workItem from="1731419444448" duration="17000" />
+      <workItem from="1731419783782" duration="624000" />
+      <workItem from="1731421799935" duration="2074000" />
+      <workItem from="1731429227618" duration="6000" />
+      <workItem from="1731429256402" duration="24000" />
+      <workItem from="1731429304685" duration="1598000" />
     </task>
     <task id="LOCAL-00001" summary="It works... better?">
       <option name="closed" value="true" />

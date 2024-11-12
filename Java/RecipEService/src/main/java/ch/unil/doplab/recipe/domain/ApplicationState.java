@@ -42,7 +42,7 @@ public class ApplicationState {
         populateApplication();
     }
 
-    // In order : getters, add operations, remove operations
+    // Functions for UserProfileResource
     public UserProfile getUserProfile(UUID id) {return userProfiles.get(id);}
 
     public Map<UUID, UserProfile> getAllUserProfiles() {return userProfiles;}
@@ -55,17 +55,18 @@ public class ApplicationState {
     }
 
     public UserProfile addUserProfile(UUID id, UserProfile userProfile) {
-        if (userProfile.getUsername() == null | userProfile.getUsername().isEmpty()) {
-            throw new IllegalArgumentException("Username cannot be null or empty.");
-        }
+        /*if (userProfile.getUsername() == null) {
+            throw new IllegalArgumentException("Username cannot be null.");
+        }*/
         if (userProfiles.containsKey(id)) {
             throw new IllegalArgumentException("User with ID " + id + " already exists.");
         }
+        /*
         if (usernames.containsKey(userProfile.getUsername())) {
             throw new IllegalArgumentException("Username " + userProfile.getUsername() + " already in use.");
-        }
+        }*/
         userProfiles.put(id, userProfile);
-        usernames.put(userProfile.getUsername(), id);
+        /*usernames.put(userProfile.getUsername(), id);*/
         return userProfile;
     }
 
@@ -95,10 +96,22 @@ public class ApplicationState {
         removeUserProfile(usernames.get(username));
     }
 
-    public void removeUserProfile(UUID id) {
-        usernames.remove(userProfiles.get(id).getUsername());
+    public boolean removeUserProfile(UUID id) {
+        UserProfile userProfile = userProfiles.get(id);
+        if (userProfile == null) {
+            return false;
+        }
+        if (usernames.containsKey(userProfile.getUsername())) {
+            usernames.remove(userProfile.getUsername());
+        }
+        if (usersMealPlans.containsKey(id)) {
+            usersMealPlans.remove(id);
+        }
         userProfiles.remove(id);
+        return true;
     }
+
+    // Functions for MealPlanResource
 
     public MealPlan getMealPlan(UUID id) {
         return mealPlans.get(id);
@@ -122,10 +135,19 @@ public class ApplicationState {
         return mealPlan;
     }
 
-    public void removeMealPlan(UUID id) {
+    public boolean removeMealPlan(UUID id) {
+        MealPlan mealPlan = mealPlans.get(id);
+        if (mealPlan == null) {
+            return false;
+        }
+        if (mealPlansGroceryLists.containsKey(id)) {
+            mealPlansGroceryLists.remove(id);
+        }
         mealPlans.remove(id);
+        return true;
     }
 
+    // Functions for GroceryListResource
     public GroceryList getGroceryList(UUID id) {return groceryLists.get(id);}
 
     public Map<UUID, GroceryList> getAllGroceryLists() {return groceryLists;}
@@ -135,14 +157,49 @@ public class ApplicationState {
         return groceryList;
     }
 
-    public GroceryList setGroceryList(UUID id, Map<String, Ingredient> ingredients) {
-        GroceryList groceryList = groceryLists.get(id);
-        groceryList.setIngredients(ingredients);
+    public GroceryList setGroceryList(UUID id, GroceryList groceryList) {
+        groceryLists.replace(id, groceryList);
         return groceryList;
     }
 
-    public void removeGroceryList(UUID id) {
+    public boolean removeGroceryList(UUID id) {
+        GroceryList groceryList = groceryLists.get(id);
+        if (groceryList == null) {
+            return false;
+        }
+        if (mealPlansGroceryLists.inverse().containsKey(id)) {
+            mealPlansGroceryLists.inverse().remove(id);
+        }
         groceryLists.remove(id);
+        return true;
+    }
+
+    //Functions for ServiceResource
+    public MealPlan generateMealPlan(UUID userId) {
+        MealPlan mealPlan = apiHandler.generateMealPlan(userProfiles.get(userId));
+        UUID mealPlanId = UUID.randomUUID();
+        mealPlans.put(mealPlanId, mealPlan);
+        usersMealPlans.put(userId, mealPlanId);
+        return mealPlan;
+    }
+
+    public GroceryList generateGroceryList(UUID userId) {
+        MealPlan mealPlan = mealPlans.get(usersMealPlans.get(userId));
+        GroceryList groceryList = mealPlan.generateGroceryList();
+        UUID groceryListId = UUID.randomUUID();
+        groceryLists.put(groceryListId, groceryList);
+        mealPlansGroceryLists.put(usersMealPlans.get(userId), groceryListId);
+        return groceryList;
+    }
+
+    public MealPlan getUserMealPlan(UUID userId) {
+        // Returns a given user's current meal plan
+        return mealPlans.get(usersMealPlans.get(userId));
+    }
+
+    public GroceryList getUserGroceryList(UUID userId) {
+        // Looks up a user's current meal plan, and returns the corresponding grocery list
+        return groceryLists.get(mealPlansGroceryLists.get(usersMealPlans.get(userId)));
     }
 
     private void populateApplication() {
@@ -150,7 +207,8 @@ public class ApplicationState {
         for (int i = 1; i <= 20; i++) {
             String username = "user" + i;
             String password = "password" + i + "123";
-            UserProfile user = new UserProfile(UUID.randomUUID(), username, password);
+            UserProfile user = new UserProfile(UUID.randomUUID(), username, password, UserProfile.DietType.VEGETARIAN,
+                    new HashSet<>(), new HashSet<>(), 2000, UserProfile.MealPlanPreference.DAILY);
             addUserProfile(user);
         }
 
