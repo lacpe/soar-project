@@ -1,6 +1,7 @@
 package ch.unil.doplab.recipe.rest;
 
 import ch.unil.doplab.recipe.domain.ApplicationState;
+import ch.unil.doplab.recipe.domain.MealPlan;
 import ch.unil.doplab.recipe.domain.UserProfile;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
@@ -8,44 +9,44 @@ import jakarta.ws.rs.core.MediaType;
 
 import java.util.*;
 
-@Path("/userprofile")
-public class UserProfileResource {
+@Path("/mealplan")
+public class MealPlanRessource {
     @Inject
     private ApplicationState state;
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public Map<UUID, UserProfile> getAllUserProfiles() {
-        return new TreeMap<UUID, UserProfile>(state.getAllUserProfiles());
+    public Map<UUID, MealPlan> getAllMealPlans() {
+        return state.getAllMealPlans();
     }
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/{id}")
-    public UserProfile getUserProfile(@PathParam("id") UUID id) {
-        return state.getUserProfile(id);
+    public MealPlan getMealPlan(@PathParam("id") UUID id) {
+        return state.getMealPlan(id);
     }
 
     @PUT
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     @Path("/{id}")
-    public UserProfile updateUserProfile(@PathParam("id") UUID id, UserProfile userProfile) {
-        return state.setUserProfile(id, userProfile);
+    public MealPlan setMealPlan(@PathParam("id") UUID id, MealPlan mealPlan) {
+        return state.setMealPlan(id, mealPlan);
     }
 
     @POST
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     @Path("/{id}")
-    public UserProfile createUserProfile(@PathParam("id") UUID id, UserProfile userProfile) {
-        return state.addUserProfile(id, userProfile);
+    public MealPlan addMealPlan(@PathParam("id") UUID id, MealPlan mealPlan) {
+        return state.addMealPlan(id, mealPlan);
     }
 
     @DELETE
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/{id}")
-    public boolean deleteUserProfile(@PathParam("id") UUID id) {
-        return state.removeUserProfile(id);
+    public boolean removeMealPlan(@PathParam("id") UUID id) {
+        return state.removeMealPlan(id);
     }
 }

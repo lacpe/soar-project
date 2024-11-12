@@ -95,9 +95,19 @@ public class ApplicationState {
         removeUserProfile(usernames.get(username));
     }
 
-    public void removeUserProfile(UUID id) {
-        usernames.remove(userProfiles.get(id).getUsername());
+    public boolean removeUserProfile(UUID id) {
+        UserProfile userProfile = userProfiles.get(id);
+        if (userProfile == null) {
+            return false;
+        }
+        if (usernames.containsKey(userProfile.getUsername())) {
+            usernames.remove(userProfile.getUsername());
+        }
+        if (usersMealPlans.containsKey(id)) {
+            usersMealPlans.remove(id);
+        }
         userProfiles.remove(id);
+        return true;
     }
 
     public MealPlan getMealPlan(UUID id) {
@@ -122,8 +132,16 @@ public class ApplicationState {
         return mealPlan;
     }
 
-    public void removeMealPlan(UUID id) {
+    public boolean removeMealPlan(UUID id) {
+        MealPlan mealPlan = mealPlans.get(id);
+        if (mealPlan == null) {
+            return false;
+        }
+        if (mealPlansGroceryLists.containsKey(id)) {
+            mealPlansGroceryLists.remove(id);
+        }
         mealPlans.remove(id);
+        return true;
     }
 
     public GroceryList getGroceryList(UUID id) {return groceryLists.get(id);}
@@ -135,15 +153,24 @@ public class ApplicationState {
         return groceryList;
     }
 
-    public GroceryList setGroceryList(UUID id, Map<String, Ingredient> ingredients) {
-        GroceryList groceryList = groceryLists.get(id);
-        groceryList.setIngredients(ingredients);
+    public GroceryList setGroceryList(UUID id, GroceryList groceryList) {
+        groceryLists.replace(id, groceryList);
         return groceryList;
     }
 
-    public void removeGroceryList(UUID id) {
+    public boolean removeGroceryList(UUID id) {
+        GroceryList groceryList = groceryLists.get(id);
+        if (groceryList == null) {
+            return false;
+        }
+        if (mealPlansGroceryLists.inverse().containsKey(id)) {
+            mealPlansGroceryLists.inverse().remove(id);
+        }
         groceryLists.remove(id);
+        return true;
     }
+
+    // A few utility functions to make UX nicer
 
     private void populateApplication() {
         // Create 20 fake user profiles
