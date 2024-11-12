@@ -32,7 +32,7 @@ public class MealPlanGenerator {
         ));
 
         // Create and return the MealPlan with dummy data
-        return new MealPlan(userProfile, orderedDailyMeals);
+        return new MealPlan(orderedDailyMeals);
     }
 
     // Helper method to create a dummy Meal object

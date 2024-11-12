@@ -15,13 +15,12 @@ public class MealPlanTest {
     public void setUp() {
         userProfile = new UserProfile("testUser", "testPassword", UserProfile.DietType.VEGETARIAN,
                 new HashSet<>(), new HashSet<>(), 2000, UserProfile.MealPlanPreference.DAILY);
-        mealPlan = new MealPlan(userProfile);
+        mealPlan = new MealPlan();
     }
 
     @Test
     public void testMealPlanInitialization() {
         assertNotNull(mealPlan.getMealPlanId(), "MealPlan ID should not be null");
-        assertEquals(userProfile, mealPlan.getUserProfile(), "MealPlan should be associated with the provided user profile");
         assertNotNull(mealPlan.getDailyMeals(), "Daily meals should be initialized and not null");
         assertTrue(mealPlan.getDailyMeals().isEmpty(), "Daily meals should be empty upon initialization");
     }
@@ -86,6 +85,5 @@ public class MealPlanTest {
     @Test
     public void testUserProfileLink() {
         UUID userId = userProfile.getUserId();
-        assertEquals(userId, mealPlan.getUserId(), "MealPlan's userId should match the user profile's userId");
     }
 }

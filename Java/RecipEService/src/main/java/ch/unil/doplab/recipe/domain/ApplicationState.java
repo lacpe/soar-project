@@ -42,7 +42,7 @@ public class ApplicationState {
         populateApplication();
     }
 
-    // In order : getters, add operations, remove operations
+    // Functions for UserProfileResource
     public UserProfile getUserProfile(UUID id) {return userProfiles.get(id);}
 
     public Map<UUID, UserProfile> getAllUserProfiles() {return userProfiles;}
@@ -111,6 +111,8 @@ public class ApplicationState {
         return true;
     }
 
+    // Functions for MealPlanResource
+
     public MealPlan getMealPlan(UUID id) {
         return mealPlans.get(id);
     }
@@ -145,6 +147,7 @@ public class ApplicationState {
         return true;
     }
 
+    // Functions for GroceryListResource
     public GroceryList getGroceryList(UUID id) {return groceryLists.get(id);}
 
     public Map<UUID, GroceryList> getAllGroceryLists() {return groceryLists;}
@@ -171,7 +174,33 @@ public class ApplicationState {
         return true;
     }
 
-    // A few utility functions to make UX nicer
+    //Functions for ServiceResource
+    public MealPlan generateMealPlan(UUID userId) {
+        MealPlan mealPlan = apiHandler.generateMealPlan(userProfiles.get(userId));
+        UUID mealPlanId = UUID.randomUUID();
+        mealPlans.put(mealPlanId, mealPlan);
+        usersMealPlans.put(userId, mealPlanId);
+        return mealPlan;
+    }
+
+    public GroceryList generateGroceryList(UUID userId) {
+        MealPlan mealPlan = mealPlans.get(usersMealPlans.get(userId));
+        GroceryList groceryList = mealPlan.generateGroceryList();
+        UUID groceryListId = UUID.randomUUID();
+        groceryLists.put(groceryListId, groceryList);
+        mealPlansGroceryLists.put(usersMealPlans.get(userId), groceryListId);
+        return groceryList;
+    }
+
+    public MealPlan getUserMealPlan(UUID userId) {
+        // Returns a given user's current meal plan
+        return mealPlans.get(usersMealPlans.get(userId));
+    }
+
+    public GroceryList getUserGroceryList(UUID userId) {
+        // Looks up a user's current meal plan, and returns the corresponding grocery list
+        return groceryLists.get(mealPlansGroceryLists.get(usersMealPlans.get(userId)));
+    }
 
     private void populateApplication() {
         // Create 20 fake user profiles

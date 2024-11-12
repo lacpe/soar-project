@@ -4,21 +4,18 @@ import java.util.*;
 
 public class MealPlan {
     private Map<String, List<Meal>> dailyMeals; // Key: Day, Value: List of Meals (breakfast, lunch, dinner)
-    private UserProfile userProfile; // reference to the user's profile for personalized adjustments
-    private UUID userId;
     private UUID mealPlanId;
     private int calorieTarget;
 
     // Constructor
-    public MealPlan(UserProfile userProfile, Map<String, List<Meal>> dailyMeals) {
-        this.userProfile = userProfile;
-        this.userId = userProfile.getUserId();
+    public MealPlan(Map<String, List<Meal>> dailyMeals) {
+
         this.mealPlanId = UUID.randomUUID();
         this.dailyMeals = dailyMeals != null ? dailyMeals : new LinkedHashMap<>();
     }
 
-    public MealPlan(UserProfile userProfile) {
-        this(userProfile, new LinkedHashMap<>());
+    public MealPlan() {
+        this(null);
     }
 
     /**
@@ -46,15 +43,6 @@ public class MealPlan {
     }
 
     // Getters and setters for each attribute
-
-    public int getCalorieTarget() {
-        return calorieTarget;
-    }
-
-    public void setCalorieTarget(int calorieTarget) {
-        this.calorieTarget = calorieTarget;
-    }
-
     public Map<String, List<Meal>> getDailyMeals() {
         return dailyMeals;
     }
@@ -67,11 +55,16 @@ public class MealPlan {
         return mealPlanId;
     }
 
-    public UserProfile getUserProfile() {
-        return userProfile;
+    public void setMealPlanId(UUID mealPlanId) {
+        this.mealPlanId = mealPlanId;
     }
 
-    public UUID getUserId() {
-        return userId;
+    public int getCalorieTarget() {
+        return calorieTarget;
     }
+
+    public void setCalorieTarget(int calorieTarget) {
+        this.calorieTarget = calorieTarget;
+    }
+
 }

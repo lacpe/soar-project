@@ -2,7 +2,6 @@ package ch.unil.doplab.recipe.rest;
 
 import ch.unil.doplab.recipe.domain.ApplicationState;
 import ch.unil.doplab.recipe.domain.MealPlan;
-import ch.unil.doplab.recipe.domain.UserProfile;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
@@ -10,7 +9,7 @@ import jakarta.ws.rs.core.MediaType;
 import java.util.*;
 
 @Path("/mealplan")
-public class MealPlanRessource {
+public class MealPlanResource {
     @Inject
     private ApplicationState state;
 

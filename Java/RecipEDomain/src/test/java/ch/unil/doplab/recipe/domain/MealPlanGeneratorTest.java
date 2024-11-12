@@ -25,7 +25,6 @@ public class MealPlanGeneratorTest {
 
         // Assert: Verify that the meal plan is not null and is linked to the correct user
         assertNotNull(mealPlan, "Generated meal plan should not be null");
-        assertEquals(userProfile, mealPlan.getUserProfile(), "Meal plan should be linked to the provided user profile");
 
         // Assert: Verify that the meal plan contains all seven days of the week
         Map<String, List<Meal>> dailyMeals = mealPlan.getDailyMeals();

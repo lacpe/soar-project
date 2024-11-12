@@ -25,7 +25,7 @@ public class APIHandlerTest {
     @Test
     public void testGenerateMealPlan() {
         // Set up a mock meal plan with dummy data
-        MealPlan dummyMealPlan = new MealPlan(userProfile);
+        MealPlan dummyMealPlan = new MealPlan();
         when(apiHandler.generateMealPlan(userProfile)).thenReturn(dummyMealPlan);
 
         // Call the method
@@ -33,7 +33,6 @@ public class APIHandlerTest {
 
         // Assertions
         assertNotNull(mealPlan, "Generated meal plan should not be null");
-        assertEquals(userProfile, mealPlan.getUserProfile(), "Generated meal plan should be linked to the correct user profile");
 
         // Verify that generateMealPlan was called once
         verify(apiHandler, times(1)).generateMealPlan(userProfile);
