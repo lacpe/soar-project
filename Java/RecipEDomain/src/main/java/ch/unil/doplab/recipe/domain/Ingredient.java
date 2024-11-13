@@ -24,6 +24,7 @@ public class Ingredient {
     }
 
     // Getters and setters for each attribute
+
     public String getName() {
         return name;
     }

@@ -3,6 +3,7 @@ package ch.unil.doplab.recipe.domain;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 
 public class Main {
     public static void main(String[] args) {
@@ -10,7 +11,7 @@ public class Main {
 
         // Set up a test user profile with meal plan preference set directly
         UserProfile userProfile = new UserProfile(null, "testUser", "testPassword", UserProfile.DietType.VEGETARIAN,
-                new HashSet<>(), new HashSet<>(), 2000, UserProfile.MealPlanPreference.DAILY);;
+                new HashSet<>(), new HashSet<>(), 2000, UserProfile.MealPlanPreference.DAILY);
         userProfile.setDietType(UserProfile.DietType.VEGETARIAN);
         userProfile.setDailyCalorieTarget(2000);
         userProfile.setMealPlanPreference(UserProfile.MealPlanPreference.WEEK);
@@ -39,11 +40,17 @@ public class Main {
                 allMeals.addAll(meals);
             }
 
-            // Generate and display the consolidated grocery list
-            List<Ingredient> groceryList = apiHandler.generateConsolidatedShoppingList(allMeals);
-            System.out.println("\nGenerated Grocery List for the Week:");
-            for (Ingredient ingredient : groceryList) {
-                System.out.println(ingredient.getQuantity() + " " + ingredient.getUnit() + " " + ingredient.getName());
+            // Generate and display the consolidated grocery list organized by aisle
+            Map<String, List<Ingredient>> groceryListByAisle = apiHandler.generateConsolidatedShoppingList(allMeals);
+            System.out.println("\nGenerated Grocery List for the Week (Organized by Aisle):");
+
+            // Display each aisle with its ingredients
+            for (String aisle : groceryListByAisle.keySet()) {
+                System.out.println("Aisle: " + aisle);
+                for (Ingredient ingredient : groceryListByAisle.get(aisle)) {
+                    System.out.println(" - " + ingredient.getQuantity() + " " + ingredient.getUnit() + " " + ingredient.getName());
+                }
+                System.out.println(); // Blank line between aisles
             }
         }
     }

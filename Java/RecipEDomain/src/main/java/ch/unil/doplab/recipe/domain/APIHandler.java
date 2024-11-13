@@ -16,6 +16,7 @@ public class APIHandler {
     // Cache to store meal details by meal ID to avoid redundant API calls
     private Map<Integer, Meal> mealDetailsCache = new HashMap<>();
 
+
     /**
      * Generates a meal plan based on user preferences such as diet, calorie target,
      * and ingredients to exclude.
@@ -149,6 +150,8 @@ public class APIHandler {
      * @param dailyMeals Map of meals organized by day
      * @param mealIds    List of meal IDs to fetch details for in bulk
      */
+
+
     public void populateMealDetailsBulk(Map<String, List<Meal>> dailyMeals, List<Integer> mealIds) {
         if (mealIds.isEmpty()) return; // Exit if no meal IDs
 
@@ -203,7 +206,7 @@ public class APIHandler {
     * @param meals The list of meals for the week
     * @return Consolidated list of ingredients as per the API response
     */
-    public List<Ingredient> generateConsolidatedShoppingList(List<Meal> meals) {
+    public Map<String, List<Ingredient>> generateConsolidatedShoppingList(List<Meal> meals) {
         try {
             // Collect all ingredients into a single JSON array
             JSONArray itemsArray = new JSONArray();
@@ -244,7 +247,7 @@ public class APIHandler {
             e.printStackTrace();
             System.err.println("Error generating shopping list: " + e.getMessage());
         }
-        return new ArrayList<>();  // Return an empty list if there's an error
+        return new LinkedHashMap<>();  // Return an empty list if there's an error
     }
 
     private NutritionalInfo extractNutritionalInfo(JSONObject mealJson) {
@@ -318,37 +321,38 @@ public class APIHandler {
     * @param jsonResponse JSON object containing the shopping list response
     * @return List of consolidated ingredients
     */
-    private List<Ingredient> parseShoppingListResponse(JSONObject jsonResponse) {
-        List<Ingredient> shoppingList = new ArrayList<>();
+    private Map<String, List<Ingredient>> parseShoppingListResponse(JSONObject jsonResponse) {
+        Map<String, List<Ingredient>> groceryListByAisle = new LinkedHashMap<>();
 
         JSONArray aislesArray = jsonResponse.getJSONArray("aisles");  // The API organizes items by aisle
         for (int i = 0; i < aislesArray.length(); i++) {
-            JSONArray aisleItems = aislesArray.getJSONObject(i).getJSONArray("items");
+            JSONObject aisleObject = aislesArray.getJSONObject(i);
+            String aisleName = aisleObject.getString("aisle");
+
+            // Get items in this aisle
+            JSONArray aisleItems = aisleObject.getJSONArray("items");
+            List<Ingredient> ingredientsInAisle = new ArrayList<>();
 
             for (int j = 0; j < aisleItems.length(); j++) {
                 JSONObject item = aisleItems.getJSONObject(j);
                 String name = item.getString("name");
+
+                // Extract metric amount and unit if available
+                double amount = 0;
+                String unit = "";
+
                 // Check for "measures" object to get "amount" and "unit" in metric
-                if (item.has("measures")) {
-                    JSONObject measures = item.getJSONObject("measures");
-
-                    // Use "metric" measure instead of "original"
-                    if (measures.has("metric")) {
-                        JSONObject metricMeasure = measures.getJSONObject("metric");
-                        double amount = metricMeasure.getDouble("amount");
-                        String unit = metricMeasure.optString("unit", "");
-
-                        shoppingList.add(new Ingredient(name, amount, unit));
-                    } else {
-                        System.err.println("No 'metric' measure found for item: " + name);
-                    }
-                } else {
-                    System.err.println("No 'measures' object found for item: " + name);
+                if (item.has("measures") && item.getJSONObject("measures").has("metric")) {
+                    JSONObject metricMeasure = item.getJSONObject("measures").getJSONObject("metric");
+                    amount = metricMeasure.getDouble("amount");
+                    unit = metricMeasure.optString("unit", "");
                 }
+                // Add item to the list for this aisle
+                ingredientsInAisle.add(new Ingredient(name, amount, unit));
             }
+            groceryListByAisle.put(aisleName, ingredientsInAisle);
         }
-
-        return shoppingList;
+        return groceryListByAisle;
     }
 
     /**
