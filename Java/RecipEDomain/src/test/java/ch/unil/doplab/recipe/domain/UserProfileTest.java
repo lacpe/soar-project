@@ -19,7 +19,7 @@ public class UserProfileTest {
 
     @BeforeEach
     public void setUp() {
-        userProfile = new UserProfile(USERNAME, PASSWORD, UserProfile.DietType.VEGETARIAN,
+        userProfile = new UserProfile(null, USERNAME, PASSWORD, UserProfile.DietType.VEGETARIAN,
                 new HashSet<>(), new HashSet<>(), 2000, UserProfile.MealPlanPreference.DAILY);
     }
 
@@ -69,8 +69,8 @@ public class UserProfileTest {
 
     @Test
     public void testReplaceWithUser() {
-        UserProfile newUserProfile = new UserProfile("newUser", "newPassword", UserProfile.DietType.VEGETARIAN,
-                new HashSet<>(), new HashSet<>(), 2000, UserProfile.MealPlanPreference.DAILY);
+        UserProfile newUserProfile = new UserProfile(null, "testUser", "testPassword", UserProfile.DietType.VEGETARIAN,
+                new HashSet<>(), new HashSet<>(), 2000, UserProfile.MealPlanPreference.DAILY);;
         newUserProfile.setDietType(DietType.PALEO);
         newUserProfile.setDailyCalorieTarget(1800);
         newUserProfile.addAllergy("Gluten");

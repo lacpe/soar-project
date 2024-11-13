@@ -13,8 +13,8 @@ public class MealPlanTest {
 
     @BeforeEach
     public void setUp() {
-        userProfile = new UserProfile("testUser", "testPassword", UserProfile.DietType.VEGETARIAN,
-                new HashSet<>(), new HashSet<>(), 2000, UserProfile.MealPlanPreference.DAILY);
+        userProfile = new UserProfile(null, "testUser", "testPassword", UserProfile.DietType.VEGETARIAN,
+                new HashSet<>(), new HashSet<>(), 2000, UserProfile.MealPlanPreference.DAILY);;
         mealPlan = new MealPlan();
     }
 
@@ -68,7 +68,7 @@ public class MealPlanTest {
 
         // Generate and verify the grocery list
         GroceryList groceryList = mealPlan.generateGroceryList();
-        Map<String, Ingredient> ingredients = groceryList.getIngredients();
+        Map<String, Ingredient> ingredients = groceryList.getGroceries();
         assertEquals(3, ingredients.size(), "Grocery list should contain three unique ingredients");
 
         // Verify consolidated quantities

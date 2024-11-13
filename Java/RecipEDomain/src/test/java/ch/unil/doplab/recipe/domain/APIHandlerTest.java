@@ -18,7 +18,7 @@ public class APIHandlerTest {
     @BeforeEach
     public void setUp() {
         apiHandler = Mockito.mock(APIHandler.class);
-        userProfile = new UserProfile("testUser", "testPassword", UserProfile.DietType.VEGETARIAN,
+        userProfile = new UserProfile(null, "testUser", "testPassword", UserProfile.DietType.VEGETARIAN,
                 new HashSet<>(), new HashSet<>(), 2000, UserProfile.MealPlanPreference.DAILY);
     }
 

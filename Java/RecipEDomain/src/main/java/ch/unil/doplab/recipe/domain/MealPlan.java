@@ -3,22 +3,21 @@ package ch.unil.doplab.recipe.domain;
 import java.util.*;
 
 public class MealPlan {
-    private Map<String, List<Meal>> dailyMeals; // Key: Day, Value: List of Meals (breakfast, lunch, dinner)
-    private UserProfile userProfile; // reference to the user's profile for personalized adjustments
-    private UUID userId;
     private UUID mealPlanId;
+    private Map<String, List<Meal>> dailyMeals; // Key: Day, Value: List of Meals (breakfast, lunch, dinner)
     private int calorieTarget;
 
-    // Constructor
-    public MealPlan(UserProfile userProfile, Map<String, List<Meal>> dailyMeals) {
-        this.userProfile = userProfile;
-        this.userId = userProfile.getUserId();
-        this.mealPlanId = UUID.randomUUID();
-        this.dailyMeals = dailyMeals != null ? dailyMeals : new LinkedHashMap<>();
+    public MealPlan() {
+        this(null, new LinkedHashMap<>());
     }
 
-    public MealPlan(UserProfile userProfile) {
-        this(userProfile, new LinkedHashMap<>());
+    public MealPlan(Map<String, List<Meal>> dailyMeals) {
+        this(null, dailyMeals);
+    }
+
+    // Constructor
+    public MealPlan(UUID mealPlanId, Map<String, List<Meal>> dailyMeals) {
+        this.dailyMeals = dailyMeals != null ? dailyMeals : new LinkedHashMap<>();
     }
 
     /**
@@ -67,11 +66,8 @@ public class MealPlan {
         return mealPlanId;
     }
 
-    public UserProfile getUserProfile() {
-        return userProfile;
+    public void setMealPlanId(UUID mealPlanId) {
+        this.mealPlanId = mealPlanId;
     }
 
-    public UUID getUserId() {
-        return userId;
-    }
 }
