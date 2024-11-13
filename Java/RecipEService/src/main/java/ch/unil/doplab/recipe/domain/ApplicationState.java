@@ -26,6 +26,9 @@ public class ApplicationState {
     // Map to match usernames to their UUID. This simplifies API requests concerning users.
     private Map<String, UUID> usernames;
 
+    // To generate random users
+    private Random RANDOM = new Random();
+
     @PostConstruct
     public void init() {
         userProfiles = new TreeMap<>();
@@ -55,18 +58,18 @@ public class ApplicationState {
     }
 
     public UserProfile addUserProfile(UUID id, UserProfile userProfile) {
-        /*if (userProfile.getUsername() == null) {
+        if (userProfile.getUsername() == null) {
             throw new IllegalArgumentException("Username cannot be null.");
-        }*/
+        }
         if (userProfiles.containsKey(id)) {
             throw new IllegalArgumentException("User with ID " + id + " already exists.");
         }
-        /*
         if (usernames.containsKey(userProfile.getUsername())) {
             throw new IllegalArgumentException("Username " + userProfile.getUsername() + " already in use.");
-        }*/
+        }
+        userProfile.setUserId(id);
         userProfiles.put(id, userProfile);
-        /*usernames.put(userProfile.getUsername(), id);*/
+        usernames.put(userProfile.getUsername(), id);
         return userProfile;
     }
 
@@ -96,18 +99,25 @@ public class ApplicationState {
         removeUserProfile(usernames.get(username));
     }
 
-    public boolean removeUserProfile(UUID id) {
-        UserProfile userProfile = userProfiles.get(id);
+    public boolean removeUserProfile(UUID userId) {
+        UserProfile userProfile = userProfiles.get(userId);
+        UUID mealPlanId = usersMealPlans.get(userId);
+        UUID groceryListId = mealPlansGroceryLists.get(mealPlanId);
         if (userProfile == null) {
             return false;
         }
-        if (usernames.containsKey(userProfile.getUsername())) {
-            usernames.remove(userProfile.getUsername());
+        // Removes associated meal plan & grocery list (does nothing if there are none)
+        if (groceryListId != null) {
+            groceryLists.remove(groceryListId);
         }
-        if (usersMealPlans.containsKey(id)) {
-            usersMealPlans.remove(id);
+        if (mealPlanId != null) {
+            mealPlansGroceryLists.remove(mealPlanId);
+            mealPlans.remove(mealPlanId);
         }
-        userProfiles.remove(id);
+        usersMealPlans.remove(userId);
+        // Removes user
+        usernames.remove(userProfile.getUsername());
+        userProfiles.remove(userId);
         return true;
     }
 
@@ -122,10 +132,17 @@ public class ApplicationState {
     }
 
     public MealPlan addMealPlan(MealPlan mealPlan) {
+        if (mealPlan.getMealPlanId() != null) {
+            return addMealPlan(mealPlan.getMealPlanId(), mealPlan);
+        }
         return addMealPlan(UUID.randomUUID(), mealPlan);
     }
 
     public MealPlan addMealPlan(UUID id, MealPlan mealPlan) {
+        mealPlan.setMealPlanId(id);
+        if (mealPlans.containsKey(id)) {
+            throw new IllegalArgumentException("A meal plan with id " + id + " already exists.");
+        }
         mealPlans.put(id, mealPlan);
         return mealPlan;
     }
@@ -137,12 +154,14 @@ public class ApplicationState {
 
     public boolean removeMealPlan(UUID id) {
         MealPlan mealPlan = mealPlans.get(id);
+        UUID groceryListId = mealPlansGroceryLists.get(id);
         if (mealPlan == null) {
             return false;
         }
-        if (mealPlansGroceryLists.containsKey(id)) {
-            mealPlansGroceryLists.remove(id);
-        }
+        // Removes associated grocery list, does nothing if there is none
+        groceryLists.remove(groceryListId);
+        mealPlansGroceryLists.remove(id);
+        // Removes meal plan
         mealPlans.remove(id);
         return true;
     }
@@ -153,7 +172,18 @@ public class ApplicationState {
     public Map<UUID, GroceryList> getAllGroceryLists() {return groceryLists;}
 
     public GroceryList addGroceryList(GroceryList groceryList) {
-        groceryLists.put(UUID.randomUUID(), groceryList);
+        if (groceryList.getGroceryListId() == null) {
+            return addGroceryList(groceryList.getGroceryListId(), groceryList);
+        }
+        return addGroceryList(UUID.randomUUID(), groceryList);
+    }
+
+    public GroceryList addGroceryList(UUID id, GroceryList groceryList) {
+        groceryList.setGroceryListId(id);
+        if (groceryLists.containsKey(id)) {
+            throw new IllegalArgumentException("A grocery list with id " + id + " already exists.");
+        }
+        groceryLists.put(id, groceryList);
         return groceryList;
     }
 
@@ -167,28 +197,34 @@ public class ApplicationState {
         if (groceryList == null) {
             return false;
         }
-        if (mealPlansGroceryLists.inverse().containsKey(id)) {
-            mealPlansGroceryLists.inverse().remove(id);
-        }
+        mealPlansGroceryLists.inverse().remove(id);
         groceryLists.remove(id);
         return true;
     }
 
     //Functions for ServiceResource
     public MealPlan generateMealPlan(UUID userId) {
-        MealPlan mealPlan = apiHandler.generateMealPlan(userProfiles.get(userId));
-        UUID mealPlanId = UUID.randomUUID();
-        mealPlans.put(mealPlanId, mealPlan);
-        usersMealPlans.put(userId, mealPlanId);
+        UserProfile userProfile = userProfiles.get(userId);
+        if (userProfile == null) {
+            throw new IllegalArgumentException("No user profile with ID " + userId);
+        }
+        if (usersMealPlans.containsKey(userId)) {
+            throw new IllegalArgumentException("Another meal plan for user " + userProfile.getUsername() + " already exists.");
+        }
+        MealPlan mealPlan = apiHandler.generateMealPlan(userProfile);
+        addMealPlan(mealPlan);
+        usersMealPlans.put(userId, mealPlan.getMealPlanId());
         return mealPlan;
     }
 
     public GroceryList generateGroceryList(UUID userId) {
         MealPlan mealPlan = mealPlans.get(usersMealPlans.get(userId));
+        if (mealPlan == null) {
+            throw new IllegalArgumentException("User with ID " + userId + " does not have a registered meal plan.");
+        }
         GroceryList groceryList = mealPlan.generateGroceryList();
-        UUID groceryListId = UUID.randomUUID();
-        groceryLists.put(groceryListId, groceryList);
-        mealPlansGroceryLists.put(usersMealPlans.get(userId), groceryListId);
+        addGroceryList(groceryList);
+        mealPlansGroceryLists.put(usersMealPlans.get(userId), groceryList.getGroceryListId());
         return groceryList;
     }
 
@@ -202,13 +238,22 @@ public class ApplicationState {
         return groceryLists.get(mealPlansGroceryLists.get(usersMealPlans.get(userId)));
     }
 
+    public boolean authenticateUser(String username, String password) {
+        if (!usernames.containsKey(username)) {
+            throw new IllegalArgumentException("No user with name " + username + " exists.");
+        }
+        UUID userId = usernames.get(username);
+        UserProfile userProfile = userProfiles.get(userId);
+        return Utils.checkPassword(password, userProfile.getPassword());
+    }
+
     private void populateApplication() {
         // Create 20 fake user profiles
         for (int i = 1; i <= 20; i++) {
             String username = "user" + i;
             String password = "password" + i + "123";
-            UserProfile user = new UserProfile(UUID.randomUUID(), username, password, UserProfile.DietType.VEGETARIAN,
-                    new HashSet<>(), new HashSet<>(), 2000, UserProfile.MealPlanPreference.DAILY);
+            UserProfile user = new UserProfile(UUID.randomUUID(), username, password, Utils.getRandomDietType(),
+                    new HashSet<>(), new HashSet<>(), RANDOM.nextInt(500) + 1500, Utils.getRandomMealPlanPreference());
             addUserProfile(user);
         }
 
