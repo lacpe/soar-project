@@ -12,7 +12,7 @@ public class NutritionalInfoTest {
 
     @BeforeEach
     public void setUp() {
-        nutritionalInfo = new NutritionalInfo(250, 10, 5, 30); // example values: calories, protein, fat, carbs
+        nutritionalInfo = new NutritionalInfo(250, 10, 5, 30, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);; // example values: calories, protein, fat, carbs
     }
 
     @Test

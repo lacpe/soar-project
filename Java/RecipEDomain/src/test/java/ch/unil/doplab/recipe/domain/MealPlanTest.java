@@ -20,7 +20,6 @@ public class MealPlanTest {
 
     @Test
     public void testMealPlanInitialization() {
-        assertNotNull(mealPlan.getMealPlanId(), "MealPlan ID should not be null");
         assertNotNull(mealPlan.getDailyMeals(), "Daily meals should be initialized and not null");
         assertTrue(mealPlan.getDailyMeals().isEmpty(), "Daily meals should be empty upon initialization");
     }

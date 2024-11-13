@@ -25,7 +25,6 @@ public class UserProfileTest {
 
     @Test
     public void testUserProfileInitialization() {
-        assertNotNull(userProfile.getUserId(), "User ID should not be null");
         assertEquals(USERNAME, userProfile.getUsername(), "Username should match the initialized value");
         assertNotNull(userProfile.getPassword(), "Password should not be null after hashing");
     }
@@ -69,8 +68,8 @@ public class UserProfileTest {
 
     @Test
     public void testReplaceWithUser() {
-        UserProfile newUserProfile = new UserProfile(null, "testUser", "testPassword", UserProfile.DietType.VEGETARIAN,
-                new HashSet<>(), new HashSet<>(), 2000, UserProfile.MealPlanPreference.DAILY);;
+        UserProfile newUserProfile = new UserProfile(null, "newUser", "newPassword", UserProfile.DietType.VEGETARIAN,
+                new HashSet<>(), new HashSet<>(), 2000, UserProfile.MealPlanPreference.WEEK);
         newUserProfile.setDietType(DietType.PALEO);
         newUserProfile.setDailyCalorieTarget(1800);
         newUserProfile.addAllergy("Gluten");

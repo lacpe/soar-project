@@ -17,7 +17,7 @@ public class MealTest {
 
     @BeforeEach
     public void setUp() {
-        nutritionalInfo = new NutritionalInfo(200, 10, 5, 2); // example values: calories, protein, fat, carbs
+        nutritionalInfo = new NutritionalInfo(100, 5, 2, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0); // example values: calories, protein, fat, carbs
         meal = new Meal(MEAL_ID, MEAL_TITLE, IMAGE_URL, nutritionalInfo);
     }
 
@@ -60,7 +60,7 @@ public class MealTest {
 
     @Test
     public void testSetAndGetNutritionalInfo() {
-        NutritionalInfo newNutritionalInfo = new NutritionalInfo(250, 12, 7, 3);
+        NutritionalInfo newNutritionalInfo = new NutritionalInfo(250, 12, 7, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);;
         meal.setNutritionalInfo(newNutritionalInfo);
 
         assertNotNull(meal.getNutritionalInfo(), "Nutritional info should not be null after setting");

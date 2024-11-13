@@ -60,7 +60,7 @@ public class IngredientTest {
     @Test
     public void testIngredientWithNutritionalInfo() {
         // Assuming Ingredient has a constructor that accepts NutritionalInfo
-        NutritionalInfo nutritionalInfo = new NutritionalInfo(100, 5, 2, 1);
+        NutritionalInfo nutritionalInfo = new NutritionalInfo(100, 5, 2, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
         Ingredient ingredientWithInfo = new Ingredient("Milk", 1.5, "liters", "https://example.com/milk.jpg", "Fresh milk", nutritionalInfo);
 
         assertEquals("Milk", ingredientWithInfo.getName(), "Ingredient name should match");
