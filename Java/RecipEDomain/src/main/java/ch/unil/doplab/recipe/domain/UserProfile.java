@@ -156,6 +156,7 @@ public class UserProfile {
     public void replaceWithUser(UserProfile newUserProfile) {
         this.username = newUserProfile.getUsername();
         this.password = newUserProfile.getPassword();
+        this.dietType = newUserProfile.getDietType();
         this.allergies = newUserProfile.getAllergies();
         this.dislikedIngredients = newUserProfile.getDislikedIngredients();
         this.dailyCalorieTarget = newUserProfile.getDailyCalorieTarget();
