@@ -7,37 +7,16 @@ public class MealPlan {
     private Map<String, List<Meal>> dailyMeals; // Key: Day, Value: List of Meals (breakfast, lunch, dinner)
     private int calorieTarget;
     private UserProfile userProfile; // Reference to the user's profile for desired servings and other preferences
+    private GroceryList groceryList; // Field to store the automatically generated grocery list
 
     // Updated constructor to include UserProfile
-    public MealPlan(UserProfile userProfile, Map<String, List<Meal>> dailyMeals) {
+    public MealPlan(UserProfile userProfile, Map<String, List<Meal>> dailyMeals, GroceryList groceryList) {
         this.userProfile = userProfile;
         this.mealPlanId = UUID.randomUUID();
         this.dailyMeals = dailyMeals != null ? dailyMeals : new LinkedHashMap<>();
+        this.groceryList = groceryList;
     }
 
-    /**
-     * Generates a consolidated grocery list from all ingredients in each meal in the meal plan.
-     * @return GroceryList containing all ingredients needed for the meal plan
-     */
-    public GroceryList generateGroceryList() {
-        GroceryList groceryList = new GroceryList();
-
-        // Iterate through each day and each meal
-        for (List<Meal> meals : dailyMeals.values()) {
-            for (Meal meal : meals) {
-                // Check if ingredients are available for the meal
-                if (meal.getIngredients() != null) {
-                    // Get ingredients of the meal and add each to the grocery list
-                    for (Ingredient ingredient : meal.getIngredients()) {
-                        groceryList.addIngredient("General", ingredient);
-                    }
-                } else {
-                    System.out.println("No ingredients available for meal: " + meal.getTitle());
-                }
-            }
-        }
-        return groceryList;
-    }
 
     /**
      * Displays the meal plan with desired servings information.
@@ -59,6 +38,10 @@ public class MealPlan {
     }
 
     // Getters and setters for each attribute
+    public GroceryList getGroceryList() {
+        return groceryList;
+    }
+
     public int getCalorieTarget() {
         return calorieTarget;
     }

@@ -24,42 +24,50 @@ public class APIHandler {
      * @return A MealPlan object with generated meals for the day or week
      */
     public MealPlan generateMealPlan(UserProfile userProfile) {
-        String timeFrame = userProfile.getMealPlanPreference().toString().toLowerCase();
-        String url = buildMealPlanUrl(userProfile, timeFrame);
-        Map<String, List<Meal>> dailyMeals = new LinkedHashMap<>();
-        List<Integer> mealIds = new ArrayList<>();
-        int desiredServings = userProfile.getDesiredServings();
+        String timeFrame = userProfile.getMealPlanPreference().toString().toLowerCase(); // Get time frame preference (e.g., day or week)
+        String url = buildMealPlanUrl(userProfile, timeFrame); // Construct URL for API request
+        Map<String, List<Meal>> dailyMeals = new LinkedHashMap<>(); // Store meals ordered by day
+        List<Integer> mealIds = new ArrayList<>(); // Collect meal IDs for bulk data requests
+        int desiredServings = userProfile.getDesiredServings(); // Get user's desired servings
 
         try {
+            // Make API request for the meal plan data
             String response = makeApiRequest(url, "GET", null);
-            JSONObject jsonResponse = new JSONObject(response);
+            JSONObject jsonResponse = new JSONObject(response); // Parse JSON response
             List<String> daysOfWeek = Arrays.asList("monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday");
 
             if (timeFrame.equals("day")) {
+                // For daily meal plans, directly retrieve meals array
                 JSONArray mealsArray = jsonResponse.getJSONArray("meals");
-                dailyMeals.put("Day 1", parseMeals(mealsArray, mealIds));
+                dailyMeals.put("Day 1", parseMeals(mealsArray, mealIds)); // Parse meals and store in map
             } else {
+                // For weekly meal plans, process meals for each day
                 JSONObject weekObject = jsonResponse.getJSONObject("week");
                 for (String day : daysOfWeek) {
-                    if (weekObject.has(day)) {
+                    if (weekObject.has(day)) { // Check if day exists in the response
                         JSONArray mealsArray = weekObject.getJSONObject(day).getJSONArray("meals");
-                        dailyMeals.put(capitalize(day), parseMeals(mealsArray, mealIds));
+                        dailyMeals.put(capitalize(day), parseMeals(mealsArray, mealIds)); // Parse and add meals for each day
                     }
                 }
             }
 
-            // Pass desiredServings to the populateMealDetailsBulk method
+            // Populate meal details with user's desired servings
             populateMealDetailsBulk(dailyMeals, mealIds, desiredServings);
 
-            // Return the MealPlan with userProfile included
-            return new MealPlan(userProfile, dailyMeals);
+            // Generate the consolidated grocery list based on the meals
+            List<Meal> allMeals = new ArrayList<>();
+            dailyMeals.values().forEach(allMeals::addAll);
+            GroceryList groceryList = generateConsolidatedShoppingList(allMeals);
+
+            // Create and return a MealPlan with user profile and daily meals
+            return new MealPlan(userProfile, dailyMeals, groceryList);
 
         } catch (Exception e) {
             e.printStackTrace();
             System.err.println("Error generating meal plan: " + e.getMessage());
         }
 
-        return new MealPlan(userProfile, dailyMeals); // Return an empty MealPlan with userProfile if there’s an error
+        return new MealPlan(userProfile, dailyMeals, new GroceryList()); // Return an empty MealPlan with userProfile if there’s an error
     }
 
     /**
@@ -69,13 +77,13 @@ public class APIHandler {
      * @return The constructed URL as a string
      */
     private String buildMealPlanUrl(UserProfile userProfile, String timeFrame) {
-        // Base URL with API key and timeframe
+        // Base URL with API key, timeframe, and calorie target
         String url = "https://api.spoonacular.com/mealplanner/generate"
                 + "?apiKey=" + API_KEY
                 + "&timeFrame=" + timeFrame
                 + "&targetCalories=" + userProfile.getDailyCalorieTarget().orElse(0);
 
-// Add diet type to URL if specified
+        // Add diet type to URL if specified
         if (userProfile.getDietType() != null) {
             url += "&diet=" + userProfile.getDietType().toString().toLowerCase();
         }
@@ -92,7 +100,7 @@ public class APIHandler {
         if (excludeIngredients.length() > 0) {
             url += "&exclude=" + excludeIngredients.toString();
         }
-        return url;
+        return url; // Return constructed URL
     }
 
     /**
@@ -114,22 +122,22 @@ public class APIHandler {
 
             // Instantiate Meal object
             Meal meal = new Meal(id, mealJson.getString("title"), imageUrl, null);
-            meals.add(meal);
+            meals.add(meal); // Add meal to the list
         }
         return meals;
     }
 
     /**
-     * Populates detailed information for meals in bulk using the Spoonacular API.
+     * Populates detailed information for meals in bulk, using the Spoonacular API.
      * @param dailyMeals Map of meals organized by day
      * @param mealIds    List of meal IDs to fetch details for in bulk
+     * @param desiredServings Number of servings the user wants for each meal
      */
-
 
     public void populateMealDetailsBulk(Map<String, List<Meal>> dailyMeals, List<Integer> mealIds, int desiredServings) {
         if (mealIds.isEmpty()) return; // Exit if no meal IDs
 
-        // Construct URL for bulk endpoint
+        // Construct URL for bulk meal details endpoint
         String url = "https://api.spoonacular.com/recipes/informationBulk?apiKey=" + API_KEY
                 + "&ids=" + String.join(",", mealIds.stream().map(String::valueOf).toArray(String[]::new)) + "&includeNutrition=true";
 
@@ -154,7 +162,7 @@ public class APIHandler {
                     NutritionalInfo nutritionalInfo = extractNutritionalInfo(mealJson);
                     meal.setNutritionalInfo(nutritionalInfo);
 
-                    mealDetailsCache.put(mealId, meal);
+                    mealDetailsCache.put(mealId, meal); // Cache the meal details
                 }
             }
 
@@ -176,10 +184,11 @@ public class APIHandler {
     }
 
     /**
-    * Generates a consolidated shopping list using the Spoonacular Compute Shopping List API.
-    * @param meals The list of meals for the week
-    * @return Consolidated list of ingredients as per the API response
-    */
+     * Generates a consolidated grocery list using the Spoonacular Compute Shopping List API.
+     * @param meals The list of meals for the week
+     * @return GroceryList object containing all ingredients needed for the meal plan
+     */
+
     public GroceryList generateConsolidatedShoppingList(List<Meal> meals) {
         try {
             // Collect all ingredients into a single JSON array
@@ -190,7 +199,7 @@ public class APIHandler {
                     if (ingredient.getName() != null && ingredient.getUnit() != null && ingredient.getQuantity() > 0) {
                         // Format ingredient as a single string: "<quantity> <unit> <name>"
                         String ingredientString = ingredient.getQuantity() + " " + ingredient.getUnit() + " " + ingredient.getName();
-                        itemsArray.put(ingredientString);
+                        itemsArray.put(ingredientString); // Add ingredient to items array
                     }
                 }
             }
@@ -231,7 +240,14 @@ public class APIHandler {
         return new GroceryList();  // Return an empty list if there's an error
     }
 
+     /**
+     * Extracts nutritional information from the JSON response and constructs a NutritionalInfo object.
+     * @param mealJson JSON object containing nutritional details
+     * @return NutritionalInfo object
+     */
+
     private NutritionalInfo extractNutritionalInfo(JSONObject mealJson) {
+        // Initialize default values for nutritional info
         int calories = 0, protein = 0, fat = 0, carbs = 0;
         double saturatedFat = 0, fiber = 0, sugar = 0, sodium = 0;
         double vitaminC = 0, calcium = 0, iron = 0, potassium = 0, vitaminA = 0, vitaminK = 0, magnesium = 0;
@@ -245,6 +261,7 @@ public class APIHandler {
                 String name = nutrient.getString("name");
                 int amount = (int) nutrient.getDouble("amount"); // Assuming grams are integers
 
+                // Match nutrient name to corresponding field
                 switch (name.toLowerCase()) {
                     case "calories":
                         calories = amount;
@@ -298,22 +315,23 @@ public class APIHandler {
     }
 
     /**
-    * Parses the JSON response from the Compute Shopping List API into a list of ingredients.
-    * @param jsonResponse JSON object containing the shopping list response
-    * @return List of consolidated ingredients
-    */
+     * Parses JSON response from the Compute Shopping List API into a grocery list by aisle.
+     * @param jsonResponse JSON object containing the shopping list response
+     * @return Map of aisles with a list of consolidated ingredients
+     */
     private Map<String, List<Ingredient>> parseShoppingListResponse(JSONObject jsonResponse) {
         Map<String, List<Ingredient>> groceryListByAisle = new LinkedHashMap<>();
 
         JSONArray aislesArray = jsonResponse.getJSONArray("aisles");  // The API organizes items by aisle
         for (int i = 0; i < aislesArray.length(); i++) {
             JSONObject aisleObject = aislesArray.getJSONObject(i);
-            String aisleName = aisleObject.getString("aisle");
+            String aisleName = aisleObject.getString("aisle"); // Get aisle name
 
             // Get items in this aisle
-            JSONArray aisleItems = aisleObject.getJSONArray("items");
+            JSONArray aisleItems = aisleObject.getJSONArray("items"); // Get items in the aisle
             List<Ingredient> ingredientsInAisle = new ArrayList<>();
 
+            // Loop through items and add each to ingredientsInAisle
             for (int j = 0; j < aisleItems.length(); j++) {
                 JSONObject item = aisleItems.getJSONObject(j);
                 String name = item.getString("name");
@@ -331,30 +349,31 @@ public class APIHandler {
                 // Add item to the list for this aisle
                 ingredientsInAisle.add(new Ingredient(name, amount, unit));
             }
-            groceryListByAisle.put(aisleName, ingredientsInAisle);
+            groceryListByAisle.put(aisleName, ingredientsInAisle); // Add aisle to map
         }
         return groceryListByAisle;
     }
 
     /**
-     * Creates a Meal object from JSON data, setting ingredients and instructions.
+     * Creates a Meal object from JSON data, scaling ingredients based on desired servings.
      * @param mealJson JSON object containing meal details
+     * @param desiredServings Number of servings
      * @return Meal object with details populated
      */
     private Meal createMealFromJson(JSONObject mealJson, int desiredServings) {
         // Extract meal details from JSON
-        int id = mealJson.getInt("id");
-        String title = mealJson.getString("title");
-        String imageUrl = mealJson.optString("image", "");
+        int id = mealJson.getInt("id"); // Get meal ID
+        String title = mealJson.getString("title"); // Get meal title
+        String imageUrl = mealJson.optString("image", ""); // Get meal image URL
 
-        int originalServings = mealJson.getInt("servings");
+        int originalServings = mealJson.getInt("servings"); // Get original servings
 
-        double scalingFactor = (double) desiredServings / originalServings;
+        double scalingFactor = (double) desiredServings / originalServings; // Calculate scaling factor
 
         // Create Meal object using the constructor with required parameters
         Meal meal = new Meal(id, title, imageUrl, null);
 
-        // Populate ingredients
+        // Scale and set ingredients
         JSONArray ingredientsArray = mealJson.optJSONArray("extendedIngredients");
         meal.setIngredients(scaleIngredients(ingredientsArray, scalingFactor));
 
@@ -377,15 +396,22 @@ public class APIHandler {
         return meal;
     }
 
+    /**
+     * Scales ingredients based on the desired servings.
+     * @param ingredientsArray JSON array of ingredients
+     * @param scalingFactor Factor to scale each ingredient by
+     * @return List of scaled ingredients
+     */
+
     private List<Ingredient> scaleIngredients(JSONArray ingredientsArray, double scalingFactor) {
         List<Ingredient> ingredients = new ArrayList<>();
         for (int i = 0; i < ingredientsArray.length(); i++) {
             JSONObject ingredientJson = ingredientsArray.getJSONObject(i);
             String name = ingredientJson.getString("name");
-            double amount = ingredientJson.getDouble("amount") * scalingFactor;
-            String unit = ingredientJson.optString("unit", "");
+            double amount = ingredientJson.getDouble("amount") * scalingFactor; // Scale amount
+            String unit = ingredientJson.optString("unit", ""); // Get unit
 
-            ingredients.add(new Ingredient(name, amount, unit));
+            ingredients.add(new Ingredient(name, amount, unit)); // Add to list
         }
         return ingredients;
     }
@@ -399,36 +425,36 @@ public class APIHandler {
     * @throws Exception if there's an issue with the request
     */
     private String makeApiRequest(String urlString, String method, String jsonPayload) throws Exception {
-        URL url = new URL(urlString);
-        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-        conn.setRequestMethod(method);
+        URL url = new URL(urlString); // Create URL object
+        HttpURLConnection conn = (HttpURLConnection) url.openConnection(); // Open connection
+        conn.setRequestMethod(method); // Set request method
 
-        if ("POST".equalsIgnoreCase(method)) {
+        if ("POST".equalsIgnoreCase(method)) { // Handle POST request setup
             conn.setRequestProperty("Content-Type", "application/json");
-            conn.setDoOutput(true);
+            conn.setDoOutput(true); // Enable output stream for payload
 
             if (jsonPayload != null) {
                 try (OutputStream os = conn.getOutputStream()) {
                     byte[] input = jsonPayload.getBytes("utf-8");
-                    os.write(input, 0, input.length);
+                    os.write(input, 0, input.length); // Write JSON payload to output stream
                 }
             }
         }
 
-        // Check for a successful response
+        // Check response code and throw error if not 200
         if (conn.getResponseCode() != 200) {
             throw new RuntimeException("Failed : HTTP error code : " + conn.getResponseCode());
         }
 
-        // Read the response
+        // Read and build response string
         BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
         StringBuilder response = new StringBuilder();
         String output;
         while ((output = br.readLine()) != null) {
             response.append(output);
         }
-        conn.disconnect();
-        return response.toString();
+        conn.disconnect(); // Close connection
+        return response.toString(); // Return response
     }
 
     /**
@@ -437,6 +463,6 @@ public class APIHandler {
      * @return Capitalized day name
      */
     private String capitalize(String day) {
-        return day.substring(0, 1).toUpperCase() + day.substring(1);
+        return day.substring(0, 1).toUpperCase() + day.substring(1); // Capitalize first letter
     }
 }

@@ -22,17 +22,7 @@ public class Main {
         // Display the meal plan
         mealPlan.displayMealPlan();
 
-        // Generate and display a consolidated grocery list if preference is weekly
-        if (userProfile.getMealPlanPreference() == UserProfile.MealPlanPreference.WEEK) {
-            // Collect all meals in a single list for the week
-            List<Meal> allMeals = new ArrayList<>();
-            for (List<Meal> meals : mealPlan.getDailyMeals().values()) {
-                allMeals.addAll(meals);
-            }
-
-            // Generate and display the grocery list organized by aisle
-            GroceryList groceryList = apiHandler.generateConsolidatedShoppingList(allMeals);
-            groceryList.displayGroceryList();
-        }
+        // Display the pre-generated grocery list for the meal plan
+        mealPlan.getGroceryList().displayGroceryList();
     }
 }
