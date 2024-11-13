@@ -1,0 +1,607 @@
+{
+	"info": {
+		"_postman_id": "5d041561-d6ec-41f9-a0ba-6727461fe883",
+		"name": "Recip-E",
+		"description": "An app to help you plan your meals, do your groceries, and stay healthy !",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "39434680"
+	},
+	"item": [
+		{
+			"name": "Users",
+			"item": [
+				{
+					"name": "Get all user profiles",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/RecipEService-1.0-SNAPSHOT/api/userprofile",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"RecipEService-1.0-SNAPSHOT",
+								"api",
+								"userprofile"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get user profile by ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/RecipEService-1.0-SNAPSHOT/api/userprofile/{{user-id}}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"RecipEService-1.0-SNAPSHOT",
+								"api",
+								"userprofile",
+								"{{user-id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add new user profile",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"allergies\": [],\n    \"dailyCalorieTarget\": 1693,\n    \"dietType\": \"OVO_VEGETARIAN\",\n    \"dislikedIngredients\": [],\n    \"mealPlanPreference\": \"DAILY\",\n    \"password\": \"passwordtest\",\n    \"username\": \"usertest\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/RecipEService-1.0-SNAPSHOT/api/userprofile",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"RecipEService-1.0-SNAPSHOT",
+								"api",
+								"userprofile"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Change user profile",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"allergies\": [],\n    \"dailyCalorieTarget\": 1999,\n    \"dietType\": \"VEGAN\",\n    \"dislikedIngredients\": [],\n    \"mealPlanPreference\": \"DAILY\",\n    \"password\": \"testpassword\",\n    \"userId\": \"ecd877db-e997-4592-959b-12e309622f6b\",\n    \"username\": \"usertest\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/RecipEService-1.0-SNAPSHOT/api/userprofile/{{user-id}}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"RecipEService-1.0-SNAPSHOT",
+								"api",
+								"userprofile",
+								"{{user-id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Remove user by ID",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/RecipEService-1.0-SNAPSHOT/api/userprofile/{{user-id}}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"RecipEService-1.0-SNAPSHOT",
+								"api",
+								"userprofile",
+								"{{user-id}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Meal Plans",
+			"item": [
+				{
+					"name": "Get all meal plans",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/RecipEService-1.0-SNAPSHOT/api/mealplan",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"RecipEService-1.0-SNAPSHOT",
+								"api",
+								"mealplan"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get meal plan by ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/RecipEService-1.0-SNAPSHOT/api/mealplan/{{meal-plan-id}}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"RecipEService-1.0-SNAPSHOT",
+								"api",
+								"mealplan",
+								"{{meal-plan-id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add meal plan",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/RecipEService-1.0-SNAPSHOT/api/mealplan/{{meal-plan-id}}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"RecipEService-1.0-SNAPSHOT",
+								"api",
+								"mealplan",
+								"{{meal-plan-id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Change meal plan",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/RecipEService-1.0-SNAPSHOT/api/mealplan/{{meal-plan-id}}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"RecipEService-1.0-SNAPSHOT",
+								"api",
+								"mealplan",
+								"{{meal-plan-id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Remove meal plan",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/RecipEService-1.0-SNAPSHOT/api/mealplan/{{meal-plan-id}}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"RecipEService-1.0-SNAPSHOT",
+								"api",
+								"mealplan",
+								"{{meal-plan-id}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Grocery Lists",
+			"item": [
+				{
+					"name": "Get all grocery lists",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/RecipEService-1.0-SNAPSHOT/api/grocerylist",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"RecipEService-1.0-SNAPSHOT",
+								"api",
+								"grocerylist"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get grocery list by ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/RecipEService-1.0-SNAPSHOT/api/grocerylist/{{grocery-list-id}}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"RecipEService-1.0-SNAPSHOT",
+								"api",
+								"grocerylist",
+								"{{grocery-list-id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add grocery list",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/RecipEService-1.0-SNAPSHOT/api/grocerylist/{{grocery-list-id}}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"RecipEService-1.0-SNAPSHOT",
+								"api",
+								"grocerylist",
+								"{{grocery-list-id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Change grocery list",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/RecipEService-1.0-SNAPSHOT/api/grocerylist/{{grocery-list-id}}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"RecipEService-1.0-SNAPSHOT",
+								"api",
+								"grocerylist",
+								"{{grocery-list-id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Remove grocery list",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/RecipEService-1.0-SNAPSHOT/api/grocerylist/{{grocery-list-id}}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"RecipEService-1.0-SNAPSHOT",
+								"api",
+								"grocerylist",
+								"{{grocery-list-id}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Service",
+			"item": [
+				{
+					"name": "Get meal plan by user ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/RecipEService-1.0-SNAPSHOT/api/service/mealplan/{{user-id}}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"RecipEService-1.0-SNAPSHOT",
+								"api",
+								"service",
+								"mealplan",
+								"{{user-id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get grocery list by user ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/RecipEService-1.0-SNAPSHOT/api/service/grocerylist/{{user-id}}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"RecipEService-1.0-SNAPSHOT",
+								"api",
+								"service",
+								"grocerylist",
+								"{{user-id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Generate meal plan by user ID",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/RecipEService-1.0-SNAPSHOT/api/service/mealplan/generate/{{user-id}}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"RecipEService-1.0-SNAPSHOT",
+								"api",
+								"service",
+								"mealplan",
+								"generate",
+								"{{user-id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Generate grocery list by user ID",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/RecipEService-1.0-SNAPSHOT/api/service/grocerylist/generate/{{user-id}}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"RecipEService-1.0-SNAPSHOT",
+								"api",
+								"service",
+								"grocerylist",
+								"generate",
+								"{{user-id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Re-generate meal plan by user ID",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/RecipEService-1.0-SNAPSHOT/api/service/mealplan/generate/{{user-id}}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"RecipEService-1.0-SNAPSHOT",
+								"api",
+								"service",
+								"mealplan",
+								"generate",
+								"{{user-id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Re-generate grocery list by user ID",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/RecipEService-1.0-SNAPSHOT/api/service/grocerylist/generate/{{user-id}}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"RecipEService-1.0-SNAPSHOT",
+								"api",
+								"service",
+								"grocerylist",
+								"generate",
+								"{{user-id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Authenticate",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/RecipEService-1.0-SNAPSHOT/api/service/authenticate/usertest/passwordtest",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"RecipEService-1.0-SNAPSHOT",
+								"api",
+								"service",
+								"authenticate",
+								"usertest",
+								"passwordtest"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "user-id",
+			"value": "87ec472e-7f53-4443-a90f-794f4fe7c5ad",
+			"type": "string"
+		},
+		{
+			"key": "meal-plan-id",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "grocery-list-id",
+			"value": "",
+			"type": "string"
+		}
+	]
+}
