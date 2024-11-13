@@ -59,13 +59,69 @@ public class UserProfile {
         this.mealPlanPreference = mealPlanPreference;
     }
 
-    // Setters for dietary preferences
+    // Getters and setters
+    public UUID getUserId() {
+        return userId;
+    }
+
+    public void setUserId(UUID userId) {
+        this.userId = userId;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = Utils.hashPassword(password);
+    }
+
+    public DietType getDietType() {
+        return dietType;
+    }
+
     public void setDietType(DietType dietType) {
         this.dietType = dietType;
     }
 
+    public Set<String> getAllergies() {
+        return allergies;
+    }
+
+    public void setAllergies(Set<String> allergies) {
+        this.allergies = allergies;
+    }
+
+    public Set<String> getDislikedIngredients() {
+        return dislikedIngredients;
+    }
+
+    public void setDislikedIngredients(Set<String> dislikedIngredients) {
+        this.dislikedIngredients = dislikedIngredients;
+    }
+
+    public Optional<Integer> getDailyCalorieTarget() {
+        return dailyCalorieTarget;
+    }
+
     public void setDailyCalorieTarget(int dailyCalorieTarget) {
         this.dailyCalorieTarget = Optional.of(dailyCalorieTarget);
+    }
+
+    public MealPlanPreference getMealPlanPreference() {
+        return mealPlanPreference;
+    }
+
+    public void setMealPlanPreference(MealPlanPreference mealPlanPreference) {
+        this.mealPlanPreference = mealPlanPreference;
     }
 
     // Methods to add allergies and disliked ingredients
@@ -85,42 +141,7 @@ public class UserProfile {
         this.dislikedIngredients.remove(ingredient);
     }
 
-    // Getters for user preferences and restrictions
-    public UUID getUserId() {
-        return userId;
-    }
 
-    public String getUsername() {
-        return username;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public DietType getDietType() {
-        return dietType;
-    }
-
-    public Set<String> getAllergies() {
-        return allergies;
-    }
-
-    public Set<String> getDislikedIngredients() {
-        return dislikedIngredients;
-    }
-
-    public Optional<Integer> getDailyCalorieTarget() {
-        return dailyCalorieTarget;
-    }
-
-    public MealPlanPreference getMealPlanPreference() {
-        return mealPlanPreference;
-    }
-
-    public void setMealPlanPreference(MealPlanPreference mealPlanPreference) {
-        this.mealPlanPreference = mealPlanPreference;
-    }
 
     // Optional method to display user preferences for debugging or user settings
     public void displayUserPreferences() {
