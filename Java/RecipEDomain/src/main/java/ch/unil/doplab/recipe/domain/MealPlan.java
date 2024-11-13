@@ -6,17 +6,12 @@ public class MealPlan {
     private UUID mealPlanId;
     private Map<String, List<Meal>> dailyMeals; // Key: Day, Value: List of Meals (breakfast, lunch, dinner)
     private int calorieTarget;
+    private UserProfile userProfile; // Reference to the user's profile for desired servings and other preferences
 
-    public MealPlan() {
-        this(null, new LinkedHashMap<>());
-    }
-
-    public MealPlan(Map<String, List<Meal>> dailyMeals) {
-        this(null, dailyMeals);
-    }
-
-    // Constructor
-    public MealPlan(UUID mealPlanId, Map<String, List<Meal>> dailyMeals) {
+    // Updated constructor to include UserProfile
+    public MealPlan(UserProfile userProfile, Map<String, List<Meal>> dailyMeals) {
+        this.userProfile = userProfile;
+        this.mealPlanId = UUID.randomUUID();
         this.dailyMeals = dailyMeals != null ? dailyMeals : new LinkedHashMap<>();
     }
 
@@ -34,7 +29,7 @@ public class MealPlan {
                 if (meal.getIngredients() != null) {
                     // Get ingredients of the meal and add each to the grocery list
                     for (Ingredient ingredient : meal.getIngredients()) {
-                        groceryList.addIngredient(ingredient);
+                        groceryList.addIngredient("General", ingredient);
                     }
                 } else {
                     System.out.println("No ingredients available for meal: " + meal.getTitle());
@@ -44,8 +39,26 @@ public class MealPlan {
         return groceryList;
     }
 
-    // Getters and setters for each attribute
+    /**
+     * Displays the meal plan with desired servings information.
+     */
+    public void displayMealPlan() {
+        int desiredServings = userProfile.getDesiredServings(); // Access desiredServings from UserProfile instance
+        String servingsText = desiredServings == 1 ? "serving" : "servings";
+        System.out.println("\nGenerated Meal Plan: " + desiredServings + " " + servingsText);
 
+        for (String day : dailyMeals.keySet()) {
+            System.out.println("Day: " + day);
+            for (Meal meal : dailyMeals.get(day)) {
+                meal.displayMealInfo();
+                meal.displayInstructions();
+                meal.displayMealIngredients();
+            }
+            System.out.println();
+        }
+    }
+
+    // Getters and setters for each attribute
     public int getCalorieTarget() {
         return calorieTarget;
     }
@@ -70,4 +83,7 @@ public class MealPlan {
         this.mealPlanId = mealPlanId;
     }
 
+    public UserProfile getUserProfile() {
+        return userProfile;
+    }
 }

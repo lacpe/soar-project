@@ -17,6 +17,8 @@ public class UserProfile {
     private Set<String> dislikedIngredients = new HashSet<>(); // Ingredients the user dislikes, initialized
     private Optional<Integer> dailyCalorieTarget = Optional.empty(); // Daily calorie goal, initialized
     private MealPlanPreference mealPlanPreference = MealPlanPreference.DAILY; // Default to DAILY
+    private int desiredServings = 1;
+
 
     public enum MealPlanPreference {
         DAILY,
@@ -60,6 +62,14 @@ public class UserProfile {
     }
 
     // Getters and setters
+    public int getDesiredServings() {
+        return desiredServings;
+    }
+
+    public void setDesiredServings(int desiredServings) {
+        this.desiredServings = desiredServings;
+    }
+
     public UUID getUserId() {
         return userId;
     }

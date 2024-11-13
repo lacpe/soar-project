@@ -24,35 +24,21 @@ public class APIHandler {
      * @return A MealPlan object with generated meals for the day or week
      */
     public MealPlan generateMealPlan(UserProfile userProfile) {
-        // Determine the time frame (day or week) for the meal plan
         String timeFrame = userProfile.getMealPlanPreference().toString().toLowerCase();
-
-        // Build the initial URL for the meal plan request
         String url = buildMealPlanUrl(userProfile, timeFrame);
-
-        // Maps days to lists of meals for each day
-        Map<String, List<Meal>> dailyMeals = new HashMap<>();
-
-        // List to collect all meal IDs for bulk request
+        Map<String, List<Meal>> dailyMeals = new LinkedHashMap<>();
         List<Integer> mealIds = new ArrayList<>();
+        int desiredServings = userProfile.getDesiredServings();
 
         try {
-            // Make API request to get meal plan data
             String response = makeApiRequest(url, "GET", null);
-            // System.out.println("Raw JSON Response:\n" + response);
-
-            // Parse JSON response
             JSONObject jsonResponse = new JSONObject(response);
-
-            // Define days of the week in the order we want them to appear
             List<String> daysOfWeek = Arrays.asList("monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday");
 
             if (timeFrame.equals("day")) {
-                // Handle daily meal plan
                 JSONArray mealsArray = jsonResponse.getJSONArray("meals");
                 dailyMeals.put("Day 1", parseMeals(mealsArray, mealIds));
             } else {
-                // Handle weekly meal plan
                 JSONObject weekObject = jsonResponse.getJSONObject("week");
                 for (String day : daysOfWeek) {
                     if (weekObject.has(day)) {
@@ -62,30 +48,18 @@ public class APIHandler {
                 }
             }
 
-            // Populate details for each meal using bulk request
-            populateMealDetailsBulk(dailyMeals, mealIds);
+            // Pass desiredServings to the populateMealDetailsBulk method
+            populateMealDetailsBulk(dailyMeals, mealIds, desiredServings);
 
-            // Final ordered map to return
-            Map<String, List<Meal>> orderedDailyMeals = new LinkedHashMap<>();
+            // Return the MealPlan with userProfile included
+            return new MealPlan(userProfile, dailyMeals);
 
-            // Insert days in predefined order
-            for (String day : daysOfWeek) {
-                String capitalizedDay = capitalize(day);
-                if (dailyMeals.containsKey(capitalizedDay)) {
-                    orderedDailyMeals.put(capitalizedDay, dailyMeals.get(capitalizedDay));
-                }
-            }
-
-            return new MealPlan(orderedDailyMeals);
-
-        } catch (java.net.SocketTimeoutException e) {
-            System.err.println("Request timed out. Please try again later.");
         } catch (Exception e) {
             e.printStackTrace();
             System.err.println("Error generating meal plan: " + e.getMessage());
         }
 
-        return new MealPlan(dailyMeals);
+        return new MealPlan(userProfile, dailyMeals); // Return an empty MealPlan with userProfile if there’s an error
     }
 
     /**
@@ -152,7 +126,7 @@ public class APIHandler {
      */
 
 
-    public void populateMealDetailsBulk(Map<String, List<Meal>> dailyMeals, List<Integer> mealIds) {
+    public void populateMealDetailsBulk(Map<String, List<Meal>> dailyMeals, List<Integer> mealIds, int desiredServings) {
         if (mealIds.isEmpty()) return; // Exit if no meal IDs
 
         // Construct URL for bulk endpoint
@@ -174,7 +148,7 @@ public class APIHandler {
 
                 // If the meal isn't in the cache, cache it with all details, including nutritional info
                 if (!mealDetailsCache.containsKey(mealId)) {
-                    Meal meal = createMealFromJson(mealJson);
+                    Meal meal = createMealFromJson(mealJson, desiredServings);
 
                     // Parse and set nutritional information from the response
                     NutritionalInfo nutritionalInfo = extractNutritionalInfo(mealJson);
@@ -206,7 +180,7 @@ public class APIHandler {
     * @param meals The list of meals for the week
     * @return Consolidated list of ingredients as per the API response
     */
-    public Map<String, List<Ingredient>> generateConsolidatedShoppingList(List<Meal> meals) {
+    public GroceryList generateConsolidatedShoppingList(List<Meal> meals) {
         try {
             // Collect all ingredients into a single JSON array
             JSONArray itemsArray = new JSONArray();
@@ -240,14 +214,21 @@ public class APIHandler {
             // Convert the response to a JSON object
             JSONObject jsonResponse = new JSONObject(response);
 
+            // Parse the response to get the organized grocery list by aisle
+            Map<String, List<Ingredient>> groceryListByAisle = parseShoppingListResponse(jsonResponse);
+
+            // Create a new GroceryList object and populate it with the organized grocery list
+            GroceryList groceryList = new GroceryList();
+            groceryList.generateGroceriesFromIngredients(groceryListByAisle);
+
             // Parse the response to extract the consolidated ingredient list
-            return parseShoppingListResponse(jsonResponse);
+            return groceryList;
 
         } catch (Exception e) {
             e.printStackTrace();
             System.err.println("Error generating shopping list: " + e.getMessage());
         }
-        return new LinkedHashMap<>();  // Return an empty list if there's an error
+        return new GroceryList();  // Return an empty list if there's an error
     }
 
     private NutritionalInfo extractNutritionalInfo(JSONObject mealJson) {
@@ -360,32 +341,27 @@ public class APIHandler {
      * @param mealJson JSON object containing meal details
      * @return Meal object with details populated
      */
-    private Meal createMealFromJson(JSONObject mealJson) {
+    private Meal createMealFromJson(JSONObject mealJson, int desiredServings) {
         // Extract meal details from JSON
         int id = mealJson.getInt("id");
         String title = mealJson.getString("title");
         String imageUrl = mealJson.optString("image", "");
+
+        int originalServings = mealJson.getInt("servings");
+
+        double scalingFactor = (double) desiredServings / originalServings;
 
         // Create Meal object using the constructor with required parameters
         Meal meal = new Meal(id, title, imageUrl, null);
 
         // Populate ingredients
         JSONArray ingredientsArray = mealJson.optJSONArray("extendedIngredients");
-        List<Ingredient> ingredients = new ArrayList<>();
-        if (ingredientsArray != null) {
-            for (int j = 0; j < ingredientsArray.length(); j++) {
-                JSONObject ingredientJson = ingredientsArray.getJSONObject(j);
-                String name = ingredientJson.optString("name", "Unknown ingredient");
-                double amount = ingredientJson.optDouble("amount", 0.0);
-                String unit = ingredientJson.optString("unit", "");
-                ingredients.add(new Ingredient(name, amount, unit));
-            }
-        }
-        meal.setIngredients(ingredients);
+        meal.setIngredients(scaleIngredients(ingredientsArray, scalingFactor));
 
-        // Populate instructions
+        // Set instructions and other details (no scaling required here)
         JSONArray analyzedInstructions = mealJson.optJSONArray("analyzedInstructions");
         List<String> instructions = new ArrayList<>();
+
         if (analyzedInstructions != null && analyzedInstructions.length() > 0) {
             JSONArray stepsArray = analyzedInstructions.getJSONObject(0).getJSONArray("steps");
             for (int j = 0; j < stepsArray.length(); j++) {
@@ -399,6 +375,19 @@ public class APIHandler {
         meal.setNutritionalInfo(nutritionalInfo);
 
         return meal;
+    }
+
+    private List<Ingredient> scaleIngredients(JSONArray ingredientsArray, double scalingFactor) {
+        List<Ingredient> ingredients = new ArrayList<>();
+        for (int i = 0; i < ingredientsArray.length(); i++) {
+            JSONObject ingredientJson = ingredientsArray.getJSONObject(i);
+            String name = ingredientJson.getString("name");
+            double amount = ingredientJson.getDouble("amount") * scalingFactor;
+            String unit = ingredientJson.optString("unit", "");
+
+            ingredients.add(new Ingredient(name, amount, unit));
+        }
+        return ingredients;
     }
 
     /**

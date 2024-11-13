@@ -4,31 +4,32 @@ import java.util.Map;
 import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
+import java.util.ArrayList;
 
 public class GroceryList {
     private UUID groceryListId;
-    private Map<String, Ingredient> groceries; // Map by ingredient name and unit for easy lookup
+    private Map<String, List<Ingredient>> ingredientsByAisle; // Store ingredients by aisle
 
     public GroceryList() {
-        this.groceries = new HashMap<>();
+        this.ingredientsByAisle = new HashMap<>();
     }
 
-    public GroceryList(Map<String, Ingredient> groceries) {
-        this(null, groceries);
+    public GroceryList(Map<String, List<Ingredient>> ingredientsByAisle) {
+        this(null, ingredientsByAisle);
     }
 
-    public GroceryList(UUID groceryListId, Map<String, Ingredient> groceries) {
+    public GroceryList(UUID groceryListId, Map<String, List<Ingredient>> ingredientsByAisle) {
         this.groceryListId = groceryListId;
-        this.groceries = groceries;
+        this.ingredientsByAisle = ingredientsByAisle;
     }
 
     // Getters and setters
-    public Map<String, Ingredient> getGroceries() {
-        return groceries;
+    public Map<String, List<Ingredient>> getIngredientsByAisle() {
+        return ingredientsByAisle;
     }
 
-    public void setGroceries(Map<String, Ingredient> groceries) {
-        this.groceries = groceries;
+    public void setIngredientsByAisle(Map<String, List<Ingredient>> ingredientsByAisle) {
+        this.ingredientsByAisle = ingredientsByAisle;
     }
 
     public UUID getGroceryListId() {
@@ -40,41 +41,57 @@ public class GroceryList {
     }
 
     /**
-     * Sets the entire list of ingredients from the API response, consolidating quantities and standardizing units.
-     * @param ingredients The list of consolidated ingredients from the API
+     * Sets the entire list of ingredients from the API response, organizing them by aisle.
+     * Consolidates quantities and standardizes units for ingredients in the same aisle.
+     * @param groceryListByAisle The map of aisles with consolidated ingredients
      */
-    public void generateGroceriesFromIngredients(List<Ingredient> ingredients) {
-        this.groceries.clear();
-        for (Ingredient ingredient : ingredients) {
-            String key = ingredient.getName() + "_" + ingredient.getUnit(); // Unique key by name and unit
-            this.groceries.put(key, ingredient);
-        }
+    public void generateGroceriesFromIngredients(Map<String, List<Ingredient>> groceryListByAisle) {
+        this.ingredientsByAisle.clear();
+        this.ingredientsByAisle.putAll(groceryListByAisle);
     }
 
     /**
-     * Adds an ingredient to the grocery list, consolidating quantities if the ingredient
-     * already exists in the list.
+     * Adds an ingredient to the grocery list by aisle, consolidating quantities if the ingredient
+     * already exists in the aisle.
      */
-    public void addIngredient(Ingredient ingredient) {
-        String key = ingredient.getName() + "_" + ingredient.getUnit(); // Unique key by name and unit
+    public void addIngredient(String aisle, Ingredient ingredient) {
+        // Retrieve the list of ingredients for the specified aisle
+        List<Ingredient> ingredientsInAisle = ingredientsByAisle.getOrDefault(aisle, new ArrayList<>());
 
-        if (groceries.containsKey(key)) {
-            // Consolidate quantities if ingredient with same name and unit already exists
-            Ingredient existingIngredient = groceries.get(key);
-            double newQuantity = existingIngredient.getQuantity() + ingredient.getQuantity();
-            existingIngredient.setQuantity(newQuantity); // Update the quantity
-        } else {
-            // Add new ingredient if it doesn't exist in the list
-            groceries.put(key, ingredient);
+        // Check if the ingredient with the same name and unit already exists in the aisle
+        boolean found = false;
+        for (Ingredient existingIngredient : ingredientsInAisle) {
+            if (existingIngredient.getName().equals(ingredient.getName()) &&
+                existingIngredient.getUnit().equals(ingredient.getUnit())) {
+                // If found, consolidate quantities
+                double newQuantity = existingIngredient.getQuantity() + ingredient.getQuantity();
+                existingIngredient.setQuantity(newQuantity); // Update the quantity
+                found = true;
+                break;
+            }
         }
+
+        // If the ingredient was not found in the aisle, add it as a new entry
+        if (!found) {
+            ingredientsInAisle.add(ingredient);
+        }
+
+        // Update the aisle with the modified ingredient list
+        ingredientsByAisle.put(aisle, ingredientsInAisle);
     }
 
     /**
-     * Displays the consolidated grocery list in a user-friendly format.
+     * Displays the consolidated grocery list organized by aisle.
      */
     public void displayGroceryList() {
-        for (Ingredient ingredient : groceries.values()) {
-            System.out.println(ingredient.getQuantity() + " " + ingredient.getUnit() + " " + ingredient.getName());
+        System.out.println("\nGenerated Grocery List (Organized by Aisle):");
+
+        for (String aisle : ingredientsByAisle.keySet()) {
+            System.out.println("Aisle: " + aisle);
+            for (Ingredient ingredient : ingredientsByAisle.get(aisle)) {
+                System.out.println(" - " + ingredient.getQuantity() + " " + ingredient.getUnit() + " " + ingredient.getName());
+            }
+            System.out.println(); // Blank line between aisles
         }
     }
 }
