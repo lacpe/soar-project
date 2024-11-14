@@ -16,12 +16,12 @@ public class UserProfile {
     private Set<String> allergies = new HashSet<>(); // Set of ingredients the user is allergic to, initialized
     private Set<String> dislikedIngredients = new HashSet<>(); // Ingredients the user dislikes, initialized
     private Optional<Integer> dailyCalorieTarget = Optional.empty(); // Daily calorie goal, initialized
-    private MealPlanPreference mealPlanPreference = MealPlanPreference.DAILY; // Default to DAILY
+    private MealPlanPreference mealPlanPreference = MealPlanPreference.DAY; // Default to DAY
     private int desiredServings = 1;
 
 
     public enum MealPlanPreference {
-        DAILY,
+        DAY,
         WEEK
     }
 
