@@ -10,9 +10,15 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="2b0e7e59-a39e-497c-9255-1e031f6c1224" name="Changes" comment="It works... better?">
+      <change afterPath="$PROJECT_DIR$/.idea/uiDesigner.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/ch/unil/doplab/recipe/rest/GroceryListResource.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/ch/unil/doplab/recipe/rest/MealPlanResource.java" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/src/main/java/ch/unil/doplab/recipe/rest/RecipEService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/ch/unil/doplab/recipe/rest/ServiceResource.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/ch/unil/doplab/recipe/domain/ApplicationState.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ch/unil/doplab/recipe/domain/ApplicationState.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/ch/unil/doplab/recipe/rest/TestResource.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ch/unil/doplab/recipe/rest/TestResource.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ch/unil/doplab/recipe/rest/UserProfileResource.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ch/unil/doplab/recipe/rest/UserProfileResource.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -55,6 +61,9 @@
   &quot;associatedIndex&quot;: 3
 }</component>
   <component name="ProjectId" id="2oCNu1v0sEoYlQARo23JTsWHG4r" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
@@ -69,10 +78,11 @@
     &quot;Maven.RecipEService [test].executor&quot;: &quot;Run&quot;,
     &quot;Maven.StudyBuddyService [clean].executor&quot;: &quot;Run&quot;,
     &quot;Payara Server.Payara 6.20.0.executor&quot;: &quot;Run&quot;,
-    &quot;Repository.Attach.Annotations&quot;: &quot;false&quot;,
-    &quot;Repository.Attach.JavaDocs&quot;: &quot;false&quot;,
-    &quot;Repository.Attach.Sources&quot;: &quot;false&quot;,
+    &quot;Repository.Attach.Annotations&quot;: &quot;true&quot;,
+    &quot;Repository.Attach.JavaDocs&quot;: &quot;true&quot;,
+    &quot;Repository.Attach.Sources&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
     &quot;git-widget-placeholder&quot;: &quot;main&quot;,
     &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
     &quot;last_opened_file_path&quot;: &quot;/Users/lpernot/Documents/GitHub/soar-project/Java/RecipEService&quot;,
@@ -215,6 +225,60 @@
       <workItem from="1730647946514" duration="1172000" />
       <workItem from="1730650436486" duration="222000" />
       <workItem from="1730651096491" duration="637000" />
+      <workItem from="1731168534082" duration="215000" />
+      <workItem from="1731169030502" duration="35000" />
+      <workItem from="1731169074539" duration="8000" />
+      <workItem from="1731169138343" duration="1509000" />
+      <workItem from="1731256049918" duration="40000" />
+      <workItem from="1731256381562" duration="18000" />
+      <workItem from="1731256822259" duration="254000" />
+      <workItem from="1731257225722" duration="437000" />
+      <workItem from="1731315666243" duration="31000" />
+      <workItem from="1731316179083" duration="108000" />
+      <workItem from="1731316537374" duration="75000" />
+      <workItem from="1731316908909" duration="51000" />
+      <workItem from="1731317251296" duration="1872000" />
+      <workItem from="1731328759652" duration="160000" />
+      <workItem from="1731328945461" duration="549000" />
+      <workItem from="1731329738536" duration="651000" />
+      <workItem from="1731330440565" duration="6376000" />
+      <workItem from="1731399297651" duration="541000" />
+      <workItem from="1731399863186" duration="18000" />
+      <workItem from="1731399901006" duration="1144000" />
+      <workItem from="1731401194640" duration="600000" />
+      <workItem from="1731403265960" duration="977000" />
+      <workItem from="1731404298017" duration="395000" />
+      <workItem from="1731404720898" duration="510000" />
+      <workItem from="1731405968275" duration="91000" />
+      <workItem from="1731406137352" duration="3000" />
+      <workItem from="1731406217412" duration="401000" />
+      <workItem from="1731406811937" duration="159000" />
+      <workItem from="1731407133052" duration="87000" />
+      <workItem from="1731407244751" duration="62000" />
+      <workItem from="1731407551771" duration="67000" />
+      <workItem from="1731407678397" duration="30000" />
+      <workItem from="1731407813270" duration="130000" />
+      <workItem from="1731408057452" duration="160000" />
+      <workItem from="1731408735210" duration="428000" />
+      <workItem from="1731416840887" duration="102000" />
+      <workItem from="1731417149913" duration="311000" />
+      <workItem from="1731418847552" duration="278000" />
+      <workItem from="1731419165396" duration="240000" />
+      <workItem from="1731419444448" duration="17000" />
+      <workItem from="1731419783782" duration="624000" />
+      <workItem from="1731421799935" duration="2074000" />
+      <workItem from="1731429227618" duration="6000" />
+      <workItem from="1731429256402" duration="24000" />
+      <workItem from="1731429304685" duration="1598000" />
+      <workItem from="1731441008340" duration="172000" />
+      <workItem from="1731487788189" duration="220000" />
+      <workItem from="1731488046043" duration="4095000" />
+      <workItem from="1731495257730" duration="3508000" />
+      <workItem from="1731502537414" duration="165000" />
+      <workItem from="1731502737547" duration="170000" />
+      <workItem from="1731503353558" duration="11000" />
+      <workItem from="1731503386301" duration="32000" />
+      <workItem from="1731503471275" duration="2263000" />
     </task>
     <task id="LOCAL-00001" summary="It works... better?">
       <option name="closed" value="true" />
