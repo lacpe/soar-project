@@ -172,7 +172,7 @@ public class ApplicationState {
     public Map<UUID, GroceryList> getAllGroceryLists() {return groceryLists;}
 
     public GroceryList addGroceryList(GroceryList groceryList) {
-        if (groceryList.getGroceryListId() == null) {
+        if (groceryList.getGroceryListId() != null) {
             return addGroceryList(groceryList.getGroceryListId(), groceryList);
         }
         return addGroceryList(UUID.randomUUID(), groceryList);
