@@ -20,7 +20,7 @@ public class UserProfileTest {
     @BeforeEach
     public void setUp() {
         userProfile = new UserProfile(null, USERNAME, PASSWORD, UserProfile.DietType.VEGETARIAN,
-                new HashSet<>(), new HashSet<>(), 2000, UserProfile.MealPlanPreference.DAILY);
+                new HashSet<>(), new HashSet<>(), 2000, UserProfile.MealPlanPreference.DAY);
     }
 
     @Test
@@ -74,7 +74,7 @@ public class UserProfileTest {
         newUserProfile.setDailyCalorieTarget(1800);
         newUserProfile.addAllergy("Gluten");
         newUserProfile.addDislikedIngredient("Mushrooms");
-        newUserProfile.setMealPlanPreference(MealPlanPreference.DAILY);
+        newUserProfile.setMealPlanPreference(MealPlanPreference.DAY);
 
         userProfile.replaceWithUser(newUserProfile);
 
@@ -85,6 +85,6 @@ public class UserProfileTest {
         assertEquals(1800, userProfile.getDailyCalorieTarget().get(), "Daily calorie target should be replaced with 1800");
         assertTrue(userProfile.getAllergies().contains("Gluten"), "Allergies should include 'Gluten' after replacement");
         assertTrue(userProfile.getDislikedIngredients().contains("Mushrooms"), "Disliked ingredients should include 'Mushrooms' after replacement");
-        assertEquals(MealPlanPreference.DAILY, userProfile.getMealPlanPreference(), "Meal plan preference should be replaced with DAILY");
+        assertEquals(MealPlanPreference.DAY, userProfile.getMealPlanPreference(), "Meal plan preference should be replaced with DAILY");
     }
 }

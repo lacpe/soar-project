@@ -23,6 +23,7 @@ public class Main {
         mealPlan.displayMealPlan();
 
         // Display the pre-generated grocery list for the meal plan
-        mealPlan.getGroceryList().displayGroceryList();
+        GroceryList groceryList = apiHandler.generateConsolidatedShoppingList(mealPlan.getAllMeals());
+        groceryList.displayGroceryList();
     }
 }

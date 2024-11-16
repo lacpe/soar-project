@@ -222,7 +222,7 @@ public class ApplicationState {
         if (mealPlan == null) {
             throw new IllegalArgumentException("User with ID " + userId + " does not have a registered meal plan.");
         }
-        GroceryList groceryList = mealPlan.generateGroceryList();
+        GroceryList groceryList = apiHandler.generateConsolidatedShoppingList(mealPlan.getAllMeals());
         addGroceryList(groceryList);
         mealPlansGroceryLists.put(usersMealPlans.get(userId), groceryList.getGroceryListId());
         return groceryList;

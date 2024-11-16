@@ -62,20 +62,15 @@ public class APIHandler {
             // Calls the method so that generating a meal plan automatically populates the meals with the details
             populateMealDetailsBulk(dailyMeals, mealIds, desiredServings);
 
-            // Generate the consolidated grocery list based on the meals
-            List<Meal> allMeals = new ArrayList<>(); // Creates the list to fill
-            dailyMeals.values().forEach(allMeals::addAll); // Adds all meals for each day in a list addAll, it's done that way so the repeted recipes will still be counted multiple times, meaning it will add the correct amount of ingredients
-            GroceryList groceryList = generateConsolidatedShoppingList(allMeals); // Here it creates the grocery list for this mealplan, that can be then shown with the display method
-
             // Create and return a MealPlan with user profile and daily meals
-            return new MealPlan(userProfile, dailyMeals, groceryList);
+            return new MealPlan(dailyMeals, userProfile.getDesiredServings());
 
         } catch (Exception e) {
             e.printStackTrace();
             System.err.println("Error generating meal plan: " + e.getMessage());
         }
 
-        return new MealPlan(userProfile, dailyMeals, new GroceryList()); // Return an empty MealPlan with userProfile if there’s an error
+        return new MealPlan(dailyMeals, userProfile.getDesiredServings()); // Return an empty MealPlan with userProfile if there’s an error
     }
 
     /**

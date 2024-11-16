@@ -11,7 +11,7 @@ public class GroceryList {
     private Map<String, List<Ingredient>> ingredientsByAisle; // Store ingredients by aisle
 
     public GroceryList() {
-        this.ingredientsByAisle = new HashMap<>();
+        this(null, new HashMap<>());
     }
 
     public GroceryList(Map<String, List<Ingredient>> ingredientsByAisle) {
