@@ -27,10 +27,7 @@ public class MealPlan {
         this.desiredServings = desiredServings;
     }
 
-
-    /**
-     * Displays the meal plan with desired servings information.
-     */
+    //Displays the meal plan with desired servings information.
     public void displayMealPlan() {
         String servingsText = this.desiredServings == 1 ? "serving" : "servings";
         System.out.println("\nGenerated Meal Plan: " + this.desiredServings + " " + servingsText);

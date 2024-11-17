@@ -40,20 +40,15 @@ public class GroceryList {
         this.groceryListId = groceryListId;
     }
 
-    /**
-     * Sets the entire list of ingredients from the API response, organizing them by aisle.
-     * Consolidates quantities and standardizes units for ingredients in the same aisle.
-     * @param groceryListByAisle The map of aisles with consolidated ingredients
-     */
+    //Sets the entire list of ingredients from the API response, organizing them by aisle.
+    //Consolidates quantities and standardizes units for ingredients in the same aisle.
+    //groceryListByAisle The map of aisles with consolidated ingredients
     public void generateGroceriesFromIngredients(Map<String, List<Ingredient>> groceryListByAisle) {
         this.ingredientsByAisle.clear();
         this.ingredientsByAisle.putAll(groceryListByAisle);
     }
 
-    /**
-     * Adds an ingredient to the grocery list by aisle, consolidating quantities if the ingredient
-     * already exists in the aisle.
-     */
+    //Adds an ingredient to the grocery list by aisle, consolidating quantities if the ingredient already exists in the aisle.
     public void addIngredient(String aisle, Ingredient ingredient) {
         // Retrieve the list of ingredients for the specified aisle
         List<Ingredient> ingredientsInAisle = ingredientsByAisle.getOrDefault(aisle, new ArrayList<>());
@@ -80,9 +75,7 @@ public class GroceryList {
         ingredientsByAisle.put(aisle, ingredientsInAisle);
     }
 
-    /**
-     * Displays the consolidated grocery list organized by aisle.
-     */
+    //Displays the consolidated grocery list organized by aisle.
     public void displayGroceryList() {
         System.out.println("\nGenerated Grocery List (Organized by Aisle):");
 
