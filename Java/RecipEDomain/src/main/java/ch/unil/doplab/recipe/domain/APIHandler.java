@@ -143,7 +143,7 @@ public class APIHandler {
             // Make API request for bulk meal details
             String response = makeApiRequest(url, "GET", null);
             // print the response for debugging
-            // System.out.println("Raw JSON Response:\n" + response);
+            //System.out.println("Raw JSON Response:\n" + response);
 
             // Parse bulk response
             JSONArray bulkResponseArray = new JSONArray(response);
