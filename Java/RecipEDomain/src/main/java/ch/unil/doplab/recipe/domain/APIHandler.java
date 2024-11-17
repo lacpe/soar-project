@@ -17,13 +17,10 @@ public class APIHandler {
     // Cache to store meal details by meal ID because when multiple meals appeared in the meal plan, the details wouldn't get fetched correctly
     private Map<Integer, Meal> mealDetailsCache = new HashMap<>();
 
+    //Generates a meal plan based on user preferences such as diet, calorie target, and ingredients to exclude.
+    //userProfile UserProfile object containing user preferences
+    //returns A MealPlan object with generated meals for the day or week
 
-    /**
-     * Generates a meal plan based on user preferences such as diet, calorie target,
-     * and ingredients to exclude.
-     * @param userProfile UserProfile object containing user preferences
-     * @return A MealPlan object with generated meals for the day or week
-     */
     public MealPlan generateMealPlan(UserProfile userProfile) {
         String timeFrame = userProfile.getMealPlanPreference().toString().toLowerCase(); // Get time frame preference (e.g., day or week)
         String url = buildMealPlanUrl(userProfile, timeFrame); // Construct URL for API request
@@ -73,13 +70,11 @@ public class APIHandler {
         return new MealPlan(dailyMeals, userProfile.getDesiredServings()); // Return an empty MealPlan with userProfile if there’s an error
     }
 
-    /**
-     * Constructs the URL for the meal plan request based on user preferences.
-     * @param userProfile The user profile with dietary preferences
-     * @param timeFrame   "day" or "week" for the meal plan
-     * @return The constructed URL as a string
-     */
-    // it's a separate method made for clarity
+    //Constructs the URL for the meal plan request based on user preferences.
+    //userProfile The user profile with dietary preferences
+    //it's a separate method made for clarity
+    //timeFrame   "day" or "week" for the meal plan
+    //returns The constructed URL as a string
     private String buildMealPlanUrl(UserProfile userProfile, String timeFrame) {
         // Base URL for generating meal plans with API key, timeframe, and calorie target
         String url = "https://api.spoonacular.com/mealplanner/generate"
@@ -108,12 +103,10 @@ public class APIHandler {
         return url; // Return constructed URL
     }
 
-    /**
-     * Parses meals from a JSON array and populates mealIds list.
-     * @param mealsArray The JSON array of meals.
-     * @param mealIds    List to collect meal IDs for later bulk request.
-     * @return A list of Meal objects for a single day.
-     */
+    //Parses meals from a JSON array and populates mealIds list.
+    //mealsArray The JSON array of meals.
+    //mealIds    List to collect meal IDs for later bulk request.
+    //returns A list of Meal objects for a single day.
     private List<Meal> parseMeals(JSONArray mealsArray, List<Integer> mealIds) {
         List<Meal> meals = new ArrayList<>();
         // for each meal in the array get a single object (ID) then add the ID to a list of IDs
@@ -135,13 +128,10 @@ public class APIHandler {
         return meals;
     }
 
-    /**
-     * Populates detailed information for meals in bulk, using the Spoonacular API.
-     * @param dailyMeals Map of meals organized by day
-     * @param mealIds    List of meal IDs to fetch details for in bulk
-     * @param desiredServings Number of servings the user wants for each meal
-     */
-
+    //Populates detailed information for meals in bulk, using the Spoonacular API.
+    //dailyMeals Map of meals organized by day
+    //mealIds    List of meal IDs to fetch details for in bulk
+    //desiredServings Number of servings the user wants for each meal
     public void populateMealDetailsBulk(Map<String, List<Meal>> dailyMeals, List<Integer> mealIds, int desiredServings) {
         if (mealIds.isEmpty()) return; // Exit if no meal IDs
 
@@ -197,12 +187,9 @@ public class APIHandler {
         }
     }
 
-    /**
-     * Generates a consolidated grocery list using the Spoonacular Compute Shopping List API.
-     * @param meals The list of meals for the week
-     * @return GroceryList object containing all ingredients needed for the meal plan
-     */
-
+    //Generates a consolidated grocery list using the Spoonacular Compute Shopping List API.
+    //meals The list of meals for the week
+    //returns GroceryList object containing all ingredients needed for the meal plan
     public GroceryList generateConsolidatedShoppingList(List<Meal> meals) {
         try {
             // Collect all ingredients into a single JSON array
@@ -258,12 +245,10 @@ public class APIHandler {
         return new GroceryList();  // Return an empty list if there's an error
     }
 
-     /**
-     * Extracts nutritional information from the JSON response and constructs a NutritionalInfo object.
-     * @param mealJson JSON object containing nutritional details
-     * @return NutritionalInfo object
-     */
+    // Extracts nutritional information from the JSON response and constructs a NutritionalInfo object.
     //extracts the nutritional info from the response of populatemealdetailsbulk, method is then called in the populate method
+    //mealJson JSON object containing nutritional details
+    // Returns NutritionalInfo object
     private NutritionalInfo extractNutritionalInfo(JSONObject mealJson) {
         // Initialize default values for nutritional info
         int calories = 0, protein = 0, fat = 0, carbs = 0;
@@ -335,11 +320,9 @@ public class APIHandler {
         return new NutritionalInfo(calories, protein, fat, carbs, saturatedFat, fiber, sugar, sodium, vitaminC, calcium, iron, potassium, vitaminA, vitaminK, magnesium);
     }
 
-    /**
-     * Parses JSON response from the Compute Shopping List API into a grocery list by aisle.
-     * @param jsonResponse JSON object containing the shopping list response
-     * @return Map of aisles with a list of consolidated ingredients
-     */
+    //Parses JSON response from the Compute Shopping List API into a grocery list by aisle.
+    //jsonResponse JSON object containing the shopping list response
+    //returns Map of aisles with a list of consolidated ingredients
     private Map<String, List<Ingredient>> parseShoppingListResponse(JSONObject jsonResponse) {
         Map<String, List<Ingredient>> groceryListByAisle = new LinkedHashMap<>();
 
@@ -377,12 +360,10 @@ public class APIHandler {
         return groceryListByAisle;
     }
 
-    /**
-     * Creates a Meal object from JSON data, scaling ingredients based on desired servings.
-     * @param mealJson JSON object containing meal details
-     * @param desiredServings Number of servings
-     * @return Meal object with details populated
-     */
+    //Creates a Meal object from JSON data, scaling ingredients based on desired servings.
+    //mealJson JSON object containing meal details
+    //desiredServings Number of servings
+    //returns Meal object with details populated
     private Meal createMealFromJson(JSONObject mealJson, int desiredServings) {
         // Extract meal details from JSON
         int id = mealJson.getInt("id"); // Get meal ID
@@ -420,13 +401,10 @@ public class APIHandler {
         return meal;
     }
 
-    /**
-     * Scales ingredients based on the desired servings.
-     * @param ingredientsArray JSON array of ingredients
-     * @param scalingFactor Factor to scale each ingredient by
-     * @return List of scaled ingredients
-     */
     // Used to scale the ingredient in createMealFromJson then the ingredients from meal are used to make the grocerylist
+    //ingredientsArray JSON array of ingredients
+    //scalingFactor Factor to scale each ingredient by
+    //return List of scaled ingredients
     private List<Ingredient> scaleIngredients(JSONArray ingredientsArray, double scalingFactor) {
         List<Ingredient> ingredients = new ArrayList<>();
         for (int i = 0; i < ingredientsArray.length(); i++) {
@@ -440,14 +418,11 @@ public class APIHandler {
         return ingredients;
     }
 
-    /**
-    * Makes an HTTP request (GET or POST) to the specified URL and returns the response as a string.
-    * @param urlString URL to send the request to
-    * @param method    The HTTP method ("GET" or "POST")
-    * @param jsonPayload JSON payload for POST requests (null for GET requests)
-    * @return Response from the API as a String
-    * @throws Exception if there's an issue with the request
-    */
+    //Makes an HTTP request (GET or POST) to the specified URL and returns the response as a string.
+    //urlString URL to send the request to
+    //method    The HTTP method ("GET" or "POST")
+    //jsonPayload JSON payload for POST requests (null for GET requests)
+    //returns Response from the API as a String
     private String makeApiRequest(String urlString, String method, String jsonPayload) throws Exception {
         // Create a URL object from the provided URL string
         URL url = new URL(urlString); // Create URL object
@@ -488,11 +463,9 @@ public class APIHandler {
         return response.toString(); // Return response
     }
 
-    /**
-     * Capitalizes the first letter of a given day.
-     * @param day Day name to capitalize
-     * @return Capitalized day name
-     */
+    //Capitalizes the first letter of a given day.
+    //day Day name to capitalize
+    //returns Capitalized day name
     private String capitalize(String day) {
         return day.substring(0, 1).toUpperCase() + day.substring(1); // Capitalize first letter
     }
