@@ -26,20 +26,19 @@ public class MealPlanResource {
         return state.getMealPlan(id);
     }
 
+    @POST
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    public MealPlan addMealPlan(MealPlan mealPlan) {
+        return state.addMealPlan(mealPlan);
+    }
+
     @PUT
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     @Path("/{id}")
     public MealPlan setMealPlan(@PathParam("id") UUID id, MealPlan mealPlan) {
         return state.setMealPlan(id, mealPlan);
-    }
-
-    @POST
-    @Produces(MediaType.APPLICATION_JSON)
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Path("/{id}")
-    public MealPlan addMealPlan(@PathParam("id") UUID id, MealPlan mealPlan) {
-        return state.addMealPlan(id, mealPlan);
     }
 
     @DELETE

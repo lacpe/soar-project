@@ -28,6 +28,13 @@ public class GroceryListResource {
     @POST
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
+    public GroceryList addGroceryList(GroceryList groceryList) {
+        return state.addGroceryList(groceryList);
+    }
+
+    @PUT
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
     @Path("/{id}")
     public GroceryList setGroceryList(@PathParam("id") UUID id, GroceryList groceryList) {
         return state.setGroceryList(id, groceryList);

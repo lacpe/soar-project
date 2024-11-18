@@ -158,8 +158,10 @@ public class ApplicationState {
         if (mealPlan == null) {
             return false;
         }
-        // Removes associated grocery list, does nothing if there is none
-        groceryLists.remove(groceryListId);
+        if (groceryListId != null) {
+            // Removes associated grocery list, does nothing if there is none
+            groceryLists.remove(groceryListId);
+        }
         mealPlansGroceryLists.remove(id);
         // Removes meal plan
         mealPlans.remove(id);
