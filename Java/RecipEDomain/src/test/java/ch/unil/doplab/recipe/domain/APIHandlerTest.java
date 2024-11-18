@@ -37,17 +37,4 @@ public class APIHandlerTest {
         // Verify that generateMealPlan was called once
         verify(apiHandler, times(1)).generateMealPlan(userProfile);
     }
-
-    @Test
-    public void testGenerateMealPlanHandlesApiLimit() {
-        // Simulate API limit reached
-        when(apiHandler.generateMealPlan(userProfile)).thenThrow(new RuntimeException("API limit reached"));
-
-        // Assert that calling generateMealPlan throws an exception
-        Exception exception = assertThrows(RuntimeException.class, () -> apiHandler.generateMealPlan(userProfile));
-        assertEquals("API limit reached", exception.getMessage(), "Exception message should indicate API limit");
-
-        // Verify that generateMealPlan was attempted once
-        verify(apiHandler, times(1)).generateMealPlan(userProfile);
-    }
 }

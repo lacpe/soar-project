@@ -16,10 +16,12 @@ public class UserProfileTest {
     private UserProfile userProfile;
     private static final String USERNAME = "testUser";
     private static final String PASSWORD = "password";
+    UUID uuid = UUID.randomUUID();
+
 
     @BeforeEach
     public void setUp() {
-        userProfile = new UserProfile(null, USERNAME, PASSWORD, UserProfile.DietType.VEGETARIAN,
+        userProfile = new UserProfile(uuid, USERNAME, PASSWORD, UserProfile.DietType.VEGETARIAN,
                 new HashSet<>(), new HashSet<>(), 2000, UserProfile.MealPlanPreference.DAY);
     }
 
@@ -68,7 +70,7 @@ public class UserProfileTest {
 
     @Test
     public void testReplaceWithUser() {
-        UserProfile newUserProfile = new UserProfile(null, "newUser", "newPassword", UserProfile.DietType.VEGETARIAN,
+        UserProfile newUserProfile = new UserProfile(uuid, "newUser", "newPassword", UserProfile.DietType.VEGETARIAN,
                 new HashSet<>(), new HashSet<>(), 2000, UserProfile.MealPlanPreference.WEEK);
         newUserProfile.setDietType(DietType.PALEO);
         newUserProfile.setDailyCalorieTarget(1800);
