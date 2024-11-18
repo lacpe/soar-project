@@ -11,6 +11,10 @@ public class Ingredient {
     private String description;         // New field for a brief description
     private NutritionalInfo nutritionalInfo; // New field for nutritional details
 
+    public Ingredient() {
+        this(null, 0.0, null);
+    }
+
     // Constructor to create an Ingredient object with essential fields
     public Ingredient(String name, double quantity, String unit) {
         this.name = name; // Assign name

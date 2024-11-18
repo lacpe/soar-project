@@ -10,6 +10,10 @@ public class Meal {
     private List<Ingredient> ingredients;
     private List<String> instructions;      // List of step-by-step cooking instructions
 
+    public Meal() {
+        this(0, null, null, null);
+    }
+
     // Constructor to initialize basic meal details
     public Meal(int id, String title, String imageUrl, NutritionalInfo nutritionalInfo) {
         this.id = id;

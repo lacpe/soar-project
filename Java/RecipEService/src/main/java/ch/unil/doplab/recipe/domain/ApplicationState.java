@@ -149,7 +149,7 @@ public class ApplicationState {
 
     public MealPlan setMealPlan(UUID id, MealPlan mealPlan) {
         mealPlans.replace(id, mealPlan);
-        return mealPlan;
+        return mealPlans.get(id);
     }
 
     public boolean removeMealPlan(UUID id) {

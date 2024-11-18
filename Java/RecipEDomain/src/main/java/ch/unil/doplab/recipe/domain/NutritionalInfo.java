@@ -4,6 +4,10 @@ public class NutritionalInfo {
     private int calories, protein, fat, carbs;
     private double saturatedFat, fiber, sugar, sodium, vitaminC, calcium, iron, potassium, vitaminA, vitaminK, magnesium;
 
+    public NutritionalInfo() {
+        this(0, 0, 0, 0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0);
+    }
+
     public NutritionalInfo(int calories, int protein, int fat, int carbs, double saturatedFat, double fiber, double sugar, double sodium, double vitaminC, double calcium, double iron, double potassium, double vitaminA, double vitaminK, double magnesium) {
         this.calories = calories;
         this.protein = protein;
