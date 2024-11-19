@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+<f:view>
+    <h3>Service Management</h3>
+    <h:form>
+        <h:commandButton action="#{recipEService.resetService}" value="RESET SERVICE"/>
+    </h:form>
+
+    <h3>Templates</h3>
+    <ul>
+        <li><a href="templates/CommonTemplate.xhtml" target="_blank" rel="noopener noreferrer">Common template</a></li>
+        <li><a href="templates/UserProfileTemplate.xhtml" target="_blank" rel="noopener noreferrer">User Profile template</a></li>
+    </ul>
+
+    <h3>Test API</h3>
+    <h4>User Profiles</h4>
+    <ul>
+        <li><a href="GetAllUserProfiles.xhtml" target="_blank" rel="noopener noreferrer">Get all user profiles</a></li>
+        <li><a href="GetUserProfile.xhtml" target="_blank" rel="noopener noreferrer">Get user profile by id</a></li>
+        <li><a href="AddUserProfile.xhtml" target="_blank" rel="noopener noreferrer">Add user profile</a></li>
+        <li><a href="UpdateUserProfile.xhtml" target="_blank" rel="noopener noreferrer">Update user profile by id</a></li>
+        <li><a href="DeleteUserProfile.xhtml" target="_blank" rel="noopener noreferrer">Delete user profile by id</a></li>
+    </ul>
+
+    <h4>Meal Plans</h4>
+    <ul>
+        <li><a href="GenerateMealPlan.xhtml" target="_blank" rel="noopener noreferrer">Generate meal plan</a></li>
+        <li><a href="GetMealPlan.xhtml" target="_blank" rel="noopener noreferrer">Get meal plan by id</a></li>
+    </ul>
+
+    <h4>Grocery Lists</h4>
+    <ul>
+        <li><a href="GenerateGroceryList.xhtml" target="_blank" rel="noopener noreferrer">Generate grocery list</a></li>
+        <li><a href="GetGroceryList.xhtml" target="_blank" rel="noopener noreferrer">Get grocery list by id</a></li>
+    </ul>
+
+    <h3>Test UI</h3>
+    <ul>
+        <li><a href="UserProfile.xhtml" target="_blank" rel="noopener noreferrer">User Profile</a></li>
+        <li><a href="MealPlan.xhtml" target="_blank" rel="noopener noreferrer">Meal Plan</a></li>
+        <li><a href="GroceryList.xhtml" target="_blank" rel="noopener noreferrer">Grocery List</a></li>
+    </ul>
+</f:view>
+</html>

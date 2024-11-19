@@ -4,10 +4,10 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>ch.unil.doplab</groupId>
-    <artifactId>Recip-E_WebApp</artifactId>
+    <groupId>ch.unil.doplab.recipe</groupId>
+    <artifactId>RecipEWebApp</artifactId>
     <version>1.0-SNAPSHOT</version>
-    <name>Recip-E_WebApp</name>
+    <name>RecipEWebApp</name>
     <packaging>war</packaging>
 
     <properties>
@@ -18,12 +18,22 @@
     </properties>
 
     <dependencies>
+        <!-- Jakarta EE Web API -->
         <dependency>
             <groupId>jakarta.platform</groupId>
             <artifactId>jakarta.jakartaee-web-api</artifactId>
             <version>11.0.0-M3</version>
             <scope>provided</scope>
         </dependency>
+
+        <!-- RecipEDomain Dependency -->
+        <dependency>
+            <groupId>ch.unil.doplab.recipe</groupId>
+            <artifactId>RecipEDomain</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+
+        <!-- JUnit for Unit Testing -->
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-api</artifactId>
@@ -36,14 +46,46 @@
             <version>${junit.version}</version>
             <scope>test</scope>
         </dependency>
+
+        <!-- Mocking (Mockito for testing purposes) -->
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-core</artifactId>
+            <version>5.5.0</version>
+            <scope>test</scope>
+        </dependency>
+
+        <!-- Optional: Logging (SLF4J + Logback) -->
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>2.0.9</version>
+        </dependency>
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+            <version>1.4.11</version>
+        </dependency>
     </dependencies>
 
     <build>
         <plugins>
+            <!-- WAR Packaging Plugin -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-war-plugin</artifactId>
                 <version>3.4.0</version>
+            </plugin>
+
+            <!-- Compiler Plugin -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.11.0</version>
+                <configuration>
+                    <source>21</source>
+                    <target>21</target>
+                </configuration>
             </plugin>
         </plugins>
     </build>
