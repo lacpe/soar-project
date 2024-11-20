@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+<f:view>
+    <head>
+        <title>Recipe Detail</title>
+        <link rel="stylesheet" type="text/css" href="resources/styles.css" />
+    </head>
+    <body>
+        <div class="container">
+            <div class="header">
+                <h1>Recipe: #{recipeDetailBean.meal.title}</h1>
+            </div>
+            <div class="content">
+                <div class="recipe-image">
+                    <img src="#{recipeDetailBean.meal.imageUrl}" alt="#{recipeDetailBean.meal.title}" />
+                </div>
+                <div class="recipe-details">
+                    <h2>Ingredients for #{recipeDetailBean.mealPlan.desiredServings} Servings:</h2>
+                    <ul>
+                        <ui:repeat value="#{recipeDetailBean.meal.ingredients}" var="ingredient">
+                            <li>#{ingredient.quantity} #{ingredient.unit} of #{ingredient.name}</li>
+                        </ui:repeat>
+                    </ul>
+                    <h2>Instructions:</h2>
+                    <ol>
+                        <ui:repeat value="#{recipeDetailBean.meal.instructions}" var="instruction">
+                            <li>#{instruction}</li>
+                        </ui:repeat>
+                    </ol>
+                </div>
+                <div class="nutritional-info">
+                    <h2>Nutritional Information:</h2>
+                    <ul>
+                        <li>Calories: #{recipeDetailBean.meal.nutritionalInfo.calories} kcal</li>
+                        <li>Protein: #{recipeDetailBean.meal.nutritionalInfo.proteins} g</li>
+                        <li>Carbohydrates: #{recipeDetailBean.meal.nutritionalInfo.carbohydrates} g</li>
+                        <li>Fat: #{recipeDetailBean.meal.nutritionalInfo.fats} g</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="actions">
+                <h:button value="Customize" outcome="Customize.xhtml" />
+                <h:button value="Nutritions" outcome="NutritionalDetails.xhtml" />
+                <h:button value="Save Plan" action="#{recipeDetailBean.saveMealPlan}" />
+                <h:button value="My Grocery" outcome="GroceryList.xhtml" />
+            </div>
+        </div>
+    </body>
+</f:view>
+</html>

@@ -83,4 +83,12 @@ public class MealPlan {
         return allMeals;
     }
 
+    public Meal getMealById(int mealId) {
+        // Iterate through all meals and find the one with the matching ID
+        return getAllMeals().stream()
+                .filter(meal -> meal.getId() == mealId)
+                .findFirst()
+                .orElse(null); // Return null if no meal with the given ID is found
+    }
+
 }

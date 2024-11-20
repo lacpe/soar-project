@@ -47,4 +47,5 @@ public class MealPlanResource {
     public boolean removeMealPlan(@PathParam("id") UUID id) {
         return state.removeMealPlan(id);
     }
+
 }
