@@ -1,48 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
         "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-      xmlns:f="http://xmlns.jcp.org/jsf/core">
-<f:view>
-    <h:head>
-        <title>User Profile Management</title>
-        <link rel="stylesheet" href="#{resource['css/styles.css']}" />
-    </h:head>
-    <h:body>
+<ui:composition template="/templates/UserProfileTemplate.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <!-- Define the page title -->
+    <ui:define name="title">
+        User Profile Management
+    </ui:define>
+
+    <!-- Main content -->
+    <ui:define name="content">
         <h1>User Profile Management</h1>
 
-        <!-- Section to Display All User Profiles -->
-        <h:form>
-            <h3>View All User Profiles</h3>
-            <h:commandButton value="Load All Profiles" action="#{userProfileBean.getAllUserProfiles}" />
-            <h:dataTable value="#{userProfileBean.allUserProfiles}" var="profile" border="1" style="margin-top: 20px;">
-                <h:column>
-                    <f:facet name="header">User ID</f:facet>
-                    #{profile.userId}
-                </h:column>
-                <h:column>
-                    <f:facet name="header">Username</f:facet>
-                    #{profile.username}
-                </h:column>
-                <h:column>
-                    <f:facet name="header">Diet Type</f:facet>
-                    #{profile.dietType}
-                </h:column>
-                <h:column>
-                    <f:facet name="header">Calorie Limit</f:facet>
-                    #{profile.calorieLimit}
-                </h:column>
-            </h:dataTable>
-        </h:form>
-
-        <!-- Section to View a Specific User Profile -->
-        <h:form style="margin-top: 30px;">
-            <h3>View Specific User Profile</h3>
-            <h:outputLabel for="userId" value="User ID:" />
-            <h:inputText id="userId" value="#{userProfileBean.userId}" />
-            <h:commandButton value="Load Profile" action="#{userProfileBean.loadUserProfile}" />
+        <!-- View a Specific User Profile -->
+        <h:form id="viewProfile" style="margin-top: 30px;">
+            <h3>My User Profile</h3>
             <h:panelGrid columns="2" style="margin-top: 20px;">
                 <h:outputLabel value="Username:" />
                 <h:outputText value="#{userProfileBean.username}" />
@@ -50,50 +26,52 @@
                 <h:outputText value="#{userProfileBean.dietType}" />
                 <h:outputLabel value="Calorie Limit:" />
                 <h:outputText value="#{userProfileBean.calorieLimit}" />
+                <h:outputLabel value="Meal Plan Preference:" />
+                <h:outputText value="#{userProfileBean.mealPlanPreference}" />
+                <h:outputLabel value="Allergies:" />
+                <h:outputText value="#{userProfileBean.allergiesAsString}" />
+                <h:outputLabel value="Disliked Ingredients:" />
+                <h:outputText value="#{userProfileBean.dislikedIngredientsAsString}" />
             </h:panelGrid>
         </h:form>
 
-        <!-- Section to Add a New User Profile -->
-        <h:form style="margin-top: 30px;">
-            <h3>Add New User Profile</h3>
-            <h:outputLabel for="newUsername" value="Username:" />
-            <h:inputText id="newUsername" value="#{userProfileBean.username}" />
-            <br />
-            <h:outputLabel for="newDietType" value="Diet Type:" />
-            <h:inputText id="newDietType" value="#{userProfileBean.dietType}" />
-            <br />
-            <h:outputLabel for="newCalorieLimit" value="Calorie Limit:" />
-            <h:inputText id="newCalorieLimit" value="#{userProfileBean.calorieLimit}" />
-            <br />
-            <h:commandButton value="Add Profile" action="#{userProfileBean.createUserProfile}" />
-        </h:form>
-
-        <!-- Section to Update the Current User Profile -->
-        <h:form style="margin-top: 30px;">
+        <!-- Update the Current User Profile -->
+        <h:form id="updateProfile" style="margin-top: 30px;">
             <h3>Update Current User Profile</h3>
             <h:outputLabel for="updateUsername" value="Username:" />
             <h:inputText id="updateUsername" value="#{userProfileBean.username}" />
             <br />
+            <h:outputLabel for="updatePassword" value="Password:" />
+            <h:inputSecret id="updatePassword" value="#{userProfileBean.password}" />
+            <br />
             <h:outputLabel for="updateDietType" value="Diet Type:" />
-            <h:inputText id="updateDietType" value="#{userProfileBean.dietType}" />
+            <h:selectOneMenu id="updateDietType" value="#{userProfileBean.dietType}">
+                <f:selectItem itemValue="VEGETARIAN" itemLabel="Vegetarian" />
+                <f:selectItem itemValue="VEGAN" itemLabel="Vegan" />
+                <f:selectItem itemValue="PALEO" itemLabel="Paleo" />
+                <f:selectItem itemValue="KETOGENIC" itemLabel="Ketogenic" />
+            </h:selectOneMenu>
             <br />
             <h:outputLabel for="updateCalorieLimit" value="Calorie Limit:" />
             <h:inputText id="updateCalorieLimit" value="#{userProfileBean.calorieLimit}" />
             <br />
+            <h:outputLabel for="updateMealPlanPreference" value="Meal Plan Preference:" />
+            <h:selectOneMenu id="updateMealPlanPreference" value="#{userProfileBean.mealPlanPreference}">
+                <f:selectItem itemValue="DAY" itemLabel="Day" />
+                <f:selectItem itemValue="WEEK" itemLabel="Week" />
+            </h:selectOneMenu>
+            <br />
+            <h:outputLabel for="updateAllergies" value="Allergies (comma-separated):" />
+            <h:inputTextarea id="updateAllergies" value="#{userProfileBean.allergiesAsString}" rows="3" cols="30" />
+            <br />
+            <h:outputLabel for="updateDislikedIngredients" value="Disliked Ingredients (comma-separated):" />
+            <h:inputTextarea id="updateDislikedIngredients" value="#{userProfileBean.dislikedIngredientsAsString}" rows="3" cols="30" />
+            <br />
             <h:commandButton value="Save Changes" action="#{userProfileBean.saveUserProfile}" />
-        </h:form>
-
-        <!-- Section to Delete a User Profile -->
-        <h:form style="margin-top: 30px;">
-            <h3>Delete User Profile</h3>
-            <h:outputLabel for="deleteUserId" value="User ID:" />
-            <h:inputText id="deleteUserId" value="#{userProfileBean.userId}" />
-            <h:commandButton value="Delete Profile" action="#{userProfileBean.deleteUserProfile}" />
         </h:form>
 
         <!-- Dialog for Messages -->
         <h3>Message:</h3>
         <h:outputText value="#{userProfileBean.dialogMessage}" style="color: red;" />
-    </h:body>
-</f:view>
-</html>
+    </ui:define>
+</ui:composition>

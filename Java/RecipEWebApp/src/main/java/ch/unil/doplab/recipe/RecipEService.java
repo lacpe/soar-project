@@ -1,9 +1,11 @@
 package ch.unil.doplab.recipe.rest;
 
+import ch.unil.doplab.recipe.domain.UserProfile;
 import jakarta.annotation.PostConstruct;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.ws.rs.client.Client;
 import jakarta.ws.rs.client.ClientBuilder;
+import jakarta.ws.rs.client.Entity;
 import jakarta.ws.rs.client.WebTarget;
 import jakarta.ws.rs.core.GenericType;
 import jakarta.ws.rs.core.MediaType;
@@ -59,20 +61,32 @@ public class RecipEService {
      * User Profile operations
      */
 
-    // Fetch all user profiles
-    public List<String> getAllUserProfiles() {
-        return userProfileTarget
-                .request(MediaType.APPLICATION_JSON)
-                .get(new GenericType<List<String>>() {});
-    }
-
     // Fetch a specific user profile by ID
-    public String getUserProfile(String userId) {
+    public UserProfile getUserProfile(String userId) {
         return userProfileTarget
                 .path(userId)
                 .request(MediaType.APPLICATION_JSON)
-                .get(String.class);
+                .get(UserProfile.class); // Deserialize JSON into UserProfile object
     }
+
+
+    public void updateUserProfile(String userId, UserProfile updatedProfile) {
+        try {
+            System.out.println("Updating profile for ID: " + userId);
+            System.out.println("Data being sent: " + updatedProfile);
+
+            userProfileTarget
+                    .path(userId)
+                    .request(MediaType.APPLICATION_JSON)
+                    .put(Entity.entity(updatedProfile, MediaType.APPLICATION_JSON));
+
+            System.out.println("Profile update request sent successfully.");
+        } catch (Exception e) {
+            System.out.println("Error during update request: " + e.getMessage());
+            throw e;
+        }
+    }
+
 
     /*
      * Meal Plan operations

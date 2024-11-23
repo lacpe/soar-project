@@ -2,6 +2,7 @@ package ch.unil.doplab.recipe.ui;
 
 import ch.unil.doplab.recipe.domain.UserProfile;
 import ch.unil.doplab.recipe.rest.RecipEService;
+import jakarta.annotation.PostConstruct;
 import jakarta.enterprise.context.SessionScoped;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
@@ -21,13 +22,59 @@ public class UserProfileBean extends UserProfile implements Serializable {
     @Inject
     private RecipEService recipEService;
 
+    @PostConstruct
+    public void init() {
+        // Create a dummy user for testing
+        UserProfile dummyUser = new UserProfile(
+                UUID.randomUUID(),
+                "testuser",
+                "password123",
+                DietType.VEGETARIAN,
+                new HashSet<>(List.of("Peanuts", "Shellfish")),
+                new HashSet<>(List.of("Broccoli", "Spinach")),
+                2000,
+                MealPlanPreference.DAY
+        );
+
+        // Set it as the current user profile
+        this.replaceWithUser(dummyUser);
+        this.setUserId(dummyUser.getUserId());
+        dialogMessage = "Dummy user loaded.";
+    }
+
     public UserProfileBean() {
-        super(); // Call UserProfile constructor
+        super();
         this.currentUserProfile = new UserProfile();
     }
 
     /*
-     * Getters and Setters for additional properties
+     * Utility Methods for Allergies and Disliked Ingredients
+     */
+
+    // Get allergies as a comma-separated string
+    public String getAllergiesAsString() {
+        return String.join(", ", getAllergies());
+    }
+
+    // Set allergies from a comma-separated string
+    public void setAllergiesAsString(String allergies) {
+        Set<String> allergiesSet = new HashSet<>(Arrays.asList(allergies.split("\\s*,\\s*")));
+        setAllergies(allergiesSet);
+    }
+
+    // Get disliked ingredients as a comma-separated string
+    public String getDislikedIngredientsAsString() {
+        return String.join(", ", getDislikedIngredients());
+    }
+
+    // Set disliked ingredients from a comma-separated string
+    public void setDislikedIngredientsAsString(String dislikedIngredients) {
+        Set<String> dislikedSet = new HashSet<>(Arrays.asList(dislikedIngredients.split("\\s*,\\s*")));
+        setDislikedIngredients(dislikedSet);
+    }
+
+    /*
+     * Getters and Setters for Additional Properties
      */
 
     public UserProfile getCurrentUserProfile() {
@@ -54,26 +101,29 @@ public class UserProfileBean extends UserProfile implements Serializable {
         this.dialogMessage = dialogMessage;
     }
 
-    /*
-     * Operations for managing UserProfiles
+    // Getter for calorieLimit (unwrap dailyCalorieTarget)
+    public Integer getCalorieLimit() {
+        return getDailyCalorieTarget().orElse(null);
+    }
 
-
-    // Load all user profiles
-    public List<UserProfile> getAllUserProfiles() {
-        try {
-            Map<UUID, UserProfile> profiles = recipEService.getAllUserProfiles();
-            return new ArrayList<>(profiles.values());
-        } catch (Exception e) {
-            dialogMessage = "Error loading user profiles: " + e.getMessage();
-            return Collections.emptyList();
+    // Setter for calorieLimit (wrap value into dailyCalorieTarget)
+    public void setCalorieLimit(Integer calorieLimit) {
+        if (calorieLimit != null) {
+            setDailyCalorieTarget(calorieLimit);
+        } else {
+            setDailyCalorieTarget(0);
         }
     }
+
+    /*
+     * Operations for Managing UserProfiles
+     */
 
     // Load a specific user profile
     public void loadUserProfile(UUID userId) {
         try {
             currentUserProfile = recipEService.getUserProfile(userId.toString());
-            this.replaceWith(currentUserProfile);
+            this.replaceWithUser(currentUserProfile);
             changed = false;
         } catch (Exception e) {
             dialogMessage = "Error loading user profile: " + e.getMessage();
@@ -84,6 +134,7 @@ public class UserProfileBean extends UserProfile implements Serializable {
     public void saveUserProfile() {
         try {
             if (this.getUserId() != null) {
+                System.out.println("Saving user profile for ID: " + this.getUserId());
                 recipEService.updateUserProfile(this.getUserId().toString(), this);
                 dialogMessage = "User profile updated successfully.";
                 changed = false;
@@ -95,58 +146,15 @@ public class UserProfileBean extends UserProfile implements Serializable {
         }
     }
 
-    // Create a new user profile
-    public void createUserProfile() {
-        try {
-            UserProfile createdProfile = recipEService.createUserProfile(this);
-            if (createdProfile != null) {
-                this.replaceWith(createdProfile);
-                dialogMessage = "User profile created successfully.";
-                changed = false;
-            }
-        } catch (Exception e) {
-            dialogMessage = "Error creating user profile: " + e.getMessage();
-        }
+    // Replace the fields of this bean with another UserProfile
+    public void replaceWithUser(UserProfile newUserProfile) {
+        this.setUserId(newUserProfile.getUserId());
+        this.setUsername(newUserProfile.getUsername());
+        this.setPassword(newUserProfile.getPassword());
+        this.setDietType(newUserProfile.getDietType());
+        this.setAllergies(newUserProfile.getAllergies());
+        this.setDislikedIngredients(newUserProfile.getDislikedIngredients());
+        this.setDailyCalorieTarget(newUserProfile.getDailyCalorieTarget().orElse(0));
+        this.setMealPlanPreference(newUserProfile.getMealPlanPreference());
     }
-
-    // Delete the current user profile
-    public void deleteUserProfile() {
-        try {
-            if (this.getUserId() != null) {
-                recipEService.deleteUserProfile(this.getUserId().toString());
-                dialogMessage = "User profile deleted successfully.";
-                this.replaceWith(new UserProfile());
-                changed = false;
-            } else {
-                dialogMessage = "Error: User ID is missing.";
-            }
-        } catch (Exception e) {
-            dialogMessage = "Error deleting user profile: " + e.getMessage();
-        }
-    }
-
-    // Undo changes to the current user profile
-    public void undoChanges() {
-        this.replaceWith(currentUserProfile);
-        changed = false;
-    }
-
-    // Check if any changes have been made
-    public void checkIfChanged() {
-        changed = !currentUserProfile.equals(this);
-    }
-
-    /*
-     * Utility Methods
-
-
-    // Replace the fields of the current bean with another UserProfile
-    public void replaceWith(UserProfile userProfile) {
-        this.setUserId(userProfile.getUserId());
-        this.setUsername(userProfile.getUsername());
-        this.setDietType(userProfile.getDietType());
-        this.setCalorieLimit(userProfile.getCalorieLimit());
-        this.setMealPlanPreferences(userProfile.getMealPlanPreferences());
-    }
-    */
 }

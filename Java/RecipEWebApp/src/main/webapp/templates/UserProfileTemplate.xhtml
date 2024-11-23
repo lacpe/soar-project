@@ -4,21 +4,19 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-      xmlns:f="http://xmlns.jcp.org/jsf/core"
-      xmlns:p="http://primefaces.org/ui">
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
 <h:head>
-    <h:outputStylesheet name="css/styles.css" />
     <title>
-        <ui:insert name="title">App Common Template</ui:insert>
+        <ui:insert name="title">User Profile Management</ui:insert>
     </title>
+    <h:outputStylesheet name="css/styles.css" />
 </h:head>
 <h:body>
-    <!-- Sidebar -->
     <div class="sidenav">
         <div align="center">
-            <h:graphicImage width="130" value="/images/logo.jpeg" alt="App Logo"/>
+            <h:graphicImage value="/images/logo.jpeg" alt="App Logo" width="130" />
         </div>
-        <hr/>
+        <hr />
         <ui:insert name="menu">
             <h:link value="Home" outcome="/index.xhtml" />
             <h:link value="User Profile" outcome="/userProfile.xhtml" />
@@ -27,21 +25,19 @@
         </ui:insert>
     </div>
 
-    <!-- Main Content Area -->
     <div class="main">
         <h1>
-            <ui:insert name="section-title">Welcome to the Application</ui:insert>
+            <ui:insert name="header">Manage User Profile</ui:insert>
         </h1>
-        <ui:insert name="section-content">
-            <p>Please select an option from the menu.</p>
+        <ui:insert name="content">
+            <p>Content goes here.</p>
         </ui:insert>
     </div>
 
-    <!-- Footer -->
     <div class="footer">
-        <p>
-            <ui:insert name="footer">© 2024 Your App Name. All rights reserved.</ui:insert>
-        </p>
+        <ui:insert name="footer">
+            <p>© 2024 Your App Name. All rights reserved.</p>
+        </ui:insert>
     </div>
 </h:body>
 </html>
