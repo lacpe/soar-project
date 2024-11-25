@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+<h:head>
+    <title>Weekly Meal Plan</title>
+    <h:outputStylesheet name="styles.css" />
+</h:head>
+<h:body>
+    <h1>Your Weekly Meal Plan</h1>
+
+    <h:form>
+        <!-- Button to trigger meal plan generation -->
+        <div style="border: 2px solid red; padding: 10px; margin: 10px;">
+            <h:commandButton value="Generate New Meal Plan"
+                             action="#{mealPlanBean.generateMealPlan}"
+                             style="display: block; visibility: visible;" />
+        </div>
+
+
+        <!-- Display the meal plan -->
+        <div class="meal-plan">
+            <ui:repeat var="day" value="#{mealPlanBean.mealPlan.dailyMeals}">
+                <div class="day">
+                    <h2>#{day.key}</h2> <!-- Day (e.g., Monday, Tuesday) -->
+                    <ui:repeat var="meal" value="#{day.value}">
+                        <div class="meal">
+                            <h3>#{meal.type}</h3>
+                            <h:commandLink action="#{mealPlanBean.viewRecipe(meal.id)}">
+                                <h:graphicImage value="#{meal.image}" />
+                                <h:outputText value="#{meal.name}" />
+                            </h:commandLink>
+                        </div>
+                    </ui:repeat>
+                </div>
+            </ui:repeat>
+        </div>
+    </h:form>
+</h:body>
+</html>
