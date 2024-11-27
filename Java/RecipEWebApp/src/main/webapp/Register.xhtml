@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+    <h:outputStylesheet name="css/styles.css"/>
+    <title>
+        Register - Recip-e
+    </title>
+</h:head>
+<h:body>
+    <div align="center">
+        <!-- Header -->
+        <p:panel style="width: 600px;">
+            <h:graphicImage width="180" value="/images/logo.png"/>
+            <br/>
+            <h1>Sign Up for Recip-e</h1>
+            <p>Plan your meals effortlessly by signing up today!</p>
+        </p:panel>
+
+        <!-- Registration Form -->
+        <p:panel style="width: 600px;">
+            <h:form id="registerForm">
+                <table>
+                    <!-- First Name -->
+                    <tr>
+                        <td style="text-align:right">
+                            <p:outputLabel value="First Name"/>
+                        </td>
+                        <td style="text-align:left">
+                            <p:inputText id="firstname" value="#{registerBean.firstName}" style="width: 300px"
+                                         required="true" requiredMessage="First name is required.">
+                                <p:ajax event="blur" update="firstname"/>
+                            </p:inputText>
+                        </td>
+                    </tr>
+                    <!-- Last Name -->
+                    <tr>
+                        <td style="text-align:right">
+                            <p:outputLabel value="Last Name"/>
+                        </td>
+                        <td style="text-align:left">
+                            <p:inputText id="lastname" value="#{registerBean.lastName}" style="width: 300px"
+                                         required="true" requiredMessage="Last name is required.">
+                                <p:ajax event="blur" update="lastname"/>
+                            </p:inputText>
+                        </td>
+                    </tr>
+                    <!-- Email -->
+                    <tr>
+                        <td style="text-align:right">
+                            <p:outputLabel value="Email"/>
+                        </td>
+                        <td style="text-align:left">
+                            <p:inputText id="email" value="#{registerBean.email}" style="width: 300px"
+                                         required="true" requiredMessage="Email is required."
+                                         validatorMessage="Invalid email format.">
+                                <f:validateRegex pattern="^[^@]+@[^@]+\.[^@]+$"/>
+                                <p:ajax event="blur" update="email"/>
+                            </p:inputText>
+                        </td>
+                    </tr>
+                    <!-- Username -->
+                    <tr>
+                        <td style="text-align:right">
+                            <p:outputLabel value="Username"/>
+                        </td>
+                        <td style="text-align:left">
+                            <p:inputText id="username" value="#{registerBean.username}" style="width: 300px"
+                                         required="true" requiredMessage="Username is required.">
+                                <p:ajax event="blur" update="username"/>
+                            </p:inputText>
+                        </td>
+                    </tr>
+                    <!-- Password -->
+                    <tr>
+                        <td style="text-align:right">
+                            <p:outputLabel value="Password"/>
+                        </td>
+                        <td style="text-align:left">
+                            <p:password id="password" value="#{registerBean.password}" style="width: 300px"
+                                        redisplay="true" toggleMask="true" feedback="false"
+                                        required="true" requiredMessage="Password is required.">
+                                <p:ajax event="blur" update="password"/>
+                            </p:password>
+                        </td>
+                    </tr>
+                    <!-- Preferences -->
+                    <tr>
+                        <td style="text-align:right">
+                            <p:outputLabel value="Food Preferences"/>
+                        </td>
+                        <td style="text-align:left">
+                            <p:inputTextarea id="preferences" value="#{registerBean.preferences}"
+                                             style="width: 300px; height: 100px;"
+                                             required="true" requiredMessage="Preferences are required.">
+                                <p:ajax event="blur" update="preferences"/>
+                            </p:inputTextarea>
+                        </td>
+                    </tr>
+                </table>
+                <!-- Register Button -->
+                <p:commandButton id="registerButton" value="Register" action="#{registerBean.register}"
+                                 update="growl" style="margin-top: 20px;"/>
+                <p:growl id="growl" showDetail="false"/>
+            </h:form>
+        </p:panel>
+    </div>
+
+    <!-- Link to Login -->
+    <div align="center">
+        <p:panel style="width: 600px;">
+            <div align="left">
+                <h:outputText value="Already have an account? "/>
+                <p:link value="Login Now" outcome="Login.xhtml"/>
+            </div>
+        </p:panel>
+    </div>
+</h:body>
+
+</html>
