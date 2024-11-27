@@ -1,4 +1,4 @@
-package ch.unil.doplab.recipe.rest;
+package ch.unil.doplab.recipe;
 
 import ch.unil.doplab.recipe.domain.UserProfile;
 import jakarta.annotation.PostConstruct;
@@ -41,6 +41,7 @@ public class RecipEService {
      */
 
     // Reset the service (useful for testing or development)
+    // Unfortunately no such option exists but I could add one
     public void resetService() {
         String response = serviceTarget
                 .path("reset")
@@ -50,6 +51,7 @@ public class RecipEService {
     }
 
     // Get available dietary preferences (or other global configurations)
+    // Same here
     public List<String> getDietaryPreferences() {
         return serviceTarget
                 .path("dietaryPreferences")
@@ -94,8 +96,8 @@ public class RecipEService {
 
     // Generate a meal plan for a specific user
     public String generateMealPlan(String userId) {
-        return mealPlanTarget
-                .path("generate")
+        return serviceTarget
+                .path("mealplan/generate")
                 .path(userId)
                 .request(MediaType.APPLICATION_JSON)
                 .post(null, String.class);
@@ -114,10 +116,11 @@ public class RecipEService {
      */
 
     // Generate a grocery list for a specific meal plan
-    public String generateGroceryList(String mealPlanId) {
-        return groceryListTarget
-                .path("generate")
-                .path(mealPlanId)
+    // Changed to do it by user ID - but I could also add an option to do it by meal plan ID
+    public String generateGroceryList(String userId) {
+        return serviceTarget
+                .path("grocerylist/generate")
+                .path(userId)
                 .request(MediaType.APPLICATION_JSON)
                 .post(null, String.class);
     }
