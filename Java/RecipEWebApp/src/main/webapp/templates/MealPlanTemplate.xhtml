@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+<h:head>
+    <title>Weekly Meal Plan</title>
+    <h:outputStylesheet name="css/styles.css" />
+</h:head>
+<h:body>
+    <h1>Your Weekly Meal Plan</h1>
+
+    <!-- Action buttons -->
+    <div class="header-buttons">
+        <h:commandButton value="Customise" action="#{mealPlanBean.customiseMealPlan}" />
+        <h:commandButton value="Nutritions" action="#{mealPlanBean.viewNutrition}" />
+        <h:commandButton value="Save Plan" action="#{mealPlanBean.saveMealPlan}" />
+        <h:commandButton value="My Grocery" action="#{mealPlanBean.viewGroceryList}" />
+    </div>
+
+    <!-- Display Meal Plan -->
+    <div class="weekly-meal-plan">
+        <ui:repeat var="day" value="#{mealPlanBean.mealPlan.dailyMeals}">
+            <div class="day-column">
+                <h2>#{day.key}</h2>
+                <ui:repeat var="meal" value="#{day.value}">
+                    <div class="meal-card">
+                        <h3>#{meal.type}</h3>
+                        <h:graphicImage value="#{meal.imageUrl}" alt="Meal Image" />
+                        <h:commandLink action="#{mealPlanBean.viewRecipe(meal.id)}">
+                            <h:outputText value="#{meal.title}" />
+                        </h:commandLink>
+                    </div>
+                </ui:repeat>
+            </div>
+        </ui:repeat>
+    </div>
+</h:body>
+</html>
