@@ -46,24 +46,63 @@ public class MealPlanBean implements Serializable {
         System.out.println("Generating mock meal plan...");
         Map<String, List<Meal>> dailyMeals = new LinkedHashMap<>();
 
+
+
         // Mock meals for Monday
         List<Meal> mondayMeals = new ArrayList<>();
-        mondayMeals.add(new Meal(1, "Loaded Avocado Toast", "/resources/images/avocado-toast.jpg", null));
-        mondayMeals.add(new Meal(2, "Crispy Garden Zucchini Cakes", "/resources/images/zucchini-cakes.jpg", null));
-        mondayMeals.add(new Meal(3, "Savoury Wrapped Chicken Feast", "/resources/images/chicken-feast.jpg", null));
+        mondayMeals.add(new Meal(1, "Loaded Avocado Toast", "/images/avocado-toast.png", null));
+        mondayMeals.add(new Meal(2, "Crispy Garden Zucchini Cakes", "/images/zucchini-cakes.png", null));
+        mondayMeals.add(new Meal(3, "Savoury Wrapped Chicken Feast", "/images/chicken-feast.png", null));
 
         // Mock meals for Tuesday
         List<Meal> tuesdayMeals = new ArrayList<>();
-        tuesdayMeals.add(new Meal(4, "Breakfast Burrito", "/resources/images/breakfast-burrito.jpg", null));
-        tuesdayMeals.add(new Meal(5, "Quinoa Salad", "/resources/images/quinoa-salad.jpg", null));
-        tuesdayMeals.add(new Meal(6, "Grilled Salmon", "/resources/images/grilled-salmon.jpg", null));
+        tuesdayMeals.add(new Meal(4, "Breakfast Burrito", "/images/breakfast-burrito.png", null));
+        tuesdayMeals.add(new Meal(5, "Quinoa Salad", "/images/quinoa-salad.png", null));
+        tuesdayMeals.add(new Meal(6, "Grilled Salmon", "/images/grilled-salmon.png", null));
 
-        // Add meals to days
+        // Mock meals for Wednesday
+        List<Meal> wednesdayMeals = new ArrayList<>();
+        wednesdayMeals.add(new Meal(7, "Pancakes with Maple Syrup", "/images/pancakes.png", null));
+        wednesdayMeals.add(new Meal(8, "Vegetarian Buddha Bowl", "/images/buddha-bowl.png", null));
+        wednesdayMeals.add(new Meal(9, "Herbed Lemon Chicken", "/images/lemon-chicken.png", null));
+
+        // Mock meals for Thursday
+        List<Meal> thursdayMeals = new ArrayList<>();
+        thursdayMeals.add(new Meal(10, "Smoothie Bowl", "/images/smoothie-bowl.png", null));
+        thursdayMeals.add(new Meal(11, "Caprese Sandwich", "/images/caprese-sandwich.png", null));
+        thursdayMeals.add(new Meal(12, "Beef Stir Fry", "/images/beef-stir-fry.png", null));
+
+        // Mock meals for Friday
+        List<Meal> fridayMeals = new ArrayList<>();
+        fridayMeals.add(new Meal(13, "French Toast", "/images/french-toast.png", null));
+        fridayMeals.add(new Meal(14, "Caesar Salad", "/images/caesar-salad.png", null));
+        fridayMeals.add(new Meal(15, "Spaghetti Carbonara", "/images/carbonara.png", null));
+
+        // Mock meals for Saturday
+        List<Meal> saturdayMeals = new ArrayList<>();
+        saturdayMeals.add(new Meal(16, "Scrambled Eggs", "/images/scrambled-eggs.png", null));
+        saturdayMeals.add(new Meal(17, "Avocado Chicken Wrap", "/images/avocado-wrap.png", null));
+        saturdayMeals.add(new Meal(18, "BBQ Ribs", "/images/bbq-ribs.png", null));
+
+        // Mock meals for Sunday
+        List<Meal> sundayMeals = new ArrayList<>();
+        sundayMeals.add(new Meal(19, "Granola and Yogurt", "/images/granola-yogurt.png", null));
+        sundayMeals.add(new Meal(20, "Greek Salad", "/images/greek-salad.png", null));
+        sundayMeals.add(new Meal(21, "Roast Turkey", "/images/roast-turkey.png", null));
+
+        // Adding all the meals to dailyMeals
+//        Map<String, List<Meal>> dailyMeals = new LinkedHashMap<>();
         dailyMeals.put("Monday", mondayMeals);
         dailyMeals.put("Tuesday", tuesdayMeals);
+        dailyMeals.put("Wednesday", wednesdayMeals);
+        dailyMeals.put("Thursday", thursdayMeals);
+        dailyMeals.put("Friday", fridayMeals);
+        dailyMeals.put("Saturday", saturdayMeals);
+        dailyMeals.put("Sunday", sundayMeals);
 
-        // Initialize meal plan with mock data
+        // Assign dailyMeals to the mealPlan
         this.mealPlan = new MealPlan(dailyMeals, 2); // Assume 2 servings as default
+
     }
 
     // Method to get meal type based on its position in the daily meal list
