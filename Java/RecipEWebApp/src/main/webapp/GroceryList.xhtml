@@ -7,15 +7,14 @@
             <!-- Grocery List Display -->
             <h:form>
                 <div class="grocery-list-container">
+
                     <ui:repeat value="#{groceryListBean.groceryList.ingredientsByAisle}" var="aisle">
                         <div class="day-column">
                             <h2>#{aisle.key}</h2>
                             <ui:repeat value="#{aisle.value}" var="ingredient">
                                 <div class="ingredient-card">
                                     <h3>#{ingredient.name}</h3>
-                                    <h:body>
-                                        #{ingredient.quantity} #{ingredient.unit}
-                                    </h:body>
+                                    <h:outputLabel>#{ingredient.quantity} #{ingredient.unit}</h:outputLabel>
                                 </div>
                             </ui:repeat>
                         </div>
