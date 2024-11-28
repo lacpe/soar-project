@@ -144,38 +144,38 @@ h1 {
 body .ui-accordion .ui-accordion-header {
     border-bottom-left-radius: 8px;
     border-bottom-right-radius: 8px;
-    border-color: #abedb8;
-    background: #abedb8;
-    color: #444444;
+    border-color: #444;
+    background: #444;
+    color: #fff;
 }
 
 /* Hover color when unselected. */
 body .ui-accordion .ui-accordion-header:hover {
-    border-color: #72ba92;
-    background: #72ba92;
+    border-color: #333;
+    background: #333;
     color: #FFFFFF;
 }
 
 /* Color when active (opened). Also flattening the bottom of the header (otherwise shape looks weird). */
 body .ui-accordion .ui-accordion-header.ui-state-active {
-    border-color: #abedb8;
-    background: #abedb8;
-    color: #444444;
+    border-color: #444;
+    background: #444;
+    color: #fff;
     border-bottom-left-radius: 0;
     border-bottom-right-radius: 0;
 }
 
 /* Hover color when selected. */
 body .ui-accordion .ui-accordion-header.ui-state-active:hover {
-    border-color: #72ba92;
-    background: #72ba92;
+    border-color: #333;
+    background: #333;
     color: #FFFFFF;
 }
 
 /* Top radius. */
 body .ui-accordion .ui-accordion-header:first-child {
     margin-top: 0;
-    border-top: 0 solid #191919;
+    border-top: 0 solid #444;
     border-top-right-radius: 8px;
     border-top-left-radius: 8px;
 }
@@ -188,7 +188,7 @@ body .ui-accordion .ui-accordion-header.ui-accordion-header-last {
 
 /* Changing color of the content. */
 body .ui-accordion .ui-accordion-content {
-    border: 2px solid #abedb8;
+    border: 2px solid #444;
     border-top-width: 0;
     border-top-style: solid;
     border-top-color: rgb(25, 25, 25);
@@ -198,6 +198,38 @@ body .ui-accordion .ui-accordion-content {
     margin: 0;
     position: static;
     border-top: 0 none;
+}
+
+/* Same thing as before just with checkboxes. */
+body .ui-chkbox .ui-chkbox-box {
+    border: 1px solid #333;
+    border-top-width: 1px;
+    border-right-width: 1px;
+    border-bottom-width: 1px;
+    border-left-width: 1px;
+    border-width: 1px;
+    background: #fff;
+    width: 20px;
+    min-width: 20px;
+    height: 20px;
+    text-align: center;
+    position: relative;
+    border-radius: 3px;
+    transition: background-color .2s,color .2s,border-color .2s,box-shadow .2s,opacity .2s;
+}
+
+body .ui-chkbox .ui-chkbox-box.ui-state-hover {
+    background: #eee;
+}
+
+body .ui-chkbox .ui-chkbox-box.ui-state-active {
+    border-color: #444;
+    background: #fff;
+    color: #333;
+}
+
+body .ui-chkbox .ui-chkbox-box.ui-state-active.ui-state-hover {
+    background: #eee;
 }
 
 /* Grocery List Container */
@@ -235,7 +267,7 @@ body .ui-accordion .ui-accordion-content {
     display: flex;
     gap: 10px;
     flex-direction: row;
-    justify-content: start; /* Ensures even spacing for items inside the card */
+    justify-content: space-between; /* Ensures even spacing for items inside the card */
     height: 40px; /* Set a fixed height for all meal cards */
 }
 
@@ -247,6 +279,24 @@ body .ui-accordion .ui-accordion-content {
     font-size: 16px;
     color: #444;
     flex-shrink: 0; /* Prevents meal type text from shrinking */
+}
+
+.ingredient-container {
+    display: flex;
+    align-items: center;
+    text-align: center;
+    justify-content: left;
+    gap: 10px;
+    height: 100%;
+}
+
+.checkbox-container {
+    display: flex;
+    align-items: center;
+    text-align: center;
+    justify-content: flex-end;
+    gap: 10px;
+    height: 100%;
 }
 
 /* Sidebar */
