@@ -62,7 +62,6 @@ h1 {
     background-color: #72ba92; /* Darker green on hover */
 }
 
-
 /* Meal Plan Container */
 .meal-plan-container {
     display: flex;
@@ -137,6 +136,36 @@ h1 {
     flex-shrink: 0; /* Prevents meal title text from shrinking */
 }
 
+/* Grocery List Container */
+.grocery-list-container {
+    display: flex;
+    justify-content: space-between;
+    padding: 20px;
+    margin: 0 50px; /* Space around the container */
+    gap: 20px; /* Space between columns */
+}
+
+.aisle-column {
+    flex: 1; /* Equal width for all columns */
+    background-color: #FFFFFF; /* Soft yellow */
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.ingredient-card {
+    text-align: center;
+    margin-bottom: 20px;
+    padding: 10px;
+    background-color: #ffffff; /* White card background */
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between; /* Ensures even spacing for items inside the card */
+    height: 100px; /* Set a fixed height for all meal cards */
+}
+
 /* Sidebar */
 .sidenav {
     font-family: "Quicksand", sans-serif;
@@ -187,5 +216,14 @@ h1 {
     .top-buttons {
         justify-content: center;
         flex-wrap: wrap;
+    }
+
+    .grocery-list-container {
+        flex-direction: column;
+        margin: 0;
+    }
+
+    .aisle-column {
+        margin-bottom: 20px;
     }
 }
