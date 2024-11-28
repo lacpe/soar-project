@@ -8,7 +8,7 @@ body {
     background-color: #ffe4c4; /* Light peach background or use this fbe4d6 */
     color: #333; /* Text color */
     height: 100vh; /* Ensure full viewport height */
-    margin-left: 160px !important; /* Same width as the sidebar */
+    margin-left: 160px; /* Same width as the sidebar */
 }
 
 html {
