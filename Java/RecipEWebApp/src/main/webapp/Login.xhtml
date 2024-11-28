@@ -9,68 +9,108 @@
 
 <h:head>
     <h:outputStylesheet name="css/styles.css"/>
-    <title>Welcome to Recip-e</title>
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;700&amp;family=Comfortaa:wght@300;400;700&amp;display=swap" rel="stylesheet" />
+    <title>Welcome to Recip-E</title>
+    <style>
+        /* Center body content for the Login page */
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            height: 100vh;
+            background-color: #FFE4C4; /* Match the overall theme */
+        }
+
+        /* Center-align content inside panels */
+        .panel-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+    </style>
 </h:head>
+
 <h:body>
     <!-- Page Header with Welcome Message -->
-    <div align="center">
+    <div>
         <p:panel style="width: 600px;">
-            <h:graphicImage width="180" value="/images/logo.png" alt="Recip-e Logo"/>
-            <h1>Welcome to Recip-e!</h1>
-            <p>Start planning your meals effortlessly today!</p>
+            <div class="panel-content">
+                <h:graphicImage value="/images/tilted_logo.png" alt="App Logo" width="180" />
+                <h1 style="color: #abedb8;">Welcome to Recip-E!</h1>
+                <p style="color: white;">Start planning your meals effortlessly today!</p>
+            </div>
         </p:panel>
 
         <!-- Login Form -->
-        <p:panel style="width: 600px; margin-top: 20px;">
-            <h:form id="loginForm">
-                <h2>Login</h2>
-                <table>
-                    <!-- Username Field -->
-                    <tr>
-                        <td style="text-align:right">
-                            <p:outputLabel for="username" value="Username"/>
-                        </td>
-                        <td style="text-align:left">
-                            <p:inputText id="username" value="#{loginBean.username}" style="width: 300px"
-                                         autocomplete="new-username" required="true"
-                                         requiredMessage="Username is required.">
-                                <p:ajax event="blur" update="username"/>
-                            </p:inputText>
-                        </td>
-                    </tr>
-                    <!-- Password Field -->
-                    <tr>
-                        <td style="text-align:right">
-                            <p:outputLabel for="password" value="Password"/>
-                        </td>
-                        <td style="text-align:left">
-                            <p:password id="password" value="#{loginBean.password}" style="width: 300px"
-                                        redisplay="true" toggleMask="true" feedback="false" required="true"
-                                        requiredMessage="Password is required.">
-                                <p:ajax event="blur" update="password"/>
-                            </p:password>
-                        </td>
-                    </tr>
-                    <!-- Login Button -->
-                    <tr>
-                        <td colspan="2" style="text-align:center; height:50px">
-                            <p:commandButton id="loginButton" value="Login" action="#{loginBean.login}"
-                                             update="growl" style="width: 150px; margin-top: 20px;"/>
-                        </td>
-                    </tr>
-                </table>
-                <!-- Feedback Messages -->
-                <p:growl id="growl" showDetail="false"/>
-            </h:form>
+        <p:panel style="width: 600px; margin-top: 5px;">
+            <div class="panel-content">
+                <h:form id="loginForm">
+                    <h2 style="color: #818181; font-weight: bold; transition: color 0.3s ease;"
+                        onmouseover="this.style.color='white'"
+                        onmouseout="this.style.color='#818181'">Login</h2>
+
+                    <table>
+                        <!-- Username Field -->
+                        <tr>
+                            <td style="text-align:right">
+                                <p:outputLabel for="username" value="Username"
+                                               style="color: #818181; transition: color 0.3s ease;"
+                                               onmouseover="this.style.color='white'"
+                                               onmouseout="this.style.color='#818181'" />
+                            </td>
+                            <td style="text-align:left">
+                                <p:inputText id="username" value="#{loginBean.username}" style="width: 300px"
+                                             autocomplete="new-username" required="true"
+                                             requiredMessage="Username is required.">
+                                    <p:ajax event="blur" update="username"/>
+                                </p:inputText>
+                            </td>
+                        </tr>
+                        <!-- Password Field -->
+                        <tr>
+                            <td style="text-align:right">
+                                <p:outputLabel for="password" value="Password"
+                                               style="color: #818181; transition: color 0.3s ease;"
+                                               onmouseover="this.style.color='white'"
+                                               onmouseout="this.style.color='#818181'" />
+                            </td>
+                            <td style="text-align:left">
+                                <p:password id="password" value="#{loginBean.password}" style="width: 300px"
+                                            redisplay="true" toggleMask="true" feedback="false" required="true"
+                                            requiredMessage="Password is required.">
+                                    <p:ajax event="blur" update="password"/>
+                                </p:password>
+                            </td>
+                        </tr>
+                        <!-- Login Button -->
+                        <tr>
+                            <td colspan="2" style="text-align:center; height:50px">
+                                <p:commandButton id="loginButton" value="Login" action="#{loginBean.login}"
+                                                 update="growl" style="width: 150px; margin-top: 20px;
+                                                 font-family: 'Quicksand', sans-serif;
+                                                 background-color: #abedb8; color: #333; border: none; border-radius: 8px;"
+                                                 onmouseover="this.style.backgroundColor='#72ba92'"
+                                                 onmouseout="this.style.backgroundColor='#abedb8'" />
+                            </td>
+                        </tr>
+                    </table>
+                    <!-- Feedback Messages -->
+                    <p:growl id="growl" showDetail="false"/>
+                </h:form>
+            </div>
         </p:panel>
     </div>
 
     <!-- Link to Registration Page -->
-    <div align="center">
-        <p:panel style="width: 600px; margin-top: 20px;">
-            <div align="left">
-                <h:outputText value="Don't have an account? "/>
-                <p:link value="Sign Up Now" outcome="Register.xhtml"/>
+    <div>
+        <p:panel style="width: 600px; margin-top: 5px;">
+            <div style="text-align: center;">
+                <h:outputText style="color: white; font-family: 'Quicksand', sans-serif;" value="Don't have an account? "/>
+                <p:link style="color: #FFD27F; font-weight: bold; font-family: 'Quicksand', sans-serif;" value="Sign Up Now" outcome="Register.xhtml"/>
             </div>
         </p:panel>
     </div>
