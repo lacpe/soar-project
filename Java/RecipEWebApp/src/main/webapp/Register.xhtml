@@ -9,32 +9,65 @@
 
 <h:head>
     <h:outputStylesheet name="css/styles.css"/>
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;700&amp;display=swap" rel="stylesheet" />
     <title>
-        Register - Recip-e
+        Register - Recip-E
     </title>
+    <style>
+        /* Center body content for the Login page */
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            height: 100vh;
+            background-color: #FFE4C4; /* Match the overall theme */
+        }
+
+        /* Center-align content inside panels */
+        .panel-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+    </style>
 </h:head>
 <h:body>
     <div align="center">
         <!-- Header -->
         <p:panel style="width: 600px;">
-            <h:graphicImage width="180" value="/images/logo.png"/>
+            <h:graphicImage value="/images/tilted_logo.png" alt="App Logo" width="180" />
             <br/>
-            <h1>Sign Up for Recip-e</h1>
-            <p>Plan your meals effortlessly by signing up today!</p>
+            <h1 style="color: #abedb8;">Sign Up for Recip-E!</h1>
+            <p style="color: white;">Plan your meals effortlessly by signing up today!</p>
         </p:panel>
 
         <!-- Registration Form -->
         <p:panel style="width: 600px;">
             <h:form id="registerForm">
+<!--                <h2 style="color: #818181; font-weight: bold; transition: color 0.3s ease;"-->
+<!--                    onmouseover="this.style.color='white'"-->
+<!--                    onmouseout="this.style.color='#818181'">Register</h2>-->
                 <table>
                     <!-- First Name -->
                     <tr>
                         <td style="text-align:right">
-                            <p:outputLabel value="First Name"/>
+                            <p:outputLabel value="First Name"
+                                           style="color: #818181; transition: color 0.3s ease;"
+                                           onmouseover="this.style.color='white'"
+                                           onmouseout="this.style.color='#818181'" />
                         </td>
                         <td style="text-align:left">
-                            <p:inputText id="firstname" value="#{registerBean.firstName}" style="width: 300px"
-                                         required="true" requiredMessage="First name is required.">
+                            <p:inputText id="firstname" value="#{registerBean.firstName}"
+                                         style="width: 300px; transition: border-color 0.3s ease;"
+                                         required="true" requiredMessage="First name is required."
+                                         onmouseover="if (!this.matches(':focus')) this.style.borderColor='#72ba92';"
+                                         onmouseout="if (!this.matches(':focus')) this.style.borderColor='';"
+                                         onfocus="this.style.borderColor='#FFD27F';"
+                                         onblur="this.style.borderColor='';">
                                 <p:ajax event="blur" update="firstname"/>
                             </p:inputText>
                         </td>
@@ -42,11 +75,19 @@
                     <!-- Last Name -->
                     <tr>
                         <td style="text-align:right">
-                            <p:outputLabel value="Last Name"/>
+                            <p:outputLabel value="Last Name"
+                                           style="color: #818181; transition: color 0.3s ease;"
+                                           onmouseover="this.style.color='white'"
+                                           onmouseout="this.style.color='#818181'" />
                         </td>
                         <td style="text-align:left">
-                            <p:inputText id="lastname" value="#{registerBean.lastName}" style="width: 300px"
-                                         required="true" requiredMessage="Last name is required.">
+                            <p:inputText id="lastname" value="#{registerBean.lastName}"
+                                         style="width: 300px; transition: border-color 0.3s ease;"
+                                         required="true" requiredMessage="Last name is required."
+                                         onmouseover="if (!this.matches(':focus')) this.style.borderColor='#72ba92';"
+                                         onmouseout="if (!this.matches(':focus')) this.style.borderColor='';"
+                                         onfocus="this.style.borderColor='#FFD27F';"
+                                         onblur="this.style.borderColor='';">
                                 <p:ajax event="blur" update="lastname"/>
                             </p:inputText>
                         </td>
@@ -54,12 +95,20 @@
                     <!-- Email -->
                     <tr>
                         <td style="text-align:right">
-                            <p:outputLabel value="Email"/>
+                            <p:outputLabel value="Email"
+                                           style="color: #818181; transition: color 0.3s ease;"
+                                           onmouseover="this.style.color='white'"
+                                           onmouseout="this.style.color='#818181'" />
                         </td>
                         <td style="text-align:left">
-                            <p:inputText id="email" value="#{registerBean.email}" style="width: 300px"
+                            <p:inputText id="email" value="#{registerBean.email}"
+                                         style="width: 300px; transition: border-color 0.3s ease;"
                                          required="true" requiredMessage="Email is required."
-                                         validatorMessage="Invalid email format.">
+                                         validatorMessage="Invalid email format."
+                                         onmouseover="if (!this.matches(':focus')) this.style.borderColor='#72ba92';"
+                                         onmouseout="if (!this.matches(':focus')) this.style.borderColor='';"
+                                         onfocus="this.style.borderColor='#FFD27F';"
+                                         onblur="this.style.borderColor='';">
                                 <f:validateRegex pattern="^[^@]+@[^@]+\.[^@]+$"/>
                                 <p:ajax event="blur" update="email"/>
                             </p:inputText>
@@ -68,11 +117,19 @@
                     <!-- Username -->
                     <tr>
                         <td style="text-align:right">
-                            <p:outputLabel value="Username"/>
+                            <p:outputLabel value="Username"
+                                           style="color: #818181; transition: color 0.3s ease;"
+                                           onmouseover="this.style.color='white'"
+                                           onmouseout="this.style.color='#818181'" />
                         </td>
                         <td style="text-align:left">
-                            <p:inputText id="username" value="#{registerBean.username}" style="width: 300px"
-                                         required="true" requiredMessage="Username is required.">
+                            <p:inputText id="username" value="#{registerBean.username}"
+                                         style="width: 300px; transition: border-color 0.3s ease;"
+                                         required="true" requiredMessage="Username is required."
+                                         onmouseover="if (!this.matches(':focus')) this.style.borderColor='#72ba92';"
+                                         onmouseout="if (!this.matches(':focus')) this.style.borderColor='';"
+                                         onfocus="this.style.borderColor='#FFD27F';"
+                                         onblur="this.style.borderColor='';">
                                 <p:ajax event="blur" update="username"/>
                             </p:inputText>
                         </td>
@@ -80,33 +137,54 @@
                     <!-- Password -->
                     <tr>
                         <td style="text-align:right">
-                            <p:outputLabel value="Password"/>
+                            <p:outputLabel value="Password"
+                                           style="color: #818181; transition: color 0.3s ease;"
+                                           onmouseover="this.style.color='white'"
+                                           onmouseout="this.style.color='#818181'" />
                         </td>
+
                         <td style="text-align:left">
-                            <p:password id="password" value="#{registerBean.password}" style="width: 300px"
+                            <p:password id="password" value="#{registerBean.password}"
+                                        style="width: 300px; transition: border-color 0.3s ease;"
                                         redisplay="true" toggleMask="true" feedback="false"
-                                        required="true" requiredMessage="Password is required.">
+                                        required="true" requiredMessage="Password is required."
+                                        onmouseover="if (!this.matches(':focus')) this.style.borderColor='#72ba92';"
+                                        onmouseout="if (!this.matches(':focus')) this.style.borderColor='';"
+                                        onfocus="this.style.borderColor='#FFD27F';"
+                                        onblur="this.style.borderColor='';">
                                 <p:ajax event="blur" update="password"/>
                             </p:password>
                         </td>
+
                     </tr>
-                    <!-- Preferences -->
-                    <tr>
-                        <td style="text-align:right">
-                            <p:outputLabel value="Food Preferences"/>
-                        </td>
-                        <td style="text-align:left">
-                            <p:inputTextarea id="preferences" value="#{registerBean.preferences}"
-                                             style="width: 300px; height: 100px;"
-                                             required="true" requiredMessage="Preferences are required.">
-                                <p:ajax event="blur" update="preferences"/>
-                            </p:inputTextarea>
-                        </td>
-                    </tr>
+<!--                    &lt;!&ndash; Preferences &ndash;&gt;-->
+<!--                    <tr>-->
+<!--                        <td style="text-align:right">-->
+<!--                            <p:outputLabel value="Food Preferences"-->
+<!--                                           style="color: #818181; transition: color 0.3s ease;"-->
+<!--                                           onmouseover="this.style.color='white'"-->
+<!--                                           onmouseout="this.style.color='#818181'" />-->
+<!--                        </td>-->
+<!--                        <td style="text-align:left">-->
+<!--                            <p:inputTextarea id="preferences" value="#{registerBean.preferences}"-->
+<!--                                             style="width: 300px; height: 100px; transition: border-color 0.3s ease;"-->
+<!--                                             required="true" requiredMessage="Preferences are required."-->
+<!--                                             onmouseover="if (!this.matches(':focus')) this.style.borderColor='#72ba92';"-->
+<!--                                             onmouseout="if (!this.matches(':focus')) this.style.borderColor='';"-->
+<!--                                             onfocus="this.style.borderColor='#FFD27F';"-->
+<!--                                             onblur="this.style.borderColor='';">-->
+<!--                                <p:ajax event="blur" update="preferences"/>-->
+<!--                            </p:inputTextarea>-->
+<!--                        </td>-->
+<!--                    </tr>-->
                 </table>
                 <!-- Register Button -->
                 <p:commandButton id="registerButton" value="Register" action="#{registerBean.register}"
-                                 update="growl" style="margin-top: 20px;"/>
+                                 update="growl" style="width: 150px; margin-top: 20px;
+                                                 font-family: 'Quicksand', sans-serif;
+                                                 background-color: #abedb8; color: #333; border: none; border-radius: 8px;"
+                                 onmouseover="this.style.backgroundColor='#72ba92'"
+                                 onmouseout="this.style.backgroundColor='#abedb8'" />
                 <p:growl id="growl" showDetail="false"/>
             </h:form>
         </p:panel>
@@ -115,9 +193,9 @@
     <!-- Link to Login -->
     <div align="center">
         <p:panel style="width: 600px;">
-            <div align="left">
-                <h:outputText value="Already have an account? "/>
-                <p:link value="Login Now" outcome="Login.xhtml"/>
+            <div style="text-align: center;">
+                <h:outputText style="color: white; font-family: 'Quicksand', sans-serif;" value="Already have an account? "/>
+                <p:link style="color: #FFD27F; font-weight: bold; font-family: 'Quicksand', sans-serif;" value="Login Now" outcome="Login.xhtml"/>
             </div>
         </p:panel>
     </div>
