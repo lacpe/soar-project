@@ -202,6 +202,32 @@ h1 {
     margin: 10px 0; /* Add some spacing around the line */
 }
 
+body, h1, h2, p, table {
+    font-family: 'Quicksand', sans-serif; /* Apply Quicksand font to all elements */
+}
+
+/* Apply Quicksand to PrimeFaces link */
+p\\:link {
+    font-family: 'Quicksand', sans-serif !important;
+}
+
+/* Apply Quicksand to PrimeFaces outputLabel */
+p\\:outputLabel {
+    font-family: 'Quicksand', sans-serif !important;
+}
+
+/* Apply Quicksand to PrimeFaces commandButton */
+p\\:commandButton {
+    font-family: 'Quicksand', sans-serif !important;
+    font-weight: 700; /* Optional: make buttons bold */
+}
+
+/* Apply Quicksand to growl messages */
+p\\:growl {
+    font-family: 'Quicksand', sans-serif !important;
+}
+
+
 /* Responsive Design */
 @media screen and (max-width: 768px) {
     .meal-plan-container {
