@@ -136,10 +136,73 @@ h1 {
     flex-shrink: 0; /* Prevents meal title text from shrinking */
 }
 
+/* The following overrides PrimesFaces' CSS theming, hence the ultra-verbose styling */
+
+/* Overriding the styling to make the unselected accordion panel look like the buttons. */
+body .ui-accordion .ui-accordion-header {
+    border-bottom-left-radius: 8px;
+    border-bottom-right-radius: 8px;
+    border-color: #abedb8;
+    background: #abedb8;
+    color: #444444;
+}
+
+/* Hover color when unselected. */
+body .ui-accordion .ui-accordion-header:hover {
+    border-color: #72ba92;
+    background: #72ba92;
+    color: #FFFFFF;
+}
+
+/* Color when active (opened). Also flattening the bottom of the header (otherwise shape looks weird). */
+body .ui-accordion .ui-accordion-header.ui-state-active {
+    border-color: #abedb8;
+    background: #abedb8;
+    color: #444444;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+}
+
+/* Hover color when selected. */
+body .ui-accordion .ui-accordion-header.ui-state-active:hover {
+    border-color: #72ba92;
+    background: #72ba92;
+    color: #FFFFFF;
+}
+
+/* Top radius. */
+body .ui-accordion .ui-accordion-header:first-child {
+    margin-top: 0;
+    border-top: 0 solid #191919;
+    border-top-right-radius: 8px;
+    border-top-left-radius: 8px;
+}
+
+/* Bottom radius. */
+body .ui-accordion .ui-accordion-header.ui-accordion-header-last {
+    border-bottom-right-radius:8px;
+    border-bottom-left-radius:8px
+}
+
+/* Changing color of the content. */
+body .ui-accordion .ui-accordion-content {
+    border: 2px solid #abedb8;
+    border-top-width: 0;
+    border-top-style: solid;
+    border-top-color: rgb(25, 25, 25);
+    background: #FFD27F;
+    color: #444444;
+    padding: .571rem 1rem;
+    margin: 0;
+    position: static;
+    border-top: 0 none;
+}
+
 /* Grocery List Container */
 .grocery-list-container {
     display: flex;
     justify-content: space-between;
+    flex-direction: column;
     padding: 20px;
     margin: 0 50px; /* Space around the container */
     gap: 20px; /* Space between columns */
@@ -147,7 +210,7 @@ h1 {
 
 .aisle-column {
     flex: 1; /* Equal width for all columns */
-    background-color: #FFFFFF; /* Soft yellow */
+    background-color: #FFD27F; /* Soft yellow */
     padding: 15px;
     border-radius: 10px;
     box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
@@ -168,9 +231,20 @@ h1 {
     border-radius: 8px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow */
     display: flex;
-    flex-direction: column;
-    justify-content: space-between; /* Ensures even spacing for items inside the card */
-    height: 100px; /* Set a fixed height for all meal cards */
+    gap: 10px;
+    flex-direction: row;
+    justify-content: start; /* Ensures even spacing for items inside the card */
+    height: 40px; /* Set a fixed height for all meal cards */
+}
+
+.ingredient-card h3 {
+    text-align: center;
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    font-size: 16px;
+    color: #444;
+    flex-shrink: 0; /* Prevents meal type text from shrinking */
 }
 
 /* Sidebar */
@@ -252,7 +326,7 @@ p\\:growl {
     }
 
     .grocery-list-container {
-        flex-direction: column;
+        flex-direction: row;
         margin: 0;
     }
 
