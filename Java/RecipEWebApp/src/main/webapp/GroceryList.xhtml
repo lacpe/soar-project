@@ -1,23 +1,24 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
     <ui:composition template="templates/GroceryListTemplate.xhtml">
         <ui:define name="content">
             <!-- Grocery List Display -->
             <h:form>
                 <div class="grocery-list-container">
-
                     <ui:repeat value="#{groceryListBean.groceryList.ingredientsByAisle}" var="aisle">
-                        <div class="day-column">
-                            <h2>#{aisle.key}</h2>
-                            <ui:repeat value="#{aisle.value}" var="ingredient">
-                                <div class="ingredient-card">
-                                    <h3>#{ingredient.name}</h3>
-                                    <h:outputLabel>#{ingredient.quantity} #{ingredient.unit}</h:outputLabel>
-                                </div>
-                            </ui:repeat>
-                        </div>
+                        <p:accordionPanel>
+                            <p:tab title="#{aisle.key}">
+                                <ui:repeat value="#{aisle.value}" var="ingredient">
+                                    <div class="ingredient-card">
+                                        <h3>#{ingredient.name}</h3>
+                                        <h:body>#{ingredient.quantity} #{ingredient.unit}</h:body>
+                                    </div>
+                                </ui:repeat>
+                            </p:tab>
+                        </p:accordionPanel>
                     </ui:repeat>
                 </div>
             </h:form>
