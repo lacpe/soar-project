@@ -8,7 +8,7 @@ body {
     background-color: #ffe4c4; /* Light peach background or use this fbe4d6 */
     color: #333; /* Text color */
     height: 100vh; /* Ensure full viewport height */
-    margin-left: 160px; /* Same width as the sidebar */
+    margin-left: 160px !important; /* Same width as the sidebar */
 }
 
 html {
@@ -44,6 +44,7 @@ h1 {
 
 .top-buttons h\:commandButton:hover {
     background-color: #72ba92; /* Darker green on hover */
+    color: white;
 }
 
 .top-buttons input[type="submit"] {
@@ -60,6 +61,7 @@ h1 {
 
 .top-buttons input[type="submit"]:hover {
     background-color: #72ba92; /* Darker green on hover */
+    color: white;
 }
 
 /* Meal Plan Container */
@@ -285,6 +287,13 @@ body .ui-accordion .ui-accordion-content {
 
 body, h1, h2, p, table {
     font-family: 'Quicksand', sans-serif; /* Apply Quicksand font to all elements */
+}
+
+select {
+    font-family: 'Quicksand', sans-serif !important;
+}
+option {
+    font-family: 'Quicksand', sans-serif !important;
 }
 
 /* Apply Quicksand to PrimeFaces link */
