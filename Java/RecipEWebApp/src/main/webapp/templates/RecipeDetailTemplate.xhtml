@@ -7,26 +7,36 @@
     <h:outputStylesheet name="css/styles.css" />
     <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;700&amp;family=Comfortaa:wght@300;400;700&amp;display=swap" rel="stylesheet" />
 </h:head>
-    <h:outputScript>
-        window.onload = function () {
-            const bodyClass = document.body.classList;
-            if (!bodyClass.contains('recipe-detail-page')) {
-                bodyClass.add('recipe-detail-page');
-            }
-        };
+<h:outputScript>
+    window.onload = function () {
+        const bodyClass = document.body.classList;
+        if (!bodyClass.contains('recipe-detail-page')) {
+            bodyClass.add('recipe-detail-page');
+        }
+    };
 
-        document.addEventListener('DOMContentLoaded', function () {
-            // Reapply the class after partial updates
-            jsf.ajax.addOnEvent(function (data) {
-                if (data.status === "success") {
-                    const bodyClass = document.body.classList;
-                    if (!bodyClass.contains('recipe-detail-page')) {
-                        bodyClass.add('recipe-detail-page');
-                    }
+    document.addEventListener('DOMContentLoaded', function () {
+        // Reapply the class after partial updates
+        jsf.ajax.addOnEvent(function (data) {
+            if (data.status === "success") {
+                // Ensure the recipe-detail-page class is reapplied
+                const bodyClass = document.body.classList;
+                if (!bodyClass.contains('recipe-detail-page')) {
+                    bodyClass.add('recipe-detail-page');
                 }
-            });
+
+                // Reapply navigation button styles
+                const navArrows = document.querySelectorAll('.nav-arrow');
+                navArrows.forEach(button => {
+                    if (!button.disabled) {
+                        button.style.backgroundColor = '#abedb8'; // Green background
+                        button.style.color = '#fff'; // White text
+                    }
+                });
+            }
         });
-    </h:outputScript>
+    });
+</h:outputScript>
 <h:body>
     <!-- Header Section -->
     <header class="recipe-header">

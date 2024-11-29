@@ -144,18 +144,16 @@ public class MealPlanBean implements Serializable {
         return allMeals.get(currentMealIndex);
     }
 
-    public String viewNextRecipe() {
+    public void viewNextRecipe() {
         if (hasNextRecipe()) {
             currentMealIndex++;
         }
-        return "RecipeDetail.xhtml?faces-redirect=true";
     }
 
-    public String viewPreviousRecipe() {
+    public void viewPreviousRecipe() {
         if (hasPreviousRecipe()) {
             currentMealIndex--;
         }
-        return "RecipeDetail.xhtml?faces-redirect=true";
     }
 
     public boolean hasNextRecipe() {

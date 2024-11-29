@@ -10,37 +10,71 @@
                 <div class="recipe-details-container">
                     <!-- Navigation Arrows -->
                     <div class="navigation">
-                        <h:commandButton value="&#8249;" styleClass="nav-arrow"
+                        <h:commandButton value="&#x2039;" styleClass="nav-arrow"
                                          action="#{mealPlanBean.viewPreviousRecipe}"
                                          rendered="#{mealPlanBean.hasPreviousRecipe()}">
-                            <f:ajax render="recipe-detail-content" />
+                            <f:ajax execute="@form" render="@form" />
                         </h:commandButton>
-                        <h:commandButton value="&#8250;" styleClass="nav-arrow"
+                        <h:commandButton value="&#x203A;" styleClass="nav-arrow"
                                          action="#{mealPlanBean.viewNextRecipe}"
                                          rendered="#{mealPlanBean.hasNextRecipe()}">
-                            <f:ajax render="recipe-detail-content" />
+                            <f:ajax execute="@form" render="@form" />
                         </h:commandButton>
                     </div>
 
                     <!-- Recipe Content -->
                     <div id="recipe-detail-content" class="recipe-content">
-                        <div class="recipe-image">
-                            <h:graphicImage value="#{mealPlanBean.currentRecipe.imageUrl}" alt="Meal Image"
-                                            style="width: 300px; height: 300px; border-radius: 10px; object-fit: cover;" />
+                        <div class="recipe-content-inner">
+                            <div class="recipe-image">
+                                <h:graphicImage value="#{mealPlanBean.currentRecipe.imageUrl}" alt="Meal Image"
+                                                style="width: 300px; height: 300px; border-radius: 10px; object-fit: cover;" />
+                            </div>
+                            <h1>#{mealPlanBean.currentRecipe.title}</h1>
+
+                            <!-- Ingredients Section -->
+                            <div class="recipe-section">
+                                <h2>Ingredients</h2>
+                                <ui:repeat var="ingredient" value="#{mealPlanBean.currentRecipe.ingredients}">
+                                    <p>#{ingredient}</p>
+                                </ui:repeat>
+                            </div>
+
+                            <!-- Instructions Section -->
+                            <div class="recipe-section">
+                                <h2>Instructions</h2>
+                                <ui:repeat var="instruction" value="#{mealPlanBean.currentRecipe.instructions}">
+                                    <p>#{instruction}</p>
+                                </ui:repeat>
+                            </div>
                         </div>
-                        <h1>#{mealPlanBean.currentRecipe.title}</h1>
-                        <h2>Ingredients</h2>
-                        <ui:repeat var="ingredient" value="#{mealPlanBean.currentRecipe.ingredients}">
-                            <p>#{ingredient}</p>
-                        </ui:repeat>
-                        <h2>Instructions</h2>
-                        <ui:repeat var="instruction" value="#{mealPlanBean.currentRecipe.instructions}">
-                            <p>#{instruction}</p>
-                        </ui:repeat>
                     </div>
                 </div>
             </h:form>
         </div>
     </ui:define>
+
+    <!-- JavaScript to Reapply Classes and Styling After AJAX Updates -->
+    <h:outputScript>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Reapply layout and button styles after AJAX updates
+            jsf.ajax.addOnEvent(function (data) {
+                if (data.status === "success") {
+                    const bodyClass = document.body.classList;
+                    if (!bodyClass.contains('recipe-detail-page')) {
+                        bodyClass.add('recipe-detail-page');
+                    }
+
+                    // Ensure navigation arrows maintain styles
+                    const navArrows = document.querySelectorAll('.nav-arrow');
+                    navArrows.forEach(button => {
+                        if (!button.disabled) {
+                            button.style.backgroundColor = '#abedb8'; // Green background
+                            button.style.color = 'white';
+                        }
+                    });
+                }
+            });
+        });
+    </h:outputScript>
 </ui:composition>
 </html>

@@ -1,7 +1,5 @@
 /* General Body Styling */
 body {
-    /*font-family: "Lato", sans-serif;*/
-    /*font-family: "Nunito", sans-serif;*/
     font-family: "Quicksand", sans-serif; /* Replace with your chosen font */
     margin: 0;
     padding: 0;
@@ -105,13 +103,11 @@ h1 {
 .meal-card img {
     width: 80px; /* Set fixed width */
     height: 80px; /* Set fixed height */
-    /*margin: 0 auto; !* Center the image horizontally *!*/
-    display: block; /* Ensure proper alignment */
+    margin: 10px auto; /* Center image */
+    display: block;
     border-radius: 50%; /* Make the image circular */
     object-fit: cover; /* Ensure the image scales properly */
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Add a subtle shadow */
-    /*margin-bottom: 10px; !* Space between image and title *!*/
-    margin: 10px auto; /* Center image */
     flex-shrink: 0; /* Prevents image from shrinking */
 }
 
@@ -138,165 +134,90 @@ h1 {
     flex-shrink: 0; /* Prevents meal title text from shrinking */
 }
 
-/* The following overrides PrimesFaces' CSS theming, hence the ultra-verbose styling */
-
-/* Overriding the styling to make the unselected accordion panel look like the buttons. */
-body .ui-accordion .ui-accordion-header {
-    border-bottom-left-radius: 8px;
-    border-bottom-right-radius: 8px;
-    border-color: #444;
-    background: #444;
-    color: #fff;
-}
-
-/* Hover color when unselected. */
-body .ui-accordion .ui-accordion-header:hover {
-    border-color: #333;
-    background: #333;
-    color: #FFFFFF;
-}
-
-/* Color when active (opened). Also flattening the bottom of the header (otherwise shape looks weird). */
-body .ui-accordion .ui-accordion-header.ui-state-active {
-    border-color: #444;
-    background: #444;
-    color: #fff;
-    border-bottom-left-radius: 0;
-    border-bottom-right-radius: 0;
-}
-
-/* Hover color when selected. */
-body .ui-accordion .ui-accordion-header.ui-state-active:hover {
-    border-color: #333;
-    background: #333;
-    color: #FFFFFF;
-}
-
-/* Top radius. */
-body .ui-accordion .ui-accordion-header:first-child {
-    margin-top: 0;
-    border-top: 0 solid #444;
-    border-top-right-radius: 8px;
-    border-top-left-radius: 8px;
-}
-
-/* Bottom radius. */
-body .ui-accordion .ui-accordion-header.ui-accordion-header-last {
-    border-bottom-right-radius:8px;
-    border-bottom-left-radius:8px
-}
-
-/* Changing color of the content. */
-body .ui-accordion .ui-accordion-content {
-    border: 2px solid #444;
-    border-top-width: 0;
-    border-top-style: solid;
-    border-top-color: rgb(25, 25, 25);
-    background: #FFD27F;
-    color: #444444;
-    padding: .571rem 1rem;
-    margin: 0;
-    position: static;
-    border-top: 0 none;
-}
-
-/* Same thing as before just with checkboxes. */
-body .ui-chkbox .ui-chkbox-box {
-    border: 1px solid #333;
-    border-top-width: 1px;
-    border-right-width: 1px;
-    border-bottom-width: 1px;
-    border-left-width: 1px;
-    border-width: 1px;
-    background: #fff;
-    width: 20px;
-    min-width: 20px;
-    height: 20px;
-    text-align: center;
-    position: relative;
-    border-radius: 3px;
-    transition: background-color .2s,color .2s,border-color .2s,box-shadow .2s,opacity .2s;
-}
-
-body .ui-chkbox .ui-chkbox-box.ui-state-hover {
-    background: #eee;
-}
-
-body .ui-chkbox .ui-chkbox-box.ui-state-active {
-    border-color: #444;
-    background: #fff;
-    color: #333;
-}
-
-body .ui-chkbox .ui-chkbox-box.ui-state-active.ui-state-hover {
-    background: #eee;
-}
-
-/* Grocery List Container */
-.grocery-list-container {
+/* Recipe Detail Layout */
+.recipe-detail-wrapper {
     display: flex;
-    justify-content: space-between;
-    flex-direction: column;
+    margin-left: 180px; /* Space for the sidebar */
     padding: 20px;
-    margin: 0 50px; /* Space around the container */
-    gap: 20px; /* Space between columns */
+    background-color: #ffe4c4; /* Match body background */
 }
 
-.aisle-column {
-    flex: 1; /* Equal width for all columns */
-    background-color: #FFD27F; /* Soft yellow */
+.recipe-details-container {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 20px; /* Add spacing between recipe sections */
+}
+
+/* Recipe Header */
+.recipe-header {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.recipe-header h1 {
+    font-size: 24px;
+    color: #444;
+    margin-top: 10px;
+}
+
+.recipe-header img {
+    width: 300px;
+    height: 300px;
+    border-radius: 10px;
+    object-fit: cover;
+}
+
+/* Recipe Sections (Ingredients, Instructions, Nutrition) */
+.recipe-section {
+    background-color: #fff;
     padding: 15px;
     border-radius: 10px;
-    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
 
-.aisle-column h2 {
-    text-align: center;
-    font-size: 18px;
+.recipe-section h2 {
+    font-size: 20px;
     color: #444;
     margin-bottom: 10px;
 }
 
-.ingredient-card {
-    text-align: center;
-    margin-bottom: 20px;
-    padding: 10px;
-    background-color: #ffffff; /* White card background */
-    border-radius: 8px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow */
-    display: flex;
-    gap: 10px;
-    flex-direction: row;
-    justify-content: space-between; /* Ensures even spacing for items inside the card */
-    height: 40px; /* Set a fixed height for all meal cards */
-}
-
-.ingredient-card h3 {
-    text-align: center;
-    margin: 0;
-    padding: 0;
-    height: 100%;
+.recipe-section p {
     font-size: 16px;
-    color: #444;
-    flex-shrink: 0; /* Prevents meal type text from shrinking */
+    line-height: 1.5;
+    margin: 5px 0;
 }
 
-.ingredient-container {
+/* Navigation Buttons */
+.navigation {
     display: flex;
+    justify-content: space-between;
     align-items: center;
-    text-align: center;
-    justify-content: left;
-    gap: 10px;
-    height: 100%;
+    margin: 10px 0;
 }
 
-.checkbox-container {
-    display: flex;
-    align-items: center;
-    text-align: center;
-    justify-content: flex-end;
-    gap: 10px;
-    height: 100%;
+.nav-arrow {
+    background-color: #abedb8; /* Light green */
+    border: none;
+    border-radius: 8px;
+    color: #fff;
+    font-size: 18px;
+    padding: 10px 20px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.nav-arrow:hover {
+    background-color: #72ba92; /* Darker green */
+}
+
+.nav-arrow:disabled {
+    background-color: #d3d3d3; /* Light grey for disabled state */
+    color: #999; /* Grey text for disabled state */
+    cursor: not-allowed;
 }
 
 /* Sidebar */
@@ -311,10 +232,10 @@ body .ui-chkbox .ui-chkbox-box.ui-state-active.ui-state-hover {
     background-color: #333;
     overflow-x: hidden;
     padding-top: 20px;
-    display: flex; /* Makes the sidebar a flex container */
-    flex-direction: column; /* Arranges items in a column */
-    align-items: center; /* Centers items horizontally */
-    gap: 20px; /* Adds spacing between items */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
 }
 
 .sidenav a {
@@ -330,66 +251,25 @@ body .ui-chkbox .ui-chkbox-box.ui-state-active.ui-state-hover {
 }
 
 .sidenav hr {
-    width: 80%; /* Makes the line span most of the sidebar width */
-    border: 0.5px solid #ffe4c4; /* Light gray line */
-    margin: 10px 0; /* Add some spacing around the line */
+    width: 80%;
+    border: 0.5px solid #ffe4c4;
+    margin: 10px 0;
 }
-
-body, h1, h2, p, table {
-    font-family: 'Quicksand', sans-serif; /* Apply Quicksand font to all elements */
-}
-
-select {
-    font-family: 'Quicksand', sans-serif !important;
-}
-option {
-    font-family: 'Quicksand', sans-serif !important;
-}
-
-/* Apply Quicksand to PrimeFaces link */
-p\\:link {
-    font-family: 'Quicksand', sans-serif !important;
-}
-
-/* Apply Quicksand to PrimeFaces outputLabel */
-p\\:outputLabel {
-    font-family: 'Quicksand', sans-serif !important;
-}
-
-/* Apply Quicksand to PrimeFaces commandButton */
-p\\:commandButton {
-    font-family: 'Quicksand', sans-serif !important;
-    font-weight: 700; /* Optional: make buttons bold */
-}
-
-/* Apply Quicksand to growl messages */
-p\\:growl {
-    font-family: 'Quicksand', sans-serif !important;
-}
-
 
 /* Responsive Design */
 @media screen and (max-width: 768px) {
-    .meal-plan-container {
-        flex-direction: column; /* Stack the days vertically */
-        margin: 0;
+    .recipe-detail-wrapper {
+        flex-direction: column;
+        margin-left: 0;
     }
 
-    .day-column {
-        margin-bottom: 20px;
+    .sidenav {
+        position: relative;
+        width: 100%;
+        height: auto;
     }
 
-    .top-buttons {
-        justify-content: center;
-        flex-wrap: wrap;
-    }
-
-    .grocery-list-container {
-        flex-direction: row;
-        margin: 0;
-    }
-
-    .aisle-column {
-        margin-bottom: 20px;
+    .recipe-details-container {
+        margin-top: 20px;
     }
 }
