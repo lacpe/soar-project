@@ -12,40 +12,44 @@ import ch.unil.doplab.recipe.domain.APIHandler;
 import ch.unil.doplab.recipe.domain.UserProfile;
 import ch.unil.doplab.recipe.domain.UserProfile.MealPlanPreference;
 
-@Named // Replaces @ManagedBean
-@SessionScoped // Replaces @SessionScoped from jakarta.faces.bean
+@Named
+@SessionScoped
 public class MealPlanBean implements Serializable {
 
-    private APIHandler apiHandler = new APIHandler(); // Use the existing APIHandler class
-    private MealPlan mealPlan; // The generated meal plan
-    private boolean useMockData = true; // Toggle between mock data and API data
+    private APIHandler apiHandler = new APIHandler();
+    private MealPlan mealPlan;
+    private List<Meal> allMeals; // Flattened list of meals
+    private int currentMealIndex;
+    private boolean useMockData = true;
 
     @PostConstruct
     public void init() {
         System.out.println("Initializing MealPlanBean...");
         if (useMockData) {
-            generateMockMealPlan(); // Use mock data
+            generateMockMealPlan();
         } else {
-            generateMealPlan(); // Fetch data from the API
+            generateMealPlan();
         }
+        flattenDailyMeals();
+        currentMealIndex = 0; // Start with the first meal
     }
 
     // Generate a meal plan based on user preferences (API)
     public void generateMealPlan() {
         System.out.println("Generate New Meal Plan button clicked (API Mode)!");
         UserProfile userProfile = new UserProfile();
-        userProfile.setMealPlanPreference(MealPlanPreference.WEEK); // Example preference
-        userProfile.setDesiredServings(2); // Example servings
+        userProfile.setMealPlanPreference(UserProfile.MealPlanPreference.WEEK);
+        userProfile.setDesiredServings(2);
 
         // Use APIHandler to fetch the meal plan
         this.mealPlan = apiHandler.generateMealPlan(userProfile);
+        flattenDailyMeals();
     }
 
     // Mock method to generate a meal plan
     public void generateMockMealPlan() {
         System.out.println("Generating mock meal plan...");
         Map<String, List<Meal>> dailyMeals = new LinkedHashMap<>();
-
 
 
         // Mock meals for Monday
@@ -105,8 +109,85 @@ public class MealPlanBean implements Serializable {
 
     }
 
+    // Flatten all meals into a single list
+    private void flattenDailyMeals() {
+        allMeals = new ArrayList<>();
+        if (mealPlan != null && mealPlan.getDailyMeals() != null) {
+            for (List<Meal> meals : mealPlan.getDailyMeals().values()) {
+                allMeals.addAll(meals);
+            }
+        }
+    }
+
+    // View a recipe by ID
+    public String viewRecipe(int mealId) {
+        System.out.println("Clicked meal ID: " + mealId); // Debugging
+
+        // Find the selected meal
+        Meal selectedMeal = mealPlan.getMealById(mealId);
+        if (selectedMeal != null) {
+            currentMealIndex = allMeals.indexOf(selectedMeal);
+            System.out.println("Navigating to recipe: " + selectedMeal.getTitle());
+        } else {
+            System.out.println("Meal not found for ID: " + mealId);
+            return null; // No navigation if meal is not found
+        }
+
+        return "RecipeDetail.xhtml?faces-redirect=true"; // Redirect to RecipeDetails.xhtml
+    }
+
+    // Navigation methods
+    public Meal getCurrentRecipe() {
+        if (allMeals == null || currentMealIndex < 0 || currentMealIndex >= allMeals.size()) {
+            return null;
+        }
+        return allMeals.get(currentMealIndex);
+    }
+
+    public String viewNextRecipe() {
+        if (hasNextRecipe()) {
+            currentMealIndex++;
+        }
+        return "RecipeDetail.xhtml?faces-redirect=true";
+    }
+
+    public String viewPreviousRecipe() {
+        if (hasPreviousRecipe()) {
+            currentMealIndex--;
+        }
+        return "RecipeDetail.xhtml?faces-redirect=true";
+    }
+
+    public boolean hasNextRecipe() {
+        return currentMealIndex < allMeals.size() - 1;
+    }
+
+    public boolean hasPreviousRecipe() {
+        return currentMealIndex > 0;
+    }
+
+    // Getters for use in the UI
+    public MealPlan getMealPlan() {
+        return mealPlan;
+    }
+
+    public List<Meal> getAllMeals() {
+        return allMeals;
+    }
+
+    public boolean isUseMockData() {
+        return useMockData;
+    }
+
+    public void setUseMockData(boolean useMockData) {
+        this.useMockData = useMockData;
+    }
+
     // Method to get meal type based on its position in the daily meal list
-    public String getMealType(int index) {
+    public String getMealType(Integer index) {
+        if (index == null) {
+            return "Unknown"; // Handle null gracefully
+        }
         switch (index) {
             case 0:
                 return "Breakfast";
@@ -118,16 +199,5 @@ public class MealPlanBean implements Serializable {
                 return "Other"; // For any additional meals, like snacks
         }
     }
-
-    public MealPlan getMealPlan() {
-        return mealPlan;
-    }
-
-    public void setUseMockData(boolean useMockData) {
-        this.useMockData = useMockData;
-    }
-
-    public boolean isUseMockData() {
-        return useMockData;
-    }
 }
+

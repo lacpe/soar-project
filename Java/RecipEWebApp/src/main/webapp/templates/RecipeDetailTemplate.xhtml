@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+<h:head>
+    <title>Recipe Detail</title>
+    <h:outputStylesheet name="css/styles.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;700&amp;family=Comfortaa:wght@300;400;700&amp;display=swap" rel="stylesheet" />
+</h:head>
+    <h:outputScript>
+        window.onload = function () {
+            const bodyClass = document.body.classList;
+            if (!bodyClass.contains('recipe-detail-page')) {
+                bodyClass.add('recipe-detail-page');
+            }
+        };
+
+        document.addEventListener('DOMContentLoaded', function () {
+            // Reapply the class after partial updates
+            jsf.ajax.addOnEvent(function (data) {
+                if (data.status === "success") {
+                    const bodyClass = document.body.classList;
+                    if (!bodyClass.contains('recipe-detail-page')) {
+                        bodyClass.add('recipe-detail-page');
+                    }
+                }
+            });
+        });
+    </h:outputScript>
+<h:body>
+    <!-- Header Section -->
+    <header class="recipe-header">
+        <h1>Recipe Details</h1>
+    </header>
+
+    <!-- Sidebar (Optional: if required for navigation) -->
+    <div class="sidenav">
+        <div>
+            <h:graphicImage value="/images/tilted_logo.png" alt="App Logo" width="130" />
+        </div>
+        <hr />
+        <ui:insert name="menu">
+            <h:link value="Home" outcome="/index.xhtml" />
+            <h:link value="User Profile" outcome="/UserProfile.xhtml" />
+            <h:link value="Meal Plan" outcome="/MealPlan.xhtml" />
+            <h:link value="Grocery List" outcome="/GroceryList.xhtml" />
+        </ui:insert>
+    </div>
+
+    <!-- Content Section -->
+    <main class="recipe-detail-content">
+        <ui:insert name="content" />
+    </main>
+</h:body>
+</html>
