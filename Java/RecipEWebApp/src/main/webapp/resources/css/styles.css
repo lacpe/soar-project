@@ -219,6 +219,166 @@ h1 {
     color: #999; /* Grey text for disabled state */
     cursor: not-allowed;
 }
+/* The following overrides PrimesFaces' CSS theming, hence the ultra-verbose styling */
+
+/* Overriding the styling to make the unselected accordion panel look like the buttons. */
+body .ui-accordion .ui-accordion-header {
+    border-bottom-left-radius: 8px;
+    border-bottom-right-radius: 8px;
+    border-color: #444;
+    background: #444;
+    color: #fff;
+}
+
+/* Hover color when unselected. */
+body .ui-accordion .ui-accordion-header:hover {
+    border-color: #333;
+    background: #333;
+    color: #FFFFFF;
+}
+
+/* Color when active (opened). Also flattening the bottom of the header (otherwise shape looks weird). */
+body .ui-accordion .ui-accordion-header.ui-state-active {
+    border-color: #444;
+    background: #444;
+    color: #fff;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+}
+
+/* Hover color when selected. */
+body .ui-accordion .ui-accordion-header.ui-state-active:hover {
+    border-color: #333;
+    background: #333;
+    color: #FFFFFF;
+}
+
+/* Top radius. */
+body .ui-accordion .ui-accordion-header:first-child {
+    margin-top: 0;
+    border-top: 0 solid #444;
+    border-top-right-radius: 8px;
+    border-top-left-radius: 8px;
+}
+
+/* Bottom radius. */
+body .ui-accordion .ui-accordion-header.ui-accordion-header-last {
+    border-bottom-right-radius:8px;
+    border-bottom-left-radius:8px
+}
+
+/* Changing color of the content. */
+body .ui-accordion .ui-accordion-content {
+    border: 2px solid #444;
+    border-top-width: 0;
+    border-top-style: solid;
+    border-top-color: rgb(25, 25, 25);
+    background: #FFD27F;
+    color: #444444;
+    padding: .571rem 1rem;
+    margin: 0;
+    position: static;
+    border-top: 0 none;
+}
+
+/* Same thing as before just with checkboxes. */
+body .ui-chkbox .ui-chkbox-box {
+    border: 1px solid #333;
+    border-top-width: 1px;
+    border-right-width: 1px;
+    border-bottom-width: 1px;
+    border-left-width: 1px;
+    border-width: 1px;
+    background: #fff;
+    width: 20px;
+    min-width: 20px;
+    height: 20px;
+    text-align: center;
+    position: relative;
+    border-radius: 3px;
+    transition: background-color .2s,color .2s,border-color .2s,box-shadow .2s,opacity .2s;
+}
+
+body .ui-chkbox .ui-chkbox-box.ui-state-hover {
+    background: #eee;
+}
+
+body .ui-chkbox .ui-chkbox-box.ui-state-active {
+    border-color: #444;
+    background: #fff;
+    color: #333;
+}
+
+body .ui-chkbox .ui-chkbox-box.ui-state-active.ui-state-hover {
+    background: #eee;
+}
+
+/* Grocery List Container */
+.grocery-list-container {
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
+    padding: 20px;
+    margin: 0 50px; /* Space around the container */
+    gap: 20px; /* Space between columns */
+}
+
+.aisle-column {
+    flex: 1; /* Equal width for all columns */
+    background-color: #FFD27F; /* Soft yellow */
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.aisle-column h2 {
+    text-align: center;
+    font-size: 18px;
+    color: #444;
+    margin-bottom: 10px;
+}
+
+.ingredient-card {
+    text-align: center;
+    margin-bottom: 20px;
+    padding: 10px;
+    background-color: #ffffff; /* White card background */
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+    display: flex;
+    gap: 10px;
+    flex-direction: row;
+    justify-content: space-between; /* Ensures even spacing for items inside the card */
+    height: 40px; /* Set a fixed height for all meal cards */
+}
+
+.ingredient-card h3 {
+    text-align: center;
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    font-size: 16px;
+    color: #444;
+    flex-shrink: 0; /* Prevents meal type text from shrinking */
+}
+
+.ingredient-container {
+    display: flex;
+    align-items: center;
+    text-align: center;
+    justify-content: left;
+    gap: 10px;
+    height: 100%;
+}
+
+.checkbox-container {
+    display: flex;
+    align-items: center;
+    text-align: center;
+    justify-content: flex-end;
+    gap: 10px;
+    height: 100%;
+}
 
 /* Sidebar */
 .sidenav {

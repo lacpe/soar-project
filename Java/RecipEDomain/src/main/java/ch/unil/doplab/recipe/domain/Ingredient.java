@@ -10,6 +10,8 @@ public class Ingredient {
     private String imageUrl;            // New field for ingredient image URL
     private String description;         // New field for a brief description
     private NutritionalInfo nutritionalInfo; // New field for nutritional details
+    // Field to keep track of whether the ingredient is already in stock or not
+    private boolean inStock = false;
 
     public Ingredient() {
         this(null, 0.0, null);
@@ -65,6 +67,18 @@ public class Ingredient {
     public NutritionalInfo getNutritionalInfo() {
         return nutritionalInfo;
     } // Return nutritional info if available
+
+    public boolean getInStock() {
+        return inStock;
+    }
+
+    public void setInStock(boolean inStock) {
+        this.inStock = inStock;
+    }
+
+    public void changeInStock() {
+        this.inStock = ! this.inStock;
+    }
 
     // Overriding equals() to compare ingredients based on name and unit only
     @Override

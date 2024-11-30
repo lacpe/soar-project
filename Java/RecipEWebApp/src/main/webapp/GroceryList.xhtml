@@ -19,7 +19,9 @@
                                         </div>
                                         <div class="checkbox-container">
                                             <h:body> purchased </h:body>
-                                            <p:selectBooleanCheckbox value="false"/>
+                                            <p:selectBooleanCheckbox value="#{ingredient.inStock}">
+                                                    <p:ajax listener="#{ingredient.changeInStock}"/>
+                                            </p:selectBooleanCheckbox>
                                         </div>
                                     </div>
                                 </ui:repeat>
