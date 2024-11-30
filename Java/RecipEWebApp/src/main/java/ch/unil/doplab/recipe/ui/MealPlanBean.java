@@ -143,20 +143,10 @@ public class MealPlanBean implements Serializable {
 
     // View a recipe by ID
     public String viewRecipe(int mealId) {
-        System.out.println("Clicked meal ID: " + mealId); // Debugging
-
-        // Find the selected meal
-        Meal selectedMeal = mealPlan.getMealById(mealId);
-        if (selectedMeal != null) {
-            currentMealIndex = allMeals.indexOf(selectedMeal);
-            System.out.println("Navigating to recipe: " + selectedMeal.getTitle());
-        } else {
-            System.out.println("Meal not found for ID: " + mealId);
-            return null; // No navigation if meal is not found
-        }
-
-        return "RecipeDetail.xhtml?faces-redirect=true"; // Redirect to RecipeDetails.xhtml
+        System.out.println("Clicked meal ID: " + mealId);
+        return "RecipeDetail.xhtml?faces-redirect=true&id=" + mealId;
     }
+
 
     // Navigation methods
     public Meal getCurrentRecipe() {

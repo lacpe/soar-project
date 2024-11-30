@@ -448,6 +448,42 @@ body .ui-chkbox .ui-chkbox-box.ui-state-active.ui-state-hover {
     border: 0.5px solid #ffe4c4;
     margin: 10px 0;
 }
+.nav-arrow-left,
+.nav-arrow-right {
+    position: absolute;
+    top: 50%; /* Center vertically */
+    transform: translateY(-50%);
+    background-color: #abedb8; /* Light green */
+    border: none;
+    border-radius: 50%;
+    color: white;
+    font-size: 24px;
+    width: 50px;
+    height: 50px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.nav-arrow-left:hover,
+.nav-arrow-right:hover {
+    background-color: #72ba92; /* Darker green */
+}
+
+.nav-arrow-left {
+    left: 200px; /* Position on the far left */
+}
+
+.nav-arrow-right {
+    right: 10px; /* Position on the far right */
+}
+
+.recipe-details-container {
+    transition: all 0.5s ease-in-out;
+}
+
 
 /* Responsive Design */
 @media screen and (max-width: 768px) {
@@ -465,4 +501,5 @@ body .ui-chkbox .ui-chkbox-box.ui-state-active.ui-state-hover {
     .recipe-details-container {
         margin-top: 20px;
     }
+
 }

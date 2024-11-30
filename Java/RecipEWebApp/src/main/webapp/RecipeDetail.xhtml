@@ -6,75 +6,71 @@
 <ui:composition template="/templates/RecipeDetailTemplate.xhtml">
     <ui:define name="content">
         <div class="recipe-detail-wrapper">
+
+            <!-- Left Navigation Arrow -->
+            <h:commandButton value="&#x2039;" styleClass="nav-arrow-left"
+                             action="#{mealPlanBean.viewPreviousRecipe}"
+                             rendered="#{mealPlanBean.hasPreviousRecipe()}">
+                <f:ajax execute="@form" render="@form" />
+            </h:commandButton>
+
             <h:form>
                 <div class="recipe-details-container">
-                    <!-- Navigation Arrows -->
-                    <div class="navigation">
-                        <h:commandButton value="&#x2039;" styleClass="nav-arrow"
-                                         action="#{mealPlanBean.viewPreviousRecipe}"
-                                         rendered="#{mealPlanBean.hasPreviousRecipe()}">
-                            <f:ajax execute="@form" render="@form" />
-                        </h:commandButton>
-                        <h:commandButton value="&#x203A;" styleClass="nav-arrow"
-                                         action="#{mealPlanBean.viewNextRecipe}"
-                                         rendered="#{mealPlanBean.hasNextRecipe()}">
-                            <f:ajax execute="@form" render="@form" />
-                        </h:commandButton>
+
+                    <!-- Recipe Image -->
+                    <div class="recipe-image">
+                        <h:graphicImage value="#{mealPlanBean.currentRecipe.imageUrl}" alt="Meal Image"
+                                        style="width: 300px; height: 300px; border-radius: 10px; object-fit: cover;" />
                     </div>
 
-                    <!-- Recipe Content -->
-                    <div id="recipe-detail-content" class="recipe-content">
-                        <div class="recipe-content-inner">
-                            <div class="recipe-image">
-                                <h:graphicImage value="#{mealPlanBean.currentRecipe.imageUrl}" alt="Meal Image"
-                                                style="width: 300px; height: 300px; border-radius: 10px; object-fit: cover;" />
-                            </div>
-                            <h1>#{mealPlanBean.currentRecipe.title}</h1>
+                    <!-- Recipe Title -->
+                    <h1>#{mealPlanBean.currentRecipe.title}</h1>
 
-                            <!-- Ingredients Section -->
-                            <div class="recipe-section">
-                                <h2>Ingredients</h2>
-                                <ui:repeat var="ingredient" value="#{mealPlanBean.currentRecipe.ingredients}">
-                                    <p>#{ingredient}</p>
-                                </ui:repeat>
-                            </div>
-
-                            <!-- Instructions Section -->
-                            <div class="recipe-section">
-                                <h2>Instructions</h2>
-                                <ui:repeat var="instruction" value="#{mealPlanBean.currentRecipe.instructions}">
-                                    <p>#{instruction}</p>
-                                </ui:repeat>
-                            </div>
-                        </div>
+                    <!-- Ingredients Section -->
+                    <div class="recipe-section">
+                        <h2>Ingredients</h2>
+                        <ui:repeat var="ingredient" value="#{mealPlanBean.currentRecipe.ingredients}">
+                            <p>#{ingredient}</p>
+                        </ui:repeat>
                     </div>
+
+                    <!-- Instructions Section -->
+                    <div class="recipe-section">
+                        <h2>Instructions</h2>
+                        <p>#{mealPlanBean.currentRecipe.instructions}</p>
+                    </div>
+
+                    <!-- Nutritional Info Section -->
+                    <div class="recipe-section">
+                        <h2>Nutritional Information</h2>
+                        <p>Calories: #{mealPlanBean.currentRecipe.nutritionalInfo.calories} kcal</p>
+                        <p>Protein: #{mealPlanBean.currentRecipe.nutritionalInfo.protein} g</p>
+                        <p>Fat: #{mealPlanBean.currentRecipe.nutritionalInfo.fat} g</p>
+                        <p>Carbohydrates: #{mealPlanBean.currentRecipe.nutritionalInfo.carbs} g</p>
+                        <p>Saturated Fat: #{mealPlanBean.currentRecipe.nutritionalInfo.saturatedFat} g</p>
+                        <p>Fiber: #{mealPlanBean.currentRecipe.nutritionalInfo.fiber} g</p>
+                        <p>Sugar: #{mealPlanBean.currentRecipe.nutritionalInfo.sugar} g</p>
+                        <p>Sodium: #{mealPlanBean.currentRecipe.nutritionalInfo.sodium} mg</p>
+                        <p>Vitamin C: #{mealPlanBean.currentRecipe.nutritionalInfo.vitaminC} mg</p>
+                        <p>Calcium: #{mealPlanBean.currentRecipe.nutritionalInfo.calcium} mg</p>
+                        <p>Iron: #{mealPlanBean.currentRecipe.nutritionalInfo.iron} mg</p>
+                        <p>Potassium: #{mealPlanBean.currentRecipe.nutritionalInfo.potassium} mg</p>
+                        <p>Vitamin A: #{mealPlanBean.currentRecipe.nutritionalInfo.vitaminA} IU</p>
+                        <p>Vitamin K: #{mealPlanBean.currentRecipe.nutritionalInfo.vitaminK} µg</p>
+                        <p>Magnesium: #{mealPlanBean.currentRecipe.nutritionalInfo.magnesium} mg</p>
+                    </div>
+
                 </div>
             </h:form>
+
+            <!-- Right Navigation Arrow -->
+            <h:commandButton value="&#x203A;" styleClass="nav-arrow-right"
+                             action="#{mealPlanBean.viewNextRecipe}"
+                             rendered="#{mealPlanBean.hasNextRecipe()}">
+                <f:ajax execute="@form" render="@form" />
+            </h:commandButton>
+
         </div>
     </ui:define>
-
-    <!-- JavaScript to Reapply Classes and Styling After AJAX Updates -->
-    <h:outputScript>
-        document.addEventListener('DOMContentLoaded', function () {
-            // Reapply layout and button styles after AJAX updates
-            jsf.ajax.addOnEvent(function (data) {
-                if (data.status === "success") {
-                    const bodyClass = document.body.classList;
-                    if (!bodyClass.contains('recipe-detail-page')) {
-                        bodyClass.add('recipe-detail-page');
-                    }
-
-                    // Ensure navigation arrows maintain styles
-                    const navArrows = document.querySelectorAll('.nav-arrow');
-                    navArrows.forEach(button => {
-                        if (!button.disabled) {
-                            button.style.backgroundColor = '#abedb8'; // Green background
-                            button.style.color = 'white';
-                        }
-                    });
-                }
-            });
-        });
-    </h:outputScript>
 </ui:composition>
 </html>
