@@ -11,8 +11,5 @@
         <module name="RecipEService" />
       </profile>
     </annotationProcessing>
-    <bytecodeTargetLevel>
-      <module name="RecipEWebApp" target="17" />
-    </bytecodeTargetLevel>
   </component>
 </project>
