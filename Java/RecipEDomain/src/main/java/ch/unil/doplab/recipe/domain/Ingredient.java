@@ -75,7 +75,11 @@ public class Ingredient {
     public void setInStock(boolean inStock) {
         this.inStock = inStock;
     }
-    
+
+    public void changeInStock() {
+        this.inStock = ! this.inStock;
+    }
+
     // Overriding equals() to compare ingredients based on name and unit only
     @Override
     public boolean equals(Object o) {

@@ -57,6 +57,7 @@ public class GroceryListBean extends GroceryList implements Serializable {
         feculents.add(new Ingredient("Rice", 200d, "grams"));
         feculents.add(new Ingredient("Bread", 100d, "grams"));
         feculents.add(new Ingredient("Pasta", 100d, "grams"));
+        feculents.get(0).setInStock(true);
         ingredientsByAisle.put("Feculents", feculents);
         // Generating a "Drinks" aisle
         List<Ingredient> drinks = new ArrayList<>();
