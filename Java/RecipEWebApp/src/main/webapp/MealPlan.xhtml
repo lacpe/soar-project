@@ -21,7 +21,8 @@
                                 <h3>#{mealPlanBean.getMealType(status.index)}</h3>
 
                                 <!-- Meal Image -->
-                                <h:graphicImage value="#{meal.imageUrl}" alt="Meal Image"
+<!--                                <h:graphicImage value="#{meal.imageUrl}" alt="Meal Image"-->
+                                <h:graphicImage value="#{mealPlanBean.getImagePath(meal, status.index)}" alt="Meal Image"
                                                 style="width: 100px; height: 100px; border-radius: 50%; object-fit: cover; margin-bottom: 10px;" />
 
 
