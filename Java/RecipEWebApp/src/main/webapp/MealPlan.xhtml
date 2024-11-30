@@ -27,7 +27,12 @@
 
 
                                 <!-- Meal Title with Command Link -->
-                                <h:commandLink action="#{mealPlanBean.viewRecipe(meal.id)}">
+                                <h:commandLink action="#{mealPlanBean.viewRecipe(meal.id)}"
+                                               style="text-decoration-color: #72ba92;"
+                                               onmousedown="this.style.textDecorationColor='#f8d775';"
+                                               onmouseup="this.style.textDecorationColor='#72ba92';"
+                                               onmouseover="this.style.fontWeight='bold'; this.style.textDecorationThickness='2px';"
+                                               onmouseout="this.style.fontWeight='normal'; this.style.textDecorationThickness='auto';" >
                                     <h:outputText value="#{meal.title}" style="font-size: 14px; color: #333;" />
                                 </h:commandLink>
                             </div>
