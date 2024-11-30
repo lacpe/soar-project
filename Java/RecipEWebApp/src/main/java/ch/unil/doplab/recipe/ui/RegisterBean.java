@@ -1,7 +1,7 @@
 package ch.unil.doplab.recipe.ui;
 
 import ch.unil.doplab.recipe.domain.UserProfile;
-import ch.unil.doplab.recipe.rest.RecipEService;
+import ch.unil.doplab.recipe.RecipEService;
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;

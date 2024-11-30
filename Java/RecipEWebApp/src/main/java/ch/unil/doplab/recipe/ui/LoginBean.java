@@ -1,6 +1,6 @@
 package ch.unil.doplab.recipe.ui;
 
-import ch.unil.doplab.recipe.rest.RecipEService;
+import ch.unil.doplab.recipe.RecipEService;
 import ch.unil.doplab.recipe.domain.UserProfile;
 import jakarta.enterprise.context.SessionScoped;
 import jakarta.inject.Inject;

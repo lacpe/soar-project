@@ -8,7 +8,7 @@
     <artifactId>RecipEService</artifactId>
     <version>1.0-SNAPSHOT</version>
     <name>RecipEService</name>
-    <packaging>jar</packaging>
+    <packaging>war</packaging>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
