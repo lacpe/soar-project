@@ -4,4 +4,25 @@
               xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee
                                   http://xmlns.jcp.org/xml/ns/javaee/web-facesconfig_2_3.xsd"
               version="2.3">
+
+    <!-- Navigation from Register.xhtml to LogIn.xhtml -->
+    <navigation-rule>
+        <from-view-id>/Register.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>Login</from-outcome>
+            <to-view-id>/Login.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+
+    <!-- Navigation from LogIn.xhtml to userprofile.xhtml -->
+    <navigation-rule>
+        <from-view-id>/Login.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>userprofile</from-outcome>
+            <to-view-id>/UserProfile.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+
 </faces-config>
