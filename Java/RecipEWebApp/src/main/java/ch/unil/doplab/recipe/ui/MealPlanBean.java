@@ -59,9 +59,9 @@ public class MealPlanBean implements Serializable {
 
         // Mock meals for Monday
         List<Meal> mondayMeals = new ArrayList<>();
-        mondayMeals.add(new Meal(1, "Loaded Avocado Toast", "/images/avocado-toast.png", null));
-        mondayMeals.add(new Meal(2, "Crispy Garden Zucchini Cakes", "/images/zucchini-cakes.png", null));
-        mondayMeals.add(new Meal(3, "Savoury Wrapped Chicken Feast", "/images/chicken-feast.png", null));
+        mondayMeals.add(new Meal(1, "Loaded Avocado Toast", "/images/mockmeals/avocado-toast.png", null));
+        mondayMeals.add(new Meal(2, "Crispy Garden Zucchini Cakes", "/images/mockmeals/zucchini-cakes.png", null));
+        mondayMeals.add(new Meal(3, "Savoury Wrapped Chicken Feast", "/images/mockmeals/chicken-feast.png", null));
 
         // Mock meals for Tuesday
         List<Meal> tuesdayMeals = new ArrayList<>();
@@ -71,31 +71,31 @@ public class MealPlanBean implements Serializable {
 
         // Mock meals for Wednesday
         List<Meal> wednesdayMeals = new ArrayList<>();
-        wednesdayMeals.add(new Meal(7, "Pancakes with Maple Syrup", "/images/pancakes.png", null));
-        wednesdayMeals.add(new Meal(8, "Vegetarian Buddha Bowl", "/images/buddha-bowl.png", null));
+        wednesdayMeals.add(new Meal(7, "Pancakes with Maple Syrup", "/images/mockmeals/pancakes.png", null));
+        wednesdayMeals.add(new Meal(8, "Vegetarian Buddha Bowl", "/images/mockmeals/buddha-bowl.png", null));
         wednesdayMeals.add(new Meal(9, "Herbed Lemon Chicken", null, null));
 
         // Mock meals for Thursday
         List<Meal> thursdayMeals = new ArrayList<>();
         thursdayMeals.add(new Meal(10, "Smoothie Bowl", null, null));
         thursdayMeals.add(new Meal(11, "Caprese Sandwich", null, null));
-        thursdayMeals.add(new Meal(12, "Beef Stir Fry", "/images/beef-stir-fry.png", null));
+        thursdayMeals.add(new Meal(12, "Beef Stir Fry", "/images/mockmeals/beef-stir-fry.png", null));
 
         // Mock meals for Friday
         List<Meal> fridayMeals = new ArrayList<>();
         fridayMeals.add(new Meal(13, "French Toast", null, null));
-        fridayMeals.add(new Meal(14, "Caesar Salad", "/images/caesar-salad.png", null));
+        fridayMeals.add(new Meal(14, "Caesar Salad", "/images/mockmeals/caesar-salad.png", null));
         fridayMeals.add(new Meal(15, "Spaghetti Carbonara", null, null));
 
         // Mock meals for Saturday
         List<Meal> saturdayMeals = new ArrayList<>();
-        saturdayMeals.add(new Meal(16, "Scrambled Eggs", "/images/scrambled-eggs.png", null));
+        saturdayMeals.add(new Meal(16, "Scrambled Eggs", "/images/mockmeals/scrambled-eggs.png", null));
         saturdayMeals.add(new Meal(17, "Avocado Chicken Wrap", null, null));
-        saturdayMeals.add(new Meal(18, "BBQ Ribs", "/images/bbq-ribs.png", null));
+        saturdayMeals.add(new Meal(18, "BBQ Ribs", "/images/mockmeals/bbq-ribs.png", null));
 
         // Mock meals for Sunday
         List<Meal> sundayMeals = new ArrayList<>();
-        sundayMeals.add(new Meal(19, "Granola and Yogurt", "/images/granola-yogurt.png", null));
+        sundayMeals.add(new Meal(19, "Granola and Yogurt", "/images/mockmeals/granola-yogurt.png", null));
         sundayMeals.add(new Meal(20, "Greek Salad", null, null));
         sundayMeals.add(new Meal(21, "Roast Turkey", null, null));
 
