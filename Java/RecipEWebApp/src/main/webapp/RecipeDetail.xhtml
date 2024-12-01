@@ -37,7 +37,9 @@
                     <!-- Instructions Section -->
                     <div class="recipe-section">
                         <h2>Instructions</h2>
-                        <p>#{mealPlanBean.currentRecipe.instructions}</p>
+                        <ui:repeat value="#{mealPlanBean.currentRecipe.instructions}" var="instruction">
+                                <li>#{instruction}</li>
+                        </ui:repeat>
                     </div>
 
                     <!-- Nutritional Info Section -->

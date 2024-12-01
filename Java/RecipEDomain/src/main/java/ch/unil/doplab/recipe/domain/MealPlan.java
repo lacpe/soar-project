@@ -84,11 +84,20 @@ public class MealPlan {
     }
 
     public Meal getMealById(int mealId) {
-        // Iterate through all meals and find the one with the matching ID
-        return getAllMeals().stream()
+        System.out.println("Searching for Meal with ID: " + mealId);
+        Meal foundMeal = getAllMeals().stream()
                 .filter(meal -> meal.getId() == mealId)
                 .findFirst()
-                .orElse(null); // Return null if no meal with the given ID is found
+                .orElse(null);
+
+        if (foundMeal == null) {
+            System.out.println("No meal found with ID: " + mealId);
+        } else {
+            System.out.println("Found Meal: " + foundMeal.getTitle());
+            System.out.println("Instructions: " + foundMeal.getInstructions());
+        }
+
+     return foundMeal;
     }
 
 }

@@ -99,4 +99,16 @@ public class Ingredient {
             nutritionalInfo.displayNutritionalInfo(); // Display nutritional info if available
         }
     }
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append(name != null ? name : "Unnamed Ingredient");
+        if (quantity > 0) {
+            sb.append(" (").append(quantity).append(" ").append(unit != null ? unit : "").append(")");
+        }
+        if (description != null && !description.isEmpty()) {
+            sb.append(" - ").append(description);
+        }
+        return sb.toString();
+    }
 }

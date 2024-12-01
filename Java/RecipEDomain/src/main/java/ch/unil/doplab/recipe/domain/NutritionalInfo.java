@@ -43,6 +43,50 @@ public class NutritionalInfo {
         return carbs;
     }
 
+    public double getSaturatedFat() {
+        return saturatedFat;
+    }
+
+    public double getFiber() {
+        return fiber;
+    }
+
+    public double getSugar() {
+        return sugar;
+    }
+
+    public double getSodium() {
+        return sodium;
+    }
+
+    public double getVitaminC() {
+        return vitaminC;
+    }
+
+    public double getCalcium() {
+        return calcium;
+    }
+
+    public double getIron() {
+        return iron;
+    }
+
+    public double getPotassium() {
+        return potassium;
+    }
+
+    public double getVitaminA() {
+        return vitaminA;
+    }
+
+    public double getVitaminK() {
+        return vitaminK;
+    }
+
+    public double getMagnesium() {
+        return magnesium;
+    }
+
     // Method to display nutritional information for debugging or presentation
     public void displayNutritionalInfo() {
         System.out.println("Nutritional values per serving");
