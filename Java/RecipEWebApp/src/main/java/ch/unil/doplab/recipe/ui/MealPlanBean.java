@@ -3,6 +3,8 @@ package ch.unil.doplab.recipe.ui;
 import jakarta.inject.Named;
 import jakarta.enterprise.context.SessionScoped;
 import jakarta.annotation.PostConstruct;
+import jakarta.inject.Inject;
+import jakarta.inject.Named;
 import jakarta.faces.context.FacesContext;
 import java.io.Serializable;
 import java.io.IOException;
@@ -19,7 +21,6 @@ import ch.unil.doplab.recipe.domain.UserProfile.MealPlanPreference;
 @Named
 @SessionScoped
 public class MealPlanBean implements Serializable {
-
     private APIHandler apiHandler = new APIHandler();
     private MealPlan mealPlan;
     private List<Meal> allMeals; // Flattened list of meals
@@ -30,6 +31,9 @@ public class MealPlanBean implements Serializable {
     private static final String DEFAULT_IMAGE_BREAKFAST = "/images/defaultmeals/croissant.png";
     private static final String DEFAULT_IMAGE_LUNCH = "/images/defaultmeals/lunch_colored.png";
     private static final String DEFAULT_IMAGE_DINNER = "/images/defaultmeals/dining-room.png";
+
+    @Inject
+    UserProfileBean userProfileBean;
 
     @PostConstruct
     public void init() {
@@ -46,7 +50,7 @@ public class MealPlanBean implements Serializable {
     // Generate a meal plan based on user preferences (API)
     public void generateMealPlan() {
         System.out.println("Generate New Meal Plan button clicked (API Mode)!");
-        UserProfile userProfile = createUserProfile();
+        UserProfile userProfile = userProfileBean.getCurrentUserProfile();
 
         // Ensure allergies is not null
         if (userProfile.getAllergies() == null) {

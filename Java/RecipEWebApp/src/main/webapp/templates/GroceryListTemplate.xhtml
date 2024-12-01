@@ -26,7 +26,44 @@
         </ui:insert>
     </div>
 
+    <div class="top-buttons">
+        <button type="button" class="save-button" onclick="saveGroceryListAsPdf()">Save List</button>
+        <button type="button" class="save-button" onclick="#{groceryListBean.generateGroceryList()}">Generate</button>
+    </div>
+
     <!-- Content Section for Grocery List -->
     <ui:insert name="content" />
+
+    <script>
+        function saveGroceryListAsPdf() {
+            // Stolen from the print mealplan as PDF function
+            const groceryList = document.querySelector('.grocery-list-container');
+            if (!groceryList) {
+                alert('Grocery List content not found!');
+                return;
+            }
+
+            // Notify user about the print process
+            alert('Preparing your grocery list for printing. Please wait...');
+
+            // Save the current page content
+            const originalContent = document.body.innerHTML;
+
+            // Replace the page content with the meal plan for printing
+            document.body.innerHTML = groceryList.outerHTML;
+
+            // Trigger the print dialog
+            window.print();
+
+            // Restore the original page content after printing
+            document.body.innerHTML = originalContent;
+
+            // Message to the user
+            alert('Grocery List saved successfully as PDF!');
+
+            // Optional: Reload JavaScript after restoring (if needed)
+            location.reload();
+        }
+    </script>
 </h:body>
 </html>
