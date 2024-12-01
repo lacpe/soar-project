@@ -1,65 +1,126 @@
-<!DOCTYPE html>
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://xmlns.jcp.org/jsf/html">
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
 <h:head>
-    <title>Log In</title>
+    <h:outputStylesheet name="css/styles.css"/>
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;700&amp;family=Comfortaa:wght@300;400;700&amp;display=swap" rel="stylesheet" />
+    <title>Welcome to Recip-E</title>
     <style>
+        /* Center body content for the Login page */
         body {
-            background-color: #f5deb3;
-            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            height: 100vh;
+            background-color: #FFE4C4; /* Match the overall theme */
         }
-        .container {
-            background-color: #f8d775;
-            margin: 0 auto;
-            width: 300px;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-        }
-        .input-field, .btn {
-            display: block;
-            width: 100%;
-            margin-bottom: 15px;
-        }
-        .btn {
-            background-color: #98fb98;
-            border: none;
-            padding: 10px;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 16px;
-        }
-        .btn:hover {
-            background-color: #8fbc8f;
-        }
-        .link {
+
+        /* Center-align content inside panels */
+        .panel-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
             text-align: center;
-            margin-top: 10px;
-        }
-        .messages {
-            color: red;
-            font-size: 14px;
         }
     </style>
 </h:head>
+
 <h:body>
-    <div class="container">
-        <h:form>
-            <h:outputLabel for="email" value="E-mail Address" />
-            <h:inputText id="email" value="#{loginBean.email}" class="input-field" />
-
-            <h:outputLabel for="password" value="Password" />
-            <h:inputSecret id="password" value="#{loginBean.password}" class="input-field" />
-
-            <h:commandButton value="Log In" action="#{loginBean.login}" class="btn" />
-
-            <h:messages globalOnly="true" layout="table" styleClass="messages" />
-
-            <div class="link">
-                <h:outputLink value="Register.xhtml">New to Recip-E? Sign up here</h:outputLink>
+    <!-- Page Header with Welcome Message -->
+    <div>
+        <p:panel style="width: 600px;">
+            <div class="panel-content">
+                <h:graphicImage value="/images/tilted_logo.png" alt="App Logo" width="180" />
+                <h1 style="color: #abedb8;">Welcome to Recip-E!</h1>
+                <p style="color: white;">Start planning your meals effortlessly today!</p>
             </div>
-        </h:form>
+        </p:panel>
+
+        <!-- Login Form -->
+        <p:panel style="width: 600px;">
+            <div class="panel-content">
+                <h:form id="loginForm">
+                    <h2 style="color: #818181; font-weight: bold; transition: color 0.3s ease;">
+                        Login
+                    </h2>
+                    <table>
+                        <!-- Email Field -->
+                        <tr>
+                            <td>
+                                <h:outputLabel for="email" value="Email:"
+                                    style="color: #818181; font-weight: bold; font-family: 'Quicksand', sans-serif;"
+                                    onmouseover="this.style.color='white'"
+                                    onmouseout="this.style.color='#818181'" />
+                            </td>
+                            <td style="text-align:left">
+                                <p:inputText id="email" value="#{loginBean.email}"
+                                             style="width: 300px; transition: border-color 0.3s ease;"
+                                             autocomplete="off" required="true"
+                                             requiredMessage="Email is required."
+                                             onmouseover="if (!this.matches(':focus')) this.style.borderColor='#72ba92';"
+                                             onmouseout="if (!this.matches(':focus')) this.style.borderColor='';"
+                                             onfocus="this.style.borderColor='#FFD27F';"
+                                             onblur="this.style.borderColor='';">
+                                    <p:ajax event="blur" update="email"/>
+                                </p:inputText>
+                            </td>
+                        </tr>
+                        <!-- Password Field -->
+                        <tr>
+                            <td>
+                                <h:outputLabel for="password" value="Password:"
+                                    style="color: #818181; font-weight: bold; font-family: 'Quicksand', sans-serif;"
+                                    onmouseover="this.style.color='white'"
+                                    onmouseout="this.style.color='#818181'" />
+                            </td>
+                            <td style="text-align:left">
+                                <p:password id="password" value="#{loginBean.password}"
+                                            style="width: 300px; transition: border-color 0.3s ease;"
+                                            redisplay="true" toggleMask="true" feedback="false" required="true"
+                                            requiredMessage="Password is required."
+                                            onmouseover="if (!this.matches(':focus')) this.style.borderColor='#72ba92';"
+                                            onmouseout="if (!this.matches(':focus')) this.style.borderColor='';"
+                                            onfocus="this.style.borderColor='#FFD27F';"
+                                            onblur="this.style.borderColor='';">
+                                    <p:ajax event="blur" update="password"/>
+                                </p:password>
+                            </td>
+                        </tr>
+                        <!-- Login Button -->
+                        <tr>
+                            <td colspan="2" style="text-align: center;">
+                                <p:commandButton value="Login"
+                                                 action="#{loginBean.login}"
+                                                 styleClass="ui-button-primary"
+                                                 update="@form"
+                                                 ajax="true" />
+                            </td>
+                        </tr>
+                    </table>
+                </h:form>
+            </div>
+        </p:panel>
+    </div>
+
+    <!-- Link to Registration Page -->
+    <div>
+        <p:panel style="width: 600px;">
+            <div style="text-align: center;">
+                <h:outputText style="color: white; font-family: 'Quicksand', sans-serif;" value="Don't have an account? "/>
+                <p:link style="color: #FFD27F; font-weight: bold; font-family: 'Quicksand', sans-serif;" value="Register Now" outcome="Register.xhtml"/>
+            </div>
+        </p:panel>
     </div>
 </h:body>
 </html>
+
 
