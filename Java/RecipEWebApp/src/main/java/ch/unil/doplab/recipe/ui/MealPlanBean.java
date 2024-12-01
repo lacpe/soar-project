@@ -24,7 +24,7 @@ public class MealPlanBean implements Serializable {
     private MealPlan mealPlan;
     private List<Meal> allMeals; // Flattened list of meals
     private int currentMealIndex;
-    private boolean useMockData = false;
+    private boolean useMockData = true;
 
     // Default images for meal types
     private static final String DEFAULT_IMAGE_BREAKFAST = "/images/defaultmeals/croissant.png";
