@@ -1,7 +1,10 @@
 package ch.unil.doplab.recipe;
 
+import ch.unil.doplab.recipe.domain.GroceryList;
+import ch.unil.doplab.recipe.domain.MealPlan;
 import ch.unil.doplab.recipe.domain.UserProfile;
 import ch.unil.doplab.recipe.domain.Utils;
+import ch.unil.doplab.recipe.ui.GroceryListBean;
 import jakarta.annotation.PostConstruct;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.ws.rs.WebApplicationException;
@@ -100,20 +103,20 @@ public class RecipEService {
      */
 
     // Generate a meal plan for a specific user
-    public String generateMealPlan(String userId) {
+    public MealPlan generateMealPlan(String userId) {
         return serviceTarget
                 .path("mealplan/generate")
                 .path(userId)
                 .request(MediaType.APPLICATION_JSON)
-                .post(null, String.class);
+                .post(null, MealPlan.class);
     }
 
     // Get a meal plan by user ID
-    public String getMealPlan(String userId) {
+    public MealPlan getMealPlan(String userId) {
         return mealPlanTarget
                 .path(userId)
                 .request(MediaType.APPLICATION_JSON)
-                .get(String.class);
+                .get(MealPlan.class);
     }
 
     /*
@@ -122,20 +125,20 @@ public class RecipEService {
 
     // Generate a grocery list for a specific meal plan
     // Changed to do it by user ID - but I could also add an option to do it by meal plan ID
-    public String generateGroceryList(String userId) {
+    public GroceryList generateGroceryList(String userId) {
         return serviceTarget
                 .path("grocerylist/generate")
                 .path(userId)
                 .request(MediaType.APPLICATION_JSON)
-                .post(null, String.class);
+                .post(null, GroceryList.class);
     }
 
     // Get grocery list details by meal plan ID
-    public String getGroceryList(String mealPlanId) {
+    public GroceryList getGroceryList(String mealPlanId) {
         return groceryListTarget
                 .path(mealPlanId)
                 .request(MediaType.APPLICATION_JSON)
-                .get(String.class);
+                .get(GroceryList.class);
     }
 
 

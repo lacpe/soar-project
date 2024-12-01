@@ -70,4 +70,8 @@ public class GroceryListBean extends GroceryList implements Serializable {
     public GroceryList getGroceryList() {
         return groceryList;
     }
+
+    public void setGroceryList(GroceryList groceryList) {
+        this.groceryList = groceryList;
+    }
 }

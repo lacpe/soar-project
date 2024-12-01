@@ -1,5 +1,6 @@
 package ch.unil.doplab.recipe.ui;
 
+import ch.unil.doplab.recipe.RecipEService;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
 import jakarta.enterprise.context.SessionScoped;
@@ -34,6 +35,8 @@ public class MealPlanBean implements Serializable {
 
     @Inject
     UserProfileBean userProfileBean;
+    @Inject
+    private RecipEService recipEService;
 
     @PostConstruct
     public void init() {
@@ -50,7 +53,7 @@ public class MealPlanBean implements Serializable {
     // Generate a meal plan based on user preferences (API)
     public void generateMealPlan() {
         System.out.println("Generate New Meal Plan button clicked (API Mode)!");
-        // UserProfile userProfile = createUserProfile();
+        UserProfile user = recipEService.getUserProfile(userProfileBean.getUserId().toString());
 
         /* Ensure allergies is not null
         if (userProfile.getAllergies() == null) {
@@ -258,6 +261,10 @@ public class MealPlanBean implements Serializable {
     // Getters for use in the UI
     public MealPlan getMealPlan() {
         return mealPlan;
+    }
+
+    public void setMealPlan(MealPlan mealPlan) {
+        this.mealPlan = mealPlan;
     }
 
     public List<Meal> getAllMeals() {

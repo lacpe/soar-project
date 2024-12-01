@@ -1,5 +1,6 @@
 package ch.unil.doplab.recipe.ui;
 
+import ch.unil.doplab.recipe.domain.MealPlan;
 import ch.unil.doplab.recipe.domain.UserProfile;
 import ch.unil.doplab.recipe.RecipEService;
 import jakarta.annotation.PostConstruct;
@@ -20,7 +21,13 @@ public class UserProfileBean extends UserProfile implements Serializable {
     private String dialogMessage;
 
     @Inject
-    private RecipEService recipEService;
+    RecipEService recipEService;
+
+    @Inject
+    MealPlanBean mealPlanBean;
+
+    @Inject
+    GroceryListBean groceryListBean;
 
     @PostConstruct
     public void init() {
@@ -138,6 +145,8 @@ public class UserProfileBean extends UserProfile implements Serializable {
                 recipEService.updateUserProfile(this.getUserId().toString(), this);
                 dialogMessage = "User profile updated successfully.";
                 changed = false;
+                mealPlanBean.setMealPlan(recipEService.generateMealPlan(this.getUserId().toString()));
+                groceryListBean.setGroceryList(recipEService.generateGroceryList(this.getUserId().toString()));
             } else {
                 dialogMessage = "Error: User ID is missing.";
             }
