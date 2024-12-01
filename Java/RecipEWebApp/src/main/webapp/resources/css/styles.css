@@ -66,15 +66,17 @@ h1 {
     font-family: "Quicksand", sans-serif;
     padding: 10px 20px;
     background-color: #abedb8; /* Light green */
-    color: #333;
+    color: #434343;
     border: none;
     border-radius: 8px;
-    font-size: 16px;
+    font-size: 14px;
+    font-weight: bolder;
     cursor: pointer;
     transition: all 0.3s ease;
 }
 
 .save-button:hover{
+    font-family: "Quicksand", sans-serif;
     background-color: #72ba92; /* Darker green on hover */
     color: white;
 }
