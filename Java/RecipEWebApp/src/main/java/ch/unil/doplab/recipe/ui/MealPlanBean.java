@@ -1,5 +1,6 @@
 package ch.unil.doplab.recipe.ui;
 
+import jakarta.inject.Inject;
 import jakarta.inject.Named;
 import jakarta.enterprise.context.SessionScoped;
 import jakarta.annotation.PostConstruct;
@@ -31,6 +32,9 @@ public class MealPlanBean implements Serializable {
     private static final String DEFAULT_IMAGE_LUNCH = "/images/defaultmeals/lunch_colored.png";
     private static final String DEFAULT_IMAGE_DINNER = "/images/defaultmeals/dining-room.png";
 
+    @Inject
+    UserProfileBean userProfileBean;
+
     @PostConstruct
     public void init() {
         System.out.println("Initializing MealPlanBean...");
@@ -46,18 +50,18 @@ public class MealPlanBean implements Serializable {
     // Generate a meal plan based on user preferences (API)
     public void generateMealPlan() {
         System.out.println("Generate New Meal Plan button clicked (API Mode)!");
-        UserProfile userProfile = createUserProfile();
+        // UserProfile userProfile = createUserProfile();
 
-        // Ensure allergies is not null
+        /* Ensure allergies is not null
         if (userProfile.getAllergies() == null) {
             userProfile.setAllergies(new HashSet<>()); // Initialize with an empty set
-        }
+        } */
 
         // Log user profile for debugging
-        logUserProfile(userProfile);
+        logUserProfile(userProfileBean.getCurrentUserProfile());
 
         // Use APIHandler to fetch the meal plan
-        this.mealPlan = apiHandler.generateMealPlan(userProfile);
+        this.mealPlan = apiHandler.generateMealPlan(userProfileBean.getCurrentUserProfile());
 //        flattenDailyMeals();
         if (this.mealPlan != null && this.mealPlan.getDailyMeals() != null) {
             flattenDailyMeals();
