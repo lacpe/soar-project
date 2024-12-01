@@ -47,10 +47,7 @@
                                style="font-family: 'Quicksand', sans-serif;" />
                 <h:outputLabel for="updateDietType" value="Diet Type:" />
                 <h:selectOneMenu id="updateDietType" value="#{userProfileBean.dietType}">
-                    <f:selectItem itemValue="VEGETARIAN" itemLabel="Vegetarian" />
-                    <f:selectItem itemValue="VEGAN" itemLabel="Vegan" />
-                    <f:selectItem itemValue="PALEO" itemLabel="Paleo" />
-                    <f:selectItem itemValue="KETOGENIC" itemLabel="Ketogenic" />
+                    <f:selectItems value="#{userProfileBean.dietTypes}" />
                 </h:selectOneMenu>
                 <h:outputLabel for="updateCalorieLimit" value="Calorie Limit:" />
                 <h:inputText id="updateCalorieLimit" value="#{userProfileBean.calorieLimit}"

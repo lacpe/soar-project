@@ -166,4 +166,13 @@ public class UserProfileBean extends UserProfile implements Serializable {
         this.setDailyCalorieTarget(newUserProfile.getDailyCalorieTarget().orElse(0));
         this.setMealPlanPreference(newUserProfile.getMealPlanPreference());
     }
+
+    public List<String> getDietTypes() {
+        List<String> dietTypes = new ArrayList<>();
+        for (DietType type : DietType.values()) {
+            dietTypes.add(type.toString());
+        }
+        return dietTypes;
+    }
+
 }
