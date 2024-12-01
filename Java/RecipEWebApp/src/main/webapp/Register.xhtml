@@ -1,65 +1,180 @@
-<!DOCTYPE html>
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://xmlns.jcp.org/jsf/html">
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
 <h:head>
-    <title>Register</title>
+    <h:outputStylesheet name="css/styles.css"/>
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;700&amp;display=swap" rel="stylesheet" />
+    <title>
+        Register - Recip-E
+    </title>
     <style>
+        /* Center body content for the Register page */
         body {
-            background-color: #f5deb3;
-            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            height: 100vh;
+            background-color: #FFE4C4; /* Match the overall theme */
         }
-        .container {
-            background-color: #f8d775;
-            margin: 0 auto;
-            width: 300px;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-        }
-        .input-field, .btn {
-            display: block;
-            width: 100%;
-            margin-bottom: 15px;
-        }
-        .btn {
-            background-color: #98fb98;
-            border: none;
-            padding: 10px;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 16px;
-        }
-        .btn:hover {
-            background-color: #8fbc8f;
-        }
-        .messages {
-            color: red;
-            font-size: 14px;
+
+        /* Center-align content inside panels */
+        .panel-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
         }
     </style>
 </h:head>
+
 <h:body>
-    <div class="container">
-        <h:form>
-            <h:outputLabel for="firstName" value="First Name" />
-            <h:inputText id="firstName" value="#{registerBean.firstName}" class="input-field" />
+    <div align="center">
+        <!-- Header -->
+        <p:panel style="width: 600px;">
+            <h:graphicImage value="/images/tilted_logo.png" alt="App Logo" width="180" />
+            <br/>
+            <h1 style="color: #abedb8;">Sign Up for Recip-E!</h1>
+            <p style="color: white;">Plan your meals effortlessly by signing up today!</p>
+        </p:panel>
 
-            <h:outputLabel for="lastName" value="Last Name" />
-            <h:inputText id="lastName" value="#{registerBean.lastName}" class="input-field" />
+        <!-- Registration Form -->
+        <p:panel style="width: 600px;">
+            <h:form id="registerForm">
+                <table>
+                    <!-- First Name -->
+                    <tr>
+                        <td style="text-align:right">
+                            <p:outputLabel value="First Name"
+                                           style="color: #818181; transition: color 0.3s ease;"
+                                           onmouseover="this.style.color='white'"
+                                           onmouseout="this.style.color='#818181'" />
+                        </td>
+                        <td style="text-align:left">
+                            <p:inputText id="firstname" value="#{registerBean.firstName}"
+                                         style="width: 300px; transition: border-color 0.3s ease;"
+                                         required="true" requiredMessage="First name is required."
+                                         onmouseover="if (!this.matches(':focus')) this.style.borderColor='#72ba92';"
+                                         onmouseout="if (!this.matches(':focus')) this.style.borderColor='';"
+                                         onfocus="this.style.borderColor='#FFD27F';"
+                                         onblur="this.style.borderColor='';">
+                                <p:ajax event="blur" update="firstname"/>
+                            </p:inputText>
+                        </td>
+                    </tr>
+                    <!-- Last Name -->
+                    <tr>
+                        <td style="text-align:right">
+                            <p:outputLabel value="Last Name"
+                                           style="color: #818181; transition: color 0.3s ease;"
+                                           onmouseover="this.style.color='white'"
+                                           onmouseout="this.style.color='#818181'" />
+                        </td>
+                        <td style="text-align:left">
+                            <p:inputText id="lastname" value="#{registerBean.lastName}"
+                                         style="width: 300px; transition: border-color 0.3s ease;"
+                                         required="true" requiredMessage="Last name is required."
+                                         onmouseover="if (!this.matches(':focus')) this.style.borderColor='#72ba92';"
+                                         onmouseout="if (!this.matches(':focus')) this.style.borderColor='';"
+                                         onfocus="this.style.borderColor='#FFD27F';"
+                                         onblur="this.style.borderColor='';">
+                                <p:ajax event="blur" update="lastname"/>
+                            </p:inputText>
+                        </td>
+                    </tr>
+                    <!-- Email -->
+                    <tr>
+                        <td style="text-align:right">
+                            <p:outputLabel value="Email"
+                                           style="color: #818181; transition: color 0.3s ease;"
+                                           onmouseover="this.style.color='white'"
+                                           onmouseout="this.style.color='#818181'" />
+                        </td>
+                        <td style="text-align:left">
+                            <p:inputText id="email" value="#{registerBean.email}"
+                                         style="width: 300px; transition: border-color 0.3s ease;"
+                                         required="true" requiredMessage="Email is required."
+                                         validatorMessage="Invalid email format."
+                                         onmouseover="if (!this.matches(':focus')) this.style.borderColor='#72ba92';"
+                                         onmouseout="if (!this.matches(':focus')) this.style.borderColor='';"
+                                         onfocus="this.style.borderColor='#FFD27F';"
+                                         onblur="this.style.borderColor='';">
+                                <f:validateRegex pattern="^[^@]+@[^@]+\.[^@]+$"/>
+                                <p:ajax event="blur" update="email"/>
+                            </p:inputText>
+                        </td>
+                    </tr>
+                    <!-- Password -->
+                    <tr>
+                        <td style="text-align:right">
+                            <p:outputLabel value="Password"
+                                           style="color: #818181; transition: color 0.3s ease;"
+                                           onmouseover="this.style.color='white'"
+                                           onmouseout="this.style.color='#818181'" />
+                        </td>
+                        <td style="text-align:left">
+                            <p:password id="password" value="#{registerBean.password}"
+                                        style="width: 300px; transition: border-color 0.3s ease;"
+                                        redisplay="true" toggleMask="true" feedback="false"
+                                        required="true" requiredMessage="Password is required."
+                                        onmouseover="if (!this.matches(':focus')) this.style.borderColor='#72ba92';"
+                                        onmouseout="if (!this.matches(':focus')) this.style.borderColor='';"
+                                        onfocus="this.style.borderColor='#FFD27F';"
+                                        onblur="this.style.borderColor='';">
+                                <p:ajax event="blur" update="password"/>
+                            </p:password>
+                        </td>
+                    </tr>
+                    <!-- Confirm Password -->
+                    <tr>
+                        <td style="text-align:right">
+                            <p:outputLabel value="Confirm Password"
+                                           style="color: #818181; transition: color 0.3s ease;"
+                                           onmouseover="this.style.color='white'"
+                                           onmouseout="this.style.color='#818181'" />
+                        </td>
+                        <td style="text-align:left">
+                            <p:password id="confirmPassword" value="#{registerBean.confirmPassword}"
+                                        style="width: 300px; transition: border-color 0.3s ease;"
+                                        redisplay="true" toggleMask="true" feedback="false"
+                                        required="true" requiredMessage="Please confirm your password."
+                                        onmouseover="if (!this.matches(':focus')) this.style.borderColor='#72ba92';"
+                                        onmouseout="if (!this.matches(':focus')) this.style.borderColor='';"
+                                        onfocus="this.style.borderColor='#FFD27F';"
+                                        onblur="this.style.borderColor='';">
+                                <p:ajax event="blur" update="confirmPassword"/>
+                            </p:password>
+                        </td>
+                    </tr>
+                </table>
+                <!-- Register Button -->
+                <p:commandButton id="registerButton" value="Register" action="#{registerBean.register}"
+                                 update="growl" style="width: 150px; margin-top: 20px;
+                                                 font-family: 'Quicksand', sans-serif;
+                                                 background-color: #abedb8; color: #333; border: none; border-radius: 8px;"
+                                 onmouseover="this.style.backgroundColor='#72ba92';this.style.color='white';"
+                                 onmouseout="this.style.backgroundColor='#abedb8';this.style.color='#333'" />
+                <p:growl id="growl" showDetail="false"/>
+            </h:form>
+        </p:panel>
+    </div>
 
-            <h:outputLabel for="email" value="E-mail Address" />
-            <h:inputText id="email" value="#{registerBean.email}" class="input-field" />
-
-            <h:outputLabel for="password" value="Password" />
-            <h:inputSecret id="password" value="#{registerBean.password}" class="input-field" />
-
-            <h:outputLabel for="confirmPassword" value="Confirm Password" />
-            <h:inputSecret id="confirmPassword" value="#{registerBean.confirmPassword}" class="input-field" />
-
-            <h:commandButton value="Sign Up" action="#{registerBean.register}" class="btn" />
-
-            <h:messages globalOnly="true" layout="table" styleClass="messages" />
-        </h:form>
+    <!-- Link to Login -->
+    <div align="center">
+        <p:panel style="width: 600px;">
+            <div style="text-align: center;">
+                <h:outputText style="color: white; font-family: 'Quicksand', sans-serif;" value="Already have an account? "/>
+                <p:link style="color: #FFD27F; font-weight: bold; font-family: 'Quicksand', sans-serif;" value="Login Now" outcome="Login.xhtml"/>
+            </div>
+        </p:panel>
     </div>
 </h:body>
 </html>
