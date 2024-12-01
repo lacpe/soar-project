@@ -25,43 +25,171 @@
     </div>
     <!-- Top Navigation Buttons -->
     <div class="top-buttons">
-        <button type="button" class="save-button" onclick="saveMealPlanAsPdf()">Save Plan</button>
+        <button type="button" class="save-button" onclick="saveMealPlanAsImage()">Save as PNG</button>
+        <button type="button" class="save-button" onclick="saveMealPlanAsPDF()">Save as PDF</button>
     </div>
 
     <!-- Content Section for Meal Plan -->
     <ui:insert name="content" />
 
-    <!-- JavaScript Function for Saving as PDF -->
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+
     <script>
-        function saveMealPlanAsPdf() {
-            // Select the meal plan container
-            const mealPlan = document.querySelector('.meal-plan-container');
-            if (!mealPlan) {
+        // Helper function to capture the meal plan as a canvas
+        async function captureMealPlan() {
+            const mealPlanContainer = document.querySelector('.meal-plan-container');
+            if (!mealPlanContainer) {
                 alert('Meal Plan content not found!');
-                return;
+                throw new Error('Meal Plan container missing');
             }
 
-            // Notify user about the print process
-            alert('Preparing your meal plan for printing. Please wait...');
+            // Ensure proper alignment before capture
+            document.body.style.display = 'flex';
+            document.body.style.flexDirection = 'column';
+            document.body.style.alignItems = 'center';
+            document.body.style.justifyContent = 'center';
 
-            // Save the current page content
-            const originalContent = document.body.innerHTML;
+            // Capture the meal plan as a canvas
+            const canvas = await html2canvas(mealPlanContainer, {
+                scrollY: -window.scrollY, // Correct scrolling offset
+                scale: 2,                // High resolution
+                useCORS: true,           // Allow cross-origin images
+            });
 
-            // Replace the page content with the meal plan for printing
-            document.body.innerHTML = mealPlan.outerHTML;
+            // Restore body alignment after capture
+            document.body.style.display = '';
+            document.body.style.flexDirection = '';
+            document.body.style.alignItems = '';
+            document.body.style.justifyContent = '';
 
-            // Trigger the print dialog
-            window.print();
+            return canvas;
+        }
 
-            // Restore the original page content after printing
-            document.body.innerHTML = originalContent;
+        // Save meal plan as an image
+        async function saveMealPlanAsImage() {
+            try {
+                const canvas = await captureMealPlan();
+                const image = canvas.toDataURL('image/png');
+                const link = document.createElement('a');
+                link.href = image;
+                link.download = 'meal-plan.png';
+                link.click();
+                alert('Meal Plan saved as an image!');
+            } catch (error) {
+                console.error('Error saving as image:', error);
+            }
+        }
 
-            // Message to the user
-            alert('Meal Plan saved successfully as PDF!');
+        // Save meal plan as a PDF
+        async function saveMealPlanAsPDF() {
+            try {
+                const canvas = await captureMealPlan();
+                const image = canvas.toDataURL('image/png');
 
-            // Optional: Reload JavaScript after restoring (if needed)
-            location.reload();
+                // Create a jsPDF instance
+                const pdf = new jsPDF({
+                    orientation: 'portrait',
+                    unit: 'mm',
+                    format: 'a4',
+                });
+
+                // Calculate dimensions
+                const imgWidth = 210; // A4 width in mm
+                const imgHeight = (canvas.height * imgWidth) / canvas.width;
+
+                // Add the image to the PDF
+                pdf.addImage(image, 'PNG', 0, 0, imgWidth, imgHeight);
+
+                // Save the PDF
+                pdf.save('meal-plan.pdf');
+                alert('Meal Plan saved as PDF!');
+            } catch (error) {
+                console.error('Error saving as PDF:', error);
+                alert('Failed to save the meal plan as PDF. Check the console for details.');
+            }
         }
     </script>
+
+
+    <!--    &lt;!&ndash; JavaScript Function for Savinf as Image &ndash;&gt;-->
+<!--    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>-->
+<!--    <script>-->
+<!--        async function saveMealPlanAsImage() {-->
+<!--            const mealPlanContainer = document.querySelector('.meal-plan-container');-->
+<!--            if (!mealPlanContainer) {-->
+<!--                alert('Meal Plan content not found!');-->
+<!--                return;-->
+<!--            }-->
+
+<!--            // Ensure proper alignment before capture-->
+<!--            document.body.style.display = 'flex';-->
+<!--            document.body.style.flexDirection = 'column';-->
+<!--            document.body.style.alignItems = 'center';-->
+<!--            document.body.style.justifyContent = 'center';-->
+
+<!--            try {-->
+<!--                const canvas = await html2canvas(mealPlanContainer, {-->
+<!--                    scrollY: -window.scrollY, // Correct scrolling offset-->
+<!--                    scale: 2,                // Increase resolution-->
+<!--                    useCORS: true,           // Enable cross-origin resource sharing for images-->
+<!--                });-->
+
+<!--                // Convert the canvas to an image-->
+<!--                const image = canvas.toDataURL('image/png');-->
+
+<!--                // Create a temporary link to download the image-->
+<!--                const link = document.createElement('a');-->
+<!--                link.href = image;-->
+<!--                link.download = 'meal-plan.png';-->
+<!--                link.click();-->
+
+<!--                alert('Meal plan saved as image!');-->
+<!--            } catch (error) {-->
+<!--                console.error('Error saving meal plan as image:', error);-->
+<!--                alert('Failed to save the meal plan as an image.');-->
+<!--            } finally {-->
+<!--                // Restore body alignment-->
+<!--                document.body.style.display = '';-->
+<!--                document.body.style.flexDirection = '';-->
+<!--                document.body.style.alignItems = '';-->
+<!--                document.body.style.justifyContent = '';-->
+<!--            }-->
+<!--        }-->
+<!--    </script>-->
+<!--    -->
+<!--    &lt;!&ndash; JavaScript Function for Saving as PDF &ndash;&gt;-->
+<!--    <script>-->
+<!--        function saveMealPlanAsPdf() {-->
+<!--            // Select the meal plan container-->
+<!--            const mealPlan = document.querySelector('.meal-plan-container');-->
+<!--            if (!mealPlan) {-->
+<!--                alert('Meal Plan content not found!');-->
+<!--                return;-->
+<!--            }-->
+
+<!--            // Notify user about the print process-->
+<!--            alert('Preparing your meal plan for printing. Please wait...');-->
+
+<!--            // Save the current page content-->
+<!--            const originalContent = document.body.innerHTML;-->
+
+<!--            // Replace the page content with the meal plan for printing-->
+<!--            document.body.innerHTML = mealPlan.outerHTML;-->
+
+<!--            // Trigger the print dialog-->
+<!--            window.print();-->
+
+<!--            // Restore the original page content after printing-->
+<!--            document.body.innerHTML = originalContent;-->
+
+<!--            // Message to the user-->
+<!--            alert('Meal Plan saved successfully as PDF!');-->
+
+<!--            // Optional: Reload JavaScript after restoring (if needed)-->
+<!--            location.reload();-->
+<!--        }-->
+<!--    </script>-->
 </h:body>
 </html>
