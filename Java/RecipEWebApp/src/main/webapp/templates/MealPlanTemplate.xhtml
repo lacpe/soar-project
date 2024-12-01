@@ -26,13 +26,43 @@
     </div>
     <!-- Top Navigation Buttons -->
     <div class="top-buttons">
-        <h:commandButton value="Customise" action="#{mealPlanBean.customiseMealPlan}" />
-        <h:commandButton value="Nutritions" action="#{mealPlanBean.viewNutrition}" />
-        <h:commandButton value="Save Plan" action="#{mealPlanBean.saveMealPlan}" />
-        <h:commandButton value="My Grocery" action="#{mealPlanBean.viewGroceryList}" />
+        <button type="button" class="save-button" onclick="saveMealPlanAsPdf()">Save Plan</button>
     </div>
 
     <!-- Content Section for Meal Plan -->
     <ui:insert name="content" />
+
+    <!-- JavaScript Function for Saving as PDF -->
+    <script>
+        function saveMealPlanAsPdf() {
+            // Select the meal plan container
+            const mealPlan = document.querySelector('.meal-plan-container');
+            if (!mealPlan) {
+                alert('Meal Plan content not found!');
+                return;
+            }
+
+            // Notify user about the print process
+            alert('Preparing your meal plan for printing. Please wait...');
+
+            // Save the current page content
+            const originalContent = document.body.innerHTML;
+
+            // Replace the page content with the meal plan for printing
+            document.body.innerHTML = mealPlan.outerHTML;
+
+            // Trigger the print dialog
+            window.print();
+
+            // Restore the original page content after printing
+            document.body.innerHTML = originalContent;
+
+            // Message to the user
+            alert('Meal Plan saved successfully as PDF!');
+
+            // Optional: Reload JavaScript after restoring (if needed)
+            location.reload();
+        }
+    </script>
 </h:body>
 </html>
