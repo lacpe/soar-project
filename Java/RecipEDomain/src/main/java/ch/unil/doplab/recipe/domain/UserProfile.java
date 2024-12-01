@@ -91,7 +91,7 @@ public class UserProfile {
     }
 
     public void setPassword(String password) {
-        this.password = Utils.hashPassword(password);
+        this.password = password;
     }
 
     public DietType getDietType() {

@@ -30,21 +30,19 @@ public class RegisterBean {
             return null; // Stay on the same page
         }
 
-        // Create a new UserProfile using the existing constructor
-        UserProfile newUser = new UserProfile(
-                UUID.randomUUID(), // Generate a UUID for the user
-                email,             // Use email as the username
-                password,          // Password will be hashed in UserProfile constructor
-                null,              // No diet type by default
-                new HashSet<>(),   // Empty set for allergies
-                new HashSet<>(),   // Empty set for disliked ingredients
-                0,                 // No daily calorie target
-                UserProfile.MealPlanPreference.DAY // Default meal plan preference
-        );
+        /* Create a new UserProfile using the existing constructor, parameters as follows
+        Generate a UUID for the user
+        Use email as the username
+        Password will be hashed in UserProfile constructor
+        No diet type by default
+        Empty set for allergies
+        Empty set for disliked ingredients
+        No daily calorie target
+        Default meal plan preference */
 
-        boolean success = recipEService.registerUser(newUser);
+        UserProfile newUser = recipEService.addUser(new UserProfile(UUID.randomUUID(), email, password, null, new HashSet<>(), new HashSet<>(), 0, UserProfile.MealPlanPreference.DAY));
 
-        if (success) {
+        if (newUser != null) {
             FacesContext.getCurrentInstance().addMessage(null,
                     new FacesMessage(FacesMessage.SEVERITY_INFO, "Registration successful", null));
             return "Login"; // Redirect to login page

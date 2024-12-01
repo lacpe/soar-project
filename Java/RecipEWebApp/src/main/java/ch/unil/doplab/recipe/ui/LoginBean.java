@@ -23,6 +23,9 @@ public class LoginBean implements Serializable {
     private RecipEService recipEService; // Assuming RecipEService has authentication logic
 
     private UserProfile loggedInUser;
+    @Named
+    @Inject
+    private UserProfileBean userProfileBean;
 
     public LoginBean() {
         reset();
@@ -36,13 +39,14 @@ public class LoginBean implements Serializable {
 
     public String login() {
         // Authenticate the user
-        var user = recipEService.authenticateUser(email, password);
+        var user = recipEService.getUserProfile(recipEService.authenticateUser(email, password).toString());
         var session = getSession(true);
 
         if (user != null) {
             session.setAttribute("email", email);
             session.setAttribute("user", user);
             loggedInUser = user;
+            userProfileBean.loadUserProfile(user.getUserId());
             return "userprofile"; // Redirect to user profile
         }
 

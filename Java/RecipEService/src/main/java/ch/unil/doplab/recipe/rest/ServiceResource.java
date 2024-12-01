@@ -61,9 +61,10 @@ public class ServiceResource {
     }
 
     @GET
-    @Produces(MediaType.TEXT_PLAIN)
-    @Path("authenticate/{user}/{password}")
-    public boolean authenticate(@PathParam("user") String username, @PathParam("password") String password) {
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Path("/authenticate/{user}/{password}")
+    public UUID authenticate(@PathParam("user") String username, @PathParam("password") String password) {
         return state.authenticateUser(username, password);
     }
 }

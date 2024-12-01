@@ -33,12 +33,6 @@
             <version>1.0-SNAPSHOT</version>
         </dependency>
 
-        <dependency>
-            <groupId>ch.unil.doplab.recipe</groupId>
-            <artifactId>RecipEService</artifactId>
-            <version>1.0-SNAPSHOT</version>
-        </dependency>
-
         <!-- JUnit for Unit Testing -->
         <dependency>
             <groupId>org.junit.jupiter</groupId>

@@ -240,13 +240,18 @@ public class ApplicationState {
         return groceryLists.get(mealPlansGroceryLists.get(usersMealPlans.get(userId)));
     }
 
-    public boolean authenticateUser(String username, String password) {
+    public UUID authenticateUser(String username, String password) {
         if (!usernames.containsKey(username)) {
             throw new IllegalArgumentException("No user with name " + username + " exists.");
         }
         UUID userId = usernames.get(username);
         UserProfile userProfile = userProfiles.get(userId);
-        return Utils.checkPassword(password, userProfile.getPassword());
+        if (Utils.checkPassword(password, userProfile.getPassword())) {
+            return userId;
+        }
+        else {
+            return null;
+        }
     }
 
     private void populateApplication() {

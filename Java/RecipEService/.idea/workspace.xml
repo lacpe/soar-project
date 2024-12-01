@@ -75,7 +75,10 @@
     &quot;HTTP Request.generated-requests | #3.executor&quot;: &quot;Run&quot;,
     &quot;Maven.RecipEService [clean].executor&quot;: &quot;Run&quot;,
     &quot;Maven.RecipEService [compile].executor&quot;: &quot;Run&quot;,
+    &quot;Maven.RecipEService [install].executor&quot;: &quot;Run&quot;,
+    &quot;Maven.RecipEService [package].executor&quot;: &quot;Run&quot;,
     &quot;Maven.RecipEService [test].executor&quot;: &quot;Run&quot;,
+    &quot;Maven.RecipEService [verify].executor&quot;: &quot;Run&quot;,
     &quot;Maven.StudyBuddyService [clean].executor&quot;: &quot;Run&quot;,
     &quot;Payara Server.Payara 6.20.0.executor&quot;: &quot;Run&quot;,
     &quot;Repository.Attach.Annotations&quot;: &quot;true&quot;,
@@ -296,6 +299,11 @@
       <workItem from="1732714201525" duration="597000" />
       <workItem from="1732780074479" duration="1238000" />
       <workItem from="1732799780924" duration="597000" />
+      <workItem from="1732809278555" duration="598000" />
+      <workItem from="1732978175492" duration="4587000" />
+      <workItem from="1732997860516" duration="4401000" />
+      <workItem from="1733010282152" duration="137000" />
+      <workItem from="1733010440373" duration="2133000" />
     </task>
     <task id="LOCAL-00001" summary="It works... better?">
       <option name="closed" value="true" />

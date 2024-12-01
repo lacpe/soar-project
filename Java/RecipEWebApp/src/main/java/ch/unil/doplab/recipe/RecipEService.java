@@ -4,6 +4,7 @@ import ch.unil.doplab.recipe.domain.UserProfile;
 import ch.unil.doplab.recipe.domain.Utils;
 import jakarta.annotation.PostConstruct;
 import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.ws.rs.WebApplicationException;
 import jakarta.ws.rs.client.Client;
 import jakarta.ws.rs.client.ClientBuilder;
 import jakarta.ws.rs.client.Entity;
@@ -14,6 +15,7 @@ import jakarta.ws.rs.core.MediaType;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 @ApplicationScoped
 public class RecipEService {
@@ -33,9 +35,9 @@ public class RecipEService {
         Client client = ClientBuilder.newClient();
 
         // Initialize WebTargets for the resources
-        userProfileTarget = client.target(BASE_URL).path("userProfiles");
-        mealPlanTarget = client.target(BASE_URL).path("mealPlans");
-        groceryListTarget = client.target(BASE_URL).path("groceryLists");
+        userProfileTarget = client.target(BASE_URL).path("userprofile");
+        mealPlanTarget = client.target(BASE_URL).path("mealplan");
+        groceryListTarget = client.target(BASE_URL).path("grocerylist");
         serviceTarget = client.target(BASE_URL).path("service");
     }
 
@@ -136,7 +138,7 @@ public class RecipEService {
                 .get(String.class);
     }
 
-        private final Map<String, UserProfile> userDatabase = new HashMap<>();
+
 
     /**
      * Register a new user in the system.
@@ -144,27 +146,35 @@ public class RecipEService {
      * @param user the UserProfile object to register
      * @return true if registration is successful, false if the email already exists
      */
-    public boolean registerUser(UserProfile user) {
-        if (userDatabase.containsKey(user.getUsername())) {
-            return false; // User with this email already exists
-        }
+    public UserProfile addUser(UserProfile user) {
+        user.setUserId(null);  // To make sure the id is not set and avoid bug related to ill-formed UUID on server side
+        var response = userProfileTarget
+                .request(MediaType.APPLICATION_JSON)
+                .post(Entity.entity(user, MediaType.APPLICATION_JSON));
 
-        userDatabase.put(user.getUsername(), user);
-        return true; // Registration successful
+        if (response.getStatus() == 200 && response.hasEntity()) {
+            var newlyCreatedUser = response.readEntity(UserProfile.class);
+            user.setUserId(newlyCreatedUser.getUserId());
+            return newlyCreatedUser;
+        }
+        else {
+            throw new WebApplicationException(response.getStatus());
+        }
     }
 
     /**
      * Authenticate a user with the given email and password.
      *
-     * @param email    the user's email (used as the username)
+     * @param username    the user's email (used as the username)
      * @param password the user's plain-text password
      * @return the authenticated UserProfile, or null if authentication fails
      */
-    public UserProfile authenticateUser(String email, String password) {
-        UserProfile user = userDatabase.get(email);
-        if (user != null && Utils.checkPassword(password, user.getPassword())) {
-            return user; // Authentication successful
-        }
-        return null; // Authentication failed
+    public UUID authenticateUser(String username, String password) {
+        return serviceTarget
+                .path("authenticate")
+                .path(username)
+                .path(password)
+                .request(MediaType.APPLICATION_JSON)
+                .get(UUID.class);
     }
 }
