@@ -25,171 +25,118 @@
     </div>
     <!-- Top Navigation Buttons -->
     <div class="top-buttons">
-        <button type="button" class="save-button" onclick="saveMealPlanAsImage()">Save as PNG</button>
-        <button type="button" class="save-button" onclick="saveMealPlanAsPDF()">Save as PDF</button>
+        <button type="button" class="save-button" onclick="saveMealPlanAsPNG()">Save PNG</button>
+        <button type="button" class="save-button" onclick="saveMealPlanAsPDF()">Save PDF</button>
     </div>
 
     <!-- Content Section for Meal Plan -->
     <ui:insert name="content" />
 
-
+    <!-- JavaScript for Saving Meal Plan as PNG and/or PDF -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
 
     <script>
-        // Helper function to capture the meal plan as a canvas
         async function captureMealPlan() {
-            const mealPlanContainer = document.querySelector('.meal-plan-container');
-            if (!mealPlanContainer) {
-                alert('Meal Plan content not found!');
-                throw new Error('Meal Plan container missing');
+            try {
+                const mealPlanContainer = document.querySelector('.meal-plan-container');
+                if (!mealPlanContainer) {
+                    alert('Meal Plan content not found!');
+                    throw new Error('Meal Plan container missing');
+                }
+
+                console.log('Meal Plan container found, starting capture...');
+
+                // Align content for capture
+                document.body.style.display = 'flex';
+                document.body.style.flexDirection = 'column';
+                document.body.style.alignItems = 'center';
+                document.body.style.justifyContent = 'center';
+
+                // Use html2canvas to capture the content
+                const canvas = await html2canvas(mealPlanContainer, {
+                    scrollY: -window.scrollY, // Adjust scrolling offset
+                    scale: 2,                // High resolution for clarity
+                    useCORS: true,           // Handle cross-origin images
+                });
+
+                console.log('Canvas captured successfully.');
+
+                // Restore original layout
+                document.body.style.display = '';
+                document.body.style.flexDirection = '';
+                document.body.style.alignItems = '';
+                document.body.style.justifyContent = '';
+
+                return canvas;
+            } catch (error) {
+                console.error('Error during capture:', error);
+                throw error;
             }
-
-            // Ensure proper alignment before capture
-            document.body.style.display = 'flex';
-            document.body.style.flexDirection = 'column';
-            document.body.style.alignItems = 'center';
-            document.body.style.justifyContent = 'center';
-
-            // Capture the meal plan as a canvas
-            const canvas = await html2canvas(mealPlanContainer, {
-                scrollY: -window.scrollY, // Correct scrolling offset
-                scale: 2,                // High resolution
-                useCORS: true,           // Allow cross-origin images
-            });
-
-            // Restore body alignment after capture
-            document.body.style.display = '';
-            document.body.style.flexDirection = '';
-            document.body.style.alignItems = '';
-            document.body.style.justifyContent = '';
-
-            return canvas;
         }
 
-        // Save meal plan as an image
-        async function saveMealPlanAsImage() {
+        async function saveMealPlanAsPNG() {
             try {
+                console.log('Starting PNG export...');
+
+                // Capture the meal plan as a canvas
                 const canvas = await captureMealPlan();
                 const image = canvas.toDataURL('image/png');
+
+                console.log('Image data generated from canvas.');
+
+                // Trigger download of the PNG file
                 const link = document.createElement('a');
                 link.href = image;
-                link.download = 'meal-plan.png';
+                link.download = 'MealPlan.png';
                 link.click();
-                alert('Meal Plan saved as an image!');
+
+                alert('Meal Plan saved as PNG!');
             } catch (error) {
-                console.error('Error saving as image:', error);
+                console.error('Failed to save the meal plan as PNG:', error);
+                alert('Failed to save the meal plan as PNG. Check the console for details.');
             }
         }
 
-        // Save meal plan as a PDF
         async function saveMealPlanAsPDF() {
             try {
+                console.log('Starting PDF generation...');
+
+                // Capture the meal plan as a canvas
                 const canvas = await captureMealPlan();
                 const image = canvas.toDataURL('image/png');
 
-                // Create a jsPDF instance
+                console.log('Image data generated from canvas.');
+
+                // Create jsPDF instance
+                const { jsPDF } = window.jspdf;
                 const pdf = new jsPDF({
                     orientation: 'portrait',
                     unit: 'mm',
                     format: 'a4',
                 });
 
+                console.log('jsPDF instance created.');
+
                 // Calculate dimensions
                 const imgWidth = 210; // A4 width in mm
                 const imgHeight = (canvas.height * imgWidth) / canvas.width;
 
+                console.log('Image dimensions calculated:', { imgWidth, imgHeight });
+
                 // Add the image to the PDF
                 pdf.addImage(image, 'PNG', 0, 0, imgWidth, imgHeight);
 
+                console.log('Image added to PDF.');
+
                 // Save the PDF
-                pdf.save('meal-plan.pdf');
+                pdf.save('MealPlan.pdf');
                 alert('Meal Plan saved as PDF!');
             } catch (error) {
-                console.error('Error saving as PDF:', error);
+                console.error('Failed to save the meal plan as PDF:', error);
                 alert('Failed to save the meal plan as PDF. Check the console for details.');
             }
         }
     </script>
-
-
-    <!--    &lt;!&ndash; JavaScript Function for Savinf as Image &ndash;&gt;-->
-<!--    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>-->
-<!--    <script>-->
-<!--        async function saveMealPlanAsImage() {-->
-<!--            const mealPlanContainer = document.querySelector('.meal-plan-container');-->
-<!--            if (!mealPlanContainer) {-->
-<!--                alert('Meal Plan content not found!');-->
-<!--                return;-->
-<!--            }-->
-
-<!--            // Ensure proper alignment before capture-->
-<!--            document.body.style.display = 'flex';-->
-<!--            document.body.style.flexDirection = 'column';-->
-<!--            document.body.style.alignItems = 'center';-->
-<!--            document.body.style.justifyContent = 'center';-->
-
-<!--            try {-->
-<!--                const canvas = await html2canvas(mealPlanContainer, {-->
-<!--                    scrollY: -window.scrollY, // Correct scrolling offset-->
-<!--                    scale: 2,                // Increase resolution-->
-<!--                    useCORS: true,           // Enable cross-origin resource sharing for images-->
-<!--                });-->
-
-<!--                // Convert the canvas to an image-->
-<!--                const image = canvas.toDataURL('image/png');-->
-
-<!--                // Create a temporary link to download the image-->
-<!--                const link = document.createElement('a');-->
-<!--                link.href = image;-->
-<!--                link.download = 'meal-plan.png';-->
-<!--                link.click();-->
-
-<!--                alert('Meal plan saved as image!');-->
-<!--            } catch (error) {-->
-<!--                console.error('Error saving meal plan as image:', error);-->
-<!--                alert('Failed to save the meal plan as an image.');-->
-<!--            } finally {-->
-<!--                // Restore body alignment-->
-<!--                document.body.style.display = '';-->
-<!--                document.body.style.flexDirection = '';-->
-<!--                document.body.style.alignItems = '';-->
-<!--                document.body.style.justifyContent = '';-->
-<!--            }-->
-<!--        }-->
-<!--    </script>-->
-<!--    -->
-<!--    &lt;!&ndash; JavaScript Function for Saving as PDF &ndash;&gt;-->
-<!--    <script>-->
-<!--        function saveMealPlanAsPdf() {-->
-<!--            // Select the meal plan container-->
-<!--            const mealPlan = document.querySelector('.meal-plan-container');-->
-<!--            if (!mealPlan) {-->
-<!--                alert('Meal Plan content not found!');-->
-<!--                return;-->
-<!--            }-->
-
-<!--            // Notify user about the print process-->
-<!--            alert('Preparing your meal plan for printing. Please wait...');-->
-
-<!--            // Save the current page content-->
-<!--            const originalContent = document.body.innerHTML;-->
-
-<!--            // Replace the page content with the meal plan for printing-->
-<!--            document.body.innerHTML = mealPlan.outerHTML;-->
-
-<!--            // Trigger the print dialog-->
-<!--            window.print();-->
-
-<!--            // Restore the original page content after printing-->
-<!--            document.body.innerHTML = originalContent;-->
-
-<!--            // Message to the user-->
-<!--            alert('Meal Plan saved successfully as PDF!');-->
-
-<!--            // Optional: Reload JavaScript after restoring (if needed)-->
-<!--            location.reload();-->
-<!--        }-->
-<!--    </script>-->
 </h:body>
 </html>
