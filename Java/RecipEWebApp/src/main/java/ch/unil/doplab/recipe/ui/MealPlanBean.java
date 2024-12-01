@@ -24,7 +24,7 @@ public class MealPlanBean implements Serializable {
     private MealPlan mealPlan;
     private List<Meal> allMeals; // Flattened list of meals
     private int currentMealIndex;
-    private boolean useMockData = true;
+    private boolean useMockData = false;
 
     // Default images for meal types
     private static final String DEFAULT_IMAGE_BREAKFAST = "/images/defaultmeals/croissant.png";
@@ -46,9 +46,6 @@ public class MealPlanBean implements Serializable {
     // Generate a meal plan based on user preferences (API)
     public void generateMealPlan() {
         System.out.println("Generate New Meal Plan button clicked (API Mode)!");
-//        UserProfile userProfile = new UserProfile();
-//        userProfile.setMealPlanPreference(UserProfile.MealPlanPreference.WEEK);
-//        userProfile.setDesiredServings(2);
         UserProfile userProfile = createUserProfile();
 
         // Ensure allergies is not null
@@ -81,7 +78,6 @@ public class MealPlanBean implements Serializable {
         if (userProfile.getDislikedIngredients() == null) {
             userProfile.setDislikedIngredients(new HashSet<>());
         }
-
         return userProfile;
     }
 
@@ -134,7 +130,6 @@ public class MealPlanBean implements Serializable {
         sundayMeals.add(new Meal(21, "Roast Turkey", null, null));
 
         // Adding all the meals to dailyMeals
-//        Map<String, List<Meal>> dailyMeals = new LinkedHashMap<>();
         dailyMeals.put("Monday", mondayMeals);
         dailyMeals.put("Tuesday", tuesdayMeals);
         dailyMeals.put("Wednesday", wednesdayMeals);
@@ -160,28 +155,32 @@ public class MealPlanBean implements Serializable {
 
     // Get image path with default fallback logic
     public String getImagePath(Meal meal, int index) {
-        System.out.println("[DEBUG] Meal: " + meal.getTitle() + ", Image URL: " + meal.getImageUrl());
-        String imageUrl = meal.getImageUrl();
-
-        // Check if the image URL is relative (mock meals) or absolute (API meals)
-        if (imageUrl != null && imageUrl.startsWith("/")) {
-            // Prepend the application context path for mock meals
-            String resolvedUrl = FacesContext.getCurrentInstance().getExternalContext().getRequestContextPath() + imageUrl;
-            System.out.println("[DEBUG] Resolved mock meal image URL: " + resolvedUrl);
-            return resolvedUrl;
+        if (useMockData){
+            if (meal.getImageUrl() == null || meal.getImageUrl().isEmpty()) {
+                switch (index) {
+                    case 0:
+                        return DEFAULT_IMAGE_BREAKFAST; // Default for breakfast
+                    case 1:
+                        return DEFAULT_IMAGE_LUNCH; // Default for lunch
+                    case 2:
+                        return DEFAULT_IMAGE_DINNER; // Default for dinner
+                    default:
+                        return "/images/default.png"; // Fallback for other cases
+                }
+            }
+            return meal.getImageUrl(); // Return actual image if present
+        } else{
+            // Check if the image URL is null, empty, or invalid, return a default image
+            String imageUrl = meal.getImageUrl();
+            if (imageUrl == null || imageUrl.isEmpty() || !isValidImageUrl(imageUrl)) {
+                return getDefaultImageForIndex(index);
+            }
+            return imageUrl;
         }
 
-        // Check if the image URL is null, empty, or invalid, return a default image
-        if (imageUrl == null || imageUrl.isEmpty() || !isValidImageUrl(imageUrl)) {
-            System.out.println("[DEBUG] Invalid or missing image URL. Using default image for index: " + index);
-            return getDefaultImageForIndex(index);
-        }
-
-        // Return the absolute URL for API meals
-        System.out.println("[DEBUG] API meal image URL: " + imageUrl);
-        return imageUrl;
     }
 
+    // Helper methods for API meal validation
     private boolean isValidImageUrl(String url) {
         try {
             HttpURLConnection connection = (HttpURLConnection) new URL(url).openConnection();
