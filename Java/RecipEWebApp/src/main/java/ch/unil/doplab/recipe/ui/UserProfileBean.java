@@ -146,7 +146,7 @@ public class UserProfileBean extends UserProfile implements Serializable {
                 dialogMessage = "User profile updated successfully.";
                 changed = false;
                 mealPlanBean.setMealPlan(recipEService.generateMealPlan(this.getUserId().toString()));
-                groceryListBean.setGroceryList(recipEService.generateGroceryList(this.getUserId().toString()));
+                //groceryListBean.setGroceryList(recipEService.generateGroceryList(this.getUserId().toString()));
             } else {
                 dialogMessage = "Error: User ID is missing.";
             }

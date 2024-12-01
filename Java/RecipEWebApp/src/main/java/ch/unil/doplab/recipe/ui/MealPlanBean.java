@@ -12,6 +12,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.*;
 import ch.unil.doplab.recipe.domain.MealPlan;
+import ch.unil.doplab.recipe.domain.GroceryList;
 import ch.unil.doplab.recipe.domain.Meal;
 import ch.unil.doplab.recipe.domain.NutritionalInfo;
 import ch.unil.doplab.recipe.domain.APIHandler;
@@ -69,6 +70,7 @@ public class MealPlanBean implements Serializable {
         if (this.mealPlan != null && this.mealPlan.getDailyMeals() != null) {
             flattenDailyMeals();
             System.out.println("Successfully fetched meal plan: " + this.mealPlan.getDailyMeals());
+            this.groceryList = generateGroceryList();
         } else {
             System.out.println("Failed to fetch meal plan or meal plan is empty.");
             this.mealPlan = null; // Reset in case of failure
@@ -295,5 +297,28 @@ public class MealPlanBean implements Serializable {
                 return "Other"; // For any additional meals, like snacks
         }
     }
+    public GroceryList generateGroceryList() {
+        if (this.mealPlan != null && this.mealPlan.getAllMeals() != null) {
+            System.out.println("Generating grocery list based on the existing meal plan...");
+            GroceryList groceryList = apiHandler.generateConsolidatedShoppingList(this.mealPlan.getAllMeals());
+            System.out.println("Grocery list generated successfully.");
+            return groceryList;
+        } else {
+            System.err.println("Cannot generate grocery list: Meal plan is null or empty.");
+            return new GroceryList(); // Return an empty grocery list if there's no valid meal plan
+        }
+    }
+
+    private GroceryList groceryList;
+
+    public GroceryList getGroceryList() {
+        if (groceryList == null) {
+            System.err.println("Grocery list in MealPlanBean is null.");
+        } else if (groceryList.getIngredientsByAisle().isEmpty()) {
+            System.err.println("Grocery list in MealPlanBean has no ingredients.");
+        }
+        return groceryList;
+    }
+
 }
 

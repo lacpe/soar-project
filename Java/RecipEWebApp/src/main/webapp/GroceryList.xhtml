@@ -8,19 +8,22 @@
             <!-- Grocery List Display -->
             <h:form>
                 <div class="grocery-list-container">
-                    <ui:repeat value="#{groceryListBean.groceryList.ingredientsByAisle}" var="aisle">
+                    <!-- Check if the grocery list exists -->
+                    <h:outputText value="No grocery list available." rendered="#{empty groceryListBean.groceryList.ingredientsByAisle}" />
+
+                    <ui:repeat value="#{groceryListBean.groceryList.ingredientsByAisle}" var="aisle" rendered="#{not empty groceryListBean.groceryList.ingredientsByAisle}">
                         <p:accordionPanel>
                             <p:tab title="#{aisle.key}">
                                 <ui:repeat value="#{aisle.value}" var="ingredient">
                                     <div class="ingredient-card">
                                         <div class="ingredient-container">
                                             <h3>#{ingredient.name}</h3>
-                                            <h:body>#{ingredient.quantity} #{ingredient.unit}</h:body>
+                                            <h:outputText value="#{ingredient.quantity} #{ingredient.unit}" />
                                         </div>
                                         <div class="checkbox-container">
-                                            <h:body> purchased </h:body>
+                                            <h:outputText value="Purchased" />
                                             <p:selectBooleanCheckbox value="#{ingredient.inStock}">
-                                                    <p:ajax listener="#{ingredient.changeInStock}"/>
+                                                <p:ajax listener="#{groceryListBean.updateIngredientStatus}" />
                                             </p:selectBooleanCheckbox>
                                         </div>
                                     </div>

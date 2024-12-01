@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"> <!-- Added namespace for 'f' -->
 <h:head>
     <title>Grocery List</title>
     <h:outputStylesheet name="css/styles.css" />
@@ -22,13 +23,14 @@
             <h:link value="Meal Plan" outcome="/MealPlan.xhtml" />
             <h:link value="Recipe Detail" outcome="/RecipeDetail.xhtml" />
             <h:link style="color: #f1f1f1" value="Grocery List" outcome="/GroceryList.xhtml" />
-
         </ui:insert>
     </div>
 
     <div class="top-buttons">
         <button type="button" class="save-button" onclick="saveGroceryListAsPdf()">Save List</button>
-        <button type="button" class="save-button" onclick="#{groceryListBean.generateGroceryList()}">Generate</button>
+        <h:commandButton value="Refresh Grocery List" action="#{mealPlanBean.generateGroceryList}" styleClass="save-button">
+            <f:ajax execute="@this" render="@all" />
+        </h:commandButton>
     </div>
 
     <!-- Content Section for Grocery List -->
@@ -36,7 +38,6 @@
 
     <script>
         function saveGroceryListAsPdf() {
-            // Stolen from the print mealplan as PDF function
             const groceryList = document.querySelector('.grocery-list-container');
             if (!groceryList) {
                 alert('Grocery List content not found!');
