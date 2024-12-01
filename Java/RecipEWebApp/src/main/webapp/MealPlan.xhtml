@@ -34,7 +34,8 @@
                                                onmouseup="this.style.textDecorationColor='#72ba92';"
                                                onmouseover="this.style.fontWeight='bold'; this.style.textDecorationThickness='2px';"
                                                onmouseout="this.style.fontWeight='normal'; this.style.textDecorationThickness='auto';" >
-                                    <h:outputText value="#{meal.title}" style="font-size: 14px; color: #333;" />
+                                    <h:outputText value="#{mealPlanBean.getTruncatedTitle(meal.title, 30)}"
+                                                  style="font-size: 14px; color: #333;" />
                                 </h:commandLink>
                             </div>
                         </ui:repeat>
