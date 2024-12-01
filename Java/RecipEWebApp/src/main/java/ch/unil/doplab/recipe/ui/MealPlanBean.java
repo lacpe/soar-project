@@ -3,7 +3,11 @@ package ch.unil.doplab.recipe.ui;
 import jakarta.inject.Named;
 import jakarta.enterprise.context.SessionScoped;
 import jakarta.annotation.PostConstruct;
+import jakarta.faces.context.FacesContext;
 import java.io.Serializable;
+import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.*;
 import ch.unil.doplab.recipe.domain.MealPlan;
 import ch.unil.doplab.recipe.domain.Meal;
@@ -42,13 +46,43 @@ public class MealPlanBean implements Serializable {
     // Generate a meal plan based on user preferences (API)
     public void generateMealPlan() {
         System.out.println("Generate New Meal Plan button clicked (API Mode)!");
+//        UserProfile userProfile = new UserProfile();
+//        userProfile.setMealPlanPreference(UserProfile.MealPlanPreference.WEEK);
+//        userProfile.setDesiredServings(2);
+        UserProfile userProfile = createUserProfile();
+
+        // Ensure allergies is not null
+        if (userProfile.getAllergies() == null) {
+            userProfile.setAllergies(new HashSet<>()); // Initialize with an empty set
+        }
+
+        // Log user profile for debugging
+        logUserProfile(userProfile);
+
+        // Use APIHandler to fetch the meal plan
+        this.mealPlan = apiHandler.generateMealPlan(userProfile);
+//        flattenDailyMeals();
+        if (this.mealPlan != null && this.mealPlan.getDailyMeals() != null) {
+            flattenDailyMeals();
+            System.out.println("Successfully fetched meal plan: " + this.mealPlan.getDailyMeals());
+        } else {
+            System.out.println("Failed to fetch meal plan or meal plan is empty.");
+            this.mealPlan = null; // Reset in case of failure
+        }
+    }
+
+    // Helper method to create and initialize a UserProfile
+    private UserProfile createUserProfile() {
         UserProfile userProfile = new UserProfile();
         userProfile.setMealPlanPreference(UserProfile.MealPlanPreference.WEEK);
         userProfile.setDesiredServings(2);
 
-        // Use APIHandler to fetch the meal plan
-        this.mealPlan = apiHandler.generateMealPlan(userProfile);
-        flattenDailyMeals();
+        // Initialize disliked ingredients if null
+        if (userProfile.getDislikedIngredients() == null) {
+            userProfile.setDislikedIngredients(new HashSet<>());
+        }
+
+        return userProfile;
     }
 
     // Mock method to generate a meal plan
@@ -126,19 +160,46 @@ public class MealPlanBean implements Serializable {
 
     // Get image path with default fallback logic
     public String getImagePath(Meal meal, int index) {
-        if (meal.getImageUrl() == null || meal.getImageUrl().isEmpty()) {
-            switch (index) {
-                case 0:
-                    return DEFAULT_IMAGE_BREAKFAST; // Default for breakfast
-                case 1:
-                    return DEFAULT_IMAGE_LUNCH; // Default for lunch
-                case 2:
-                    return DEFAULT_IMAGE_DINNER; // Default for dinner
-                default:
-                    return "/images/default.png"; // Fallback for other cases
-            }
+        System.out.println("[DEBUG] Meal: " + meal.getTitle() + ", Image URL: " + meal.getImageUrl());
+        String imageUrl = meal.getImageUrl();
+
+        // Check if the image URL is relative (mock meals) or absolute (API meals)
+        if (imageUrl != null && imageUrl.startsWith("/")) {
+            // Prepend the application context path for mock meals
+            String resolvedUrl = FacesContext.getCurrentInstance().getExternalContext().getRequestContextPath() + imageUrl;
+            System.out.println("[DEBUG] Resolved mock meal image URL: " + resolvedUrl);
+            return resolvedUrl;
         }
-        return meal.getImageUrl(); // Return actual image if present
+
+        // Check if the image URL is null, empty, or invalid, return a default image
+        if (imageUrl == null || imageUrl.isEmpty() || !isValidImageUrl(imageUrl)) {
+            System.out.println("[DEBUG] Invalid or missing image URL. Using default image for index: " + index);
+            return getDefaultImageForIndex(index);
+        }
+
+        // Return the absolute URL for API meals
+        System.out.println("[DEBUG] API meal image URL: " + imageUrl);
+        return imageUrl;
+    }
+
+    private boolean isValidImageUrl(String url) {
+        try {
+            HttpURLConnection connection = (HttpURLConnection) new URL(url).openConnection();
+            connection.setRequestMethod("HEAD");
+            int responseCode = connection.getResponseCode();
+            return responseCode == HttpURLConnection.HTTP_OK;
+        } catch (IOException e) {
+            return false;
+        }
+    }
+
+    private String getDefaultImageForIndex(int index) {
+        switch (index) {
+            case 0: return DEFAULT_IMAGE_BREAKFAST;
+            case 1: return DEFAULT_IMAGE_LUNCH;
+            case 2: return DEFAULT_IMAGE_DINNER;
+            default: return "/images/default.png";
+        }
     }
 
     // View a recipe by ID
@@ -147,6 +208,13 @@ public class MealPlanBean implements Serializable {
         return "RecipeDetail.xhtml?faces-redirect=true&id=" + mealId;
     }
 
+    // Truncate meal titles
+    public String getTruncatedTitle(String title, int maxLength) {
+        if (title == null || title.length() <= maxLength) {
+            return title;
+        }
+        return title.substring(0, maxLength) + "...";
+    }
 
     // Navigation methods
     public Meal getCurrentRecipe() {
@@ -174,6 +242,14 @@ public class MealPlanBean implements Serializable {
 
     public boolean hasPreviousRecipe() {
         return currentMealIndex > 0;
+    }
+
+    // Log the user profile for debugging
+    private void logUserProfile(UserProfile userProfile) {
+        System.out.println("User Profile:");
+        System.out.println("Meal Plan Preference: " + userProfile.getMealPlanPreference());
+        System.out.println("Disliked Ingredients: " +
+                (userProfile.getDislikedIngredients() != null ? userProfile.getDislikedIngredients() : "None"));
     }
 
     // Getters for use in the UI
