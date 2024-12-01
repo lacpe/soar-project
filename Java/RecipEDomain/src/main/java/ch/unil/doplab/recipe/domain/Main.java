@@ -12,10 +12,10 @@ public class Main {
 
         // Set up a test user profile with meal plan preference set directly
         UserProfile userProfile = new UserProfile(uuid, "testUser", "testPassword", UserProfile.DietType.VEGETARIAN,
-                new HashSet<>(), new HashSet<>(), 2000, UserProfile.MealPlanPreference.WEEK);
+                new HashSet<>(), new HashSet<>(), 2000, UserProfile.MealPlanPreference.DAY);
         userProfile.setDietType(UserProfile.DietType.VEGETARIAN);
         userProfile.setDailyCalorieTarget(2000);
-        userProfile.setMealPlanPreference(UserProfile.MealPlanPreference.WEEK);
+        userProfile.setMealPlanPreference(UserProfile.MealPlanPreference.DAY);
         userProfile.setDesiredServings(100); // Set desired servings
 
         // Generate the meal plan based on the user’s preference

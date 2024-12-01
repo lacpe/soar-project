@@ -118,8 +118,7 @@ public class APIHandler {
 
             // Create meal image URL using the provided image type
             // Most image links don't work sadly
-            String imageType = mealJson.getString("imageType");
-            String imageUrl = "https://spoonacular.com/recipeImages/" + id + "." + imageType;
+            String imageUrl = mealJson.optString("image", "");
 
             // Instantiate Meal object with the id got earlier, and getting the title too. Does that for each meal in the mealsArray
             // Nutritional info is null because we haven't fetched the info yet
@@ -176,6 +175,7 @@ public class APIHandler {
                     Meal cachedMeal = mealDetailsCache.get(meal.getId());
                     // For every meal in meals and for every cachedMeals, if meal is in cachedMeal then sets the already existing details for this meal
                     if (cachedMeal != null) {
+                        meal.setImageUrl(cachedMeal.getImageUrl()); // Ensure the image URL is set from enriched data
                         meal.setIngredients(cachedMeal.getIngredients());
                         meal.setInstructions(cachedMeal.getInstructions());
                         meal.setNutritionalInfo(cachedMeal.getNutritionalInfo());
