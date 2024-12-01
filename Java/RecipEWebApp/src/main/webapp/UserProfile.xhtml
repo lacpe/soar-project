@@ -38,47 +38,46 @@
         <!-- Update the Current User Profile -->
         <h:form id="updateProfile" style="margin-top: 30px;">
             <h3>Update Current User Profile</h3>
-            <h:outputLabel for="updateUsername" value="Username:" />
-            <h:inputText id="updateUsername" value="#{userProfileBean.username}"
-                         style="font-family: 'Quicksand', sans-serif;" />
-            <br />
-            <h:outputLabel for="updatePassword" value="Password:" />
-            <h:inputSecret id="updatePassword" value="#{userProfileBean.password}"
-                           style="font-family: 'Quicksand', sans-serif;" />
-            <br />
-            <h:outputLabel for="updateDietType" value="Diet Type:" />
-            <h:selectOneMenu id="updateDietType" value="#{userProfileBean.dietType}">
-                <f:selectItem itemValue="VEGETARIAN" itemLabel="Vegetarian" />
-                <f:selectItem itemValue="VEGAN" itemLabel="Vegan" />
-                <f:selectItem itemValue="PALEO" itemLabel="Paleo" />
-                <f:selectItem itemValue="KETOGENIC" itemLabel="Ketogenic" />
-            </h:selectOneMenu>
-            <br />
-            <h:outputLabel for="updateCalorieLimit" value="Calorie Limit:" />
-            <h:inputText id="updateCalorieLimit" value="#{userProfileBean.calorieLimit}"
-                         style="font-family: 'Quicksand', sans-serif;" />
-            <br />
-            <h:outputLabel for="updateMealPlanPreference" value="Meal Plan Preference:" />
-            <h:selectOneMenu id="updateMealPlanPreference" value="#{userProfileBean.mealPlanPreference}"
-                             style="font-family: 'Quicksand', sans-serif;">
-                <f:selectItem itemValue="DAY" itemLabel="Day" />
-                <f:selectItem itemValue="WEEK" itemLabel="Week" />
-            </h:selectOneMenu>
-            <br />
-            <h:outputLabel for="updateAllergies" value="Allergies (comma-separated):" />
-            <h:inputTextarea id="updateAllergies" value="#{userProfileBean.allergiesAsString}" rows="3" cols="30"
+            <h:panelGrid columns="2">
+                <h:outputLabel for="updateUsername" value="Username:" />
+                <h:inputText id="updateUsername" value="#{userProfileBean.username}"
                              style="font-family: 'Quicksand', sans-serif;" />
-            <br />
-            <h:outputLabel for="updateDislikedIngredients" value="Disliked Ingredients (comma-separated):" />
-            <h:inputTextarea id="updateDislikedIngredients" value="#{userProfileBean.dislikedIngredientsAsString}" rows="3" cols="30"
+                <h:outputLabel for="updatePassword" value="Password:" />
+                <h:inputSecret id="updatePassword" value="#{userProfileBean.password}"
+                               style="font-family: 'Quicksand', sans-serif;" />
+                <h:outputLabel for="updateDietType" value="Diet Type:" />
+                <h:selectOneMenu id="updateDietType" value="#{userProfileBean.dietType}">
+                    <f:selectItem itemValue="VEGETARIAN" itemLabel="Vegetarian" />
+                    <f:selectItem itemValue="VEGAN" itemLabel="Vegan" />
+                    <f:selectItem itemValue="PALEO" itemLabel="Paleo" />
+                    <f:selectItem itemValue="KETOGENIC" itemLabel="Ketogenic" />
+                </h:selectOneMenu>
+                <h:outputLabel for="updateCalorieLimit" value="Calorie Limit:" />
+                <h:inputText id="updateCalorieLimit" value="#{userProfileBean.calorieLimit}"
                              style="font-family: 'Quicksand', sans-serif;" />
-            <br />
-            <h:commandButton value="Save Changes" action="#{userProfileBean.saveUserProfile}"
-                             style="width: 150px; margin-top: 20px;
+                <h:outputLabel for="updateMealPlanPreference" value="Meal Plan Preference:" />
+                <h:selectOneMenu id="updateMealPlanPreference" value="#{userProfileBean.mealPlanPreference}"
+                                 style="font-family: 'Quicksand', sans-serif;">
+                    <f:selectItem itemValue="DAY" itemLabel="Day" />
+                    <f:selectItem itemValue="WEEK" itemLabel="Week" />
+                </h:selectOneMenu>
+                <h:outputLabel for="updateAllergies" value="Allergies (comma-separated):" />
+                <h:inputTextarea id="updateAllergies" value="#{userProfileBean.allergiesAsString}" rows="3" cols="30"
+                                 style="font-family: 'Quicksand', sans-serif;" />
+                <h:outputLabel for="updateDislikedIngredients" value="Disliked Ingredients (comma-separated):" />
+                <h:inputTextarea id="updateDislikedIngredients" value="#{userProfileBean.dislikedIngredientsAsString}" rows="3" cols="30"
+                                 style="font-family: 'Quicksand', sans-serif;" />
+                <h:commandButton value="Save Changes" action="#{userProfileBean.saveUserProfile}"
+                                 style="width: 150px; margin-top: 20px;
                              font-family: 'Quicksand', sans-serif;
                              background-color: #abedb8; color: #333; border: none; border-radius: 8px;"
-                             onmouseover="this.style.backgroundColor='#72ba92';this.style.color='white';"
-                             onmouseout="this.style.backgroundColor='#abedb8';this.style.color='#333'" />
+                                 onmouseover="this.style.backgroundColor='#72ba92';this.style.color='white';"
+                                 onmouseout="this.style.backgroundColor='#abedb8';this.style.color='#333'" />
+
+            </h:panelGrid>
+            
+            <br />
+
         </h:form>
 
         <!-- Dialog for Messages -->
