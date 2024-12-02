@@ -1,5 +1,7 @@
 package ch.unil.doplab.recipe.domain;
 
+import jakarta.persistence.Entity;
+
 import java.util.List;
 
 public class Meal {

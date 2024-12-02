@@ -26,6 +26,9 @@ public class LoginBean implements Serializable {
     @Named
     @Inject
     private UserProfileBean userProfileBean;
+    @Named
+    @Inject
+    private MealPlanBean mealPlanBean;
 
     public LoginBean() {
         reset();

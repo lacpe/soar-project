@@ -46,7 +46,7 @@ public class UserProfileBean extends UserProfile implements Serializable {
         // Set it as the current user profile
         this.replaceWithUser(dummyUser);
         this.setUserId(dummyUser.getUserId());
-        dialogMessage = "Dummy user loaded.";
+        dialogMessage = "User preferences loaded.";
     }
 
     public UserProfileBean() {
@@ -146,7 +146,7 @@ public class UserProfileBean extends UserProfile implements Serializable {
                 dialogMessage = "User profile updated successfully.";
                 changed = false;
                 mealPlanBean.setMealPlan(recipEService.generateMealPlan(this.getUserId().toString()));
-                //groceryListBean.setGroceryList(recipEService.generateGroceryList(this.getUserId().toString()));
+                groceryListBean.setGroceryList(recipEService.generateGroceryList(this.getUserId().toString()));
             } else {
                 dialogMessage = "Error: User ID is missing.";
             }
@@ -172,6 +172,7 @@ public class UserProfileBean extends UserProfile implements Serializable {
         for (DietType type : DietType.values()) {
             dietTypes.add(type.toString());
         }
+        dietTypes.add(null);
         return dietTypes;
     }
 

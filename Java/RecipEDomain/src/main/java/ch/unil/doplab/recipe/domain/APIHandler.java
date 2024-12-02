@@ -81,7 +81,7 @@ public class APIHandler {
         String url = "https://api.spoonacular.com/mealplanner/generate"
                 + "?apiKey=" + API_KEY
                 + "&timeFrame=" + timeFrame
-                + "&targetCalories=" + userProfile.getDailyCalorieTarget().orElse(0);
+                + "&targetCalories=" + userProfile.getDailyCalorieTarget();
 
         // Add diet type to URL if specified
         if (userProfile.getDietType() != null) {

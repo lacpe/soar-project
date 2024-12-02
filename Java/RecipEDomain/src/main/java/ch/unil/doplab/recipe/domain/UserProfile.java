@@ -5,17 +5,24 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
 import ch.unil.doplab.recipe.domain.Utils;
+import jakarta.persistence.*;
 
 import javax.swing.text.html.Option;
 
+@Entity
 public class UserProfile {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "UUID", updatable = false, nullable = false)
     private UUID userId;                             // Unique identifier for the user
     private String username;                         // Username of the user
     private String password;                         // Password, hashed as soon as it is created
     private DietType dietType;                       // User's preferred diet as an enum
+    @Transient
     private Set<String> allergies = new HashSet<>(); // Set of ingredients the user is allergic to, initialized
+    @Transient
     private Set<String> dislikedIngredients = new HashSet<>(); // Ingredients the user dislikes, initialized
-    private Optional<Integer> dailyCalorieTarget = Optional.empty(); // Daily calorie goal, initialized
+    private int dailyCalorieTarget = 0; // Daily calorie goal, initialized
     private MealPlanPreference mealPlanPreference = MealPlanPreference.DAY; // Default to DAY
     private int desiredServings = 1;
 
@@ -57,7 +64,7 @@ public class UserProfile {
         this.dietType = dietType;
         this.allergies = allergies;
         this.dislikedIngredients = dislikedIngredients;
-        this.dailyCalorieTarget = (dailyCalorieTarget == 0) ? Optional.empty() : Optional.of(dailyCalorieTarget);
+        this.dailyCalorieTarget = 0;
         this.mealPlanPreference = mealPlanPreference;
     }
 
@@ -118,12 +125,12 @@ public class UserProfile {
         this.dislikedIngredients = dislikedIngredients;
     }
 
-    public Optional<Integer> getDailyCalorieTarget() {
+    public int getDailyCalorieTarget() {
         return dailyCalorieTarget;
     }
 
     public void setDailyCalorieTarget(int dailyCalorieTarget) {
-        this.dailyCalorieTarget = Optional.of(dailyCalorieTarget);
+        this.dailyCalorieTarget = dailyCalorieTarget;
     }
 
     public MealPlanPreference getMealPlanPreference() {
@@ -157,7 +164,7 @@ public class UserProfile {
     public void displayUserPreferences() {
         System.out.println("User: " + username + " (" + userId + ")");
         System.out.println("Diet Type: " + (dietType != null ? dietType : "None"));
-        System.out.println("Daily Calorie Target: " + (dailyCalorieTarget.isPresent() ? dailyCalorieTarget.get() : "Not set"));
+        System.out.println("Daily Calorie Target: " + (dailyCalorieTarget !=0 ? dailyCalorieTarget : "Not set"));
         System.out.println("Allergies: " + String.join(", ", allergies));
         System.out.println("Disliked Ingredients: " + String.join(", ", dislikedIngredients));
         System.out.println("Meal Plan Preference: " + mealPlanPreference);

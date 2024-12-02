@@ -15,6 +15,7 @@ import jakarta.ws.rs.client.WebTarget;
 import jakarta.ws.rs.core.GenericType;
 import jakarta.ws.rs.core.MediaType;
 
+import javax.print.attribute.standard.Media;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -97,52 +98,6 @@ public class RecipEService {
         }
     }
 
-
-    /*
-     * Meal Plan operations
-     */
-
-    // Generate a meal plan for a specific user
-    public MealPlan generateMealPlan(String userId) {
-        return serviceTarget
-                .path("mealplan/generate")
-                .path(userId)
-                .request(MediaType.APPLICATION_JSON)
-                .post(null, MealPlan.class);
-    }
-
-    // Get a meal plan by user ID
-    public MealPlan getMealPlan(String userId) {
-        return mealPlanTarget
-                .path(userId)
-                .request(MediaType.APPLICATION_JSON)
-                .get(MealPlan.class);
-    }
-
-    /*
-     * Grocery List operations
-     */
-
-    // Generate a grocery list for a specific meal plan
-    // Changed to do it by user ID - but I could also add an option to do it by meal plan ID
-    public GroceryList generateGroceryList(String userId) {
-        return serviceTarget
-                .path("grocerylist/generate")
-                .path(userId)
-                .request(MediaType.APPLICATION_JSON)
-                .post(null, GroceryList.class);
-    }
-
-    // Get grocery list details by meal plan ID
-    public GroceryList getGroceryList(String mealPlanId) {
-        return groceryListTarget
-                .path(mealPlanId)
-                .request(MediaType.APPLICATION_JSON)
-                .get(GroceryList.class);
-    }
-
-
-
     /**
      * Register a new user in the system.
      *
@@ -164,6 +119,163 @@ public class RecipEService {
             throw new WebApplicationException(response.getStatus());
         }
     }
+
+    public boolean removeUserProfile(String userId) {
+        return userProfileTarget
+                .path(userId)
+                .request(MediaType.APPLICATION_JSON)
+                .delete(boolean.class);
+    }
+
+    /*
+     * Meal Plan operations
+     */
+
+    // Get a meal plan by meal plan ID
+    public MealPlan getMealPlan(String userId) {
+        return mealPlanTarget
+                .path(userId)
+                .request(MediaType.APPLICATION_JSON)
+                .get(MealPlan.class);
+    }
+
+    public MealPlan addMealPlan(MealPlan mealPlan) {
+        mealPlan.setMealPlanId(null);
+        var response = mealPlanTarget
+                .request(MediaType.APPLICATION_JSON)
+                .post(Entity.entity(mealPlan, MediaType.APPLICATION_JSON));
+        if (response.getStatus() == 200 && response.hasEntity()) {
+            var newlyCreatedMealPlan = response.readEntity(MealPlan.class);
+            mealPlan.setMealPlanId(newlyCreatedMealPlan.getMealPlanId());
+            return newlyCreatedMealPlan;
+        } else {
+            throw new WebApplicationException(response.getStatus());
+        }
+    }
+
+    public MealPlan updateMealPlan(String mealPlanId, MealPlan mealPlan) {
+        mealPlan.setMealPlanId(null);
+        var response = mealPlanTarget
+                .path(mealPlanId)
+                .request(MediaType.APPLICATION_JSON)
+                .put(Entity.entity(mealPlan, MediaType.APPLICATION_JSON));
+        if (response.getStatus() == 200 && response.hasEntity()) {
+            var updatedMealPlan = response.readEntity(MealPlan.class);
+            mealPlan.setMealPlanId(updatedMealPlan.getMealPlanId());
+            return updatedMealPlan;
+        } else {
+            throw new WebApplicationException(response.getStatus());
+        }
+    }
+
+    public boolean removeMealPlan(String mealPlanId) {
+        return mealPlanTarget
+                .path(mealPlanId)
+                .request(MediaType.APPLICATION_JSON)
+                .delete(boolean.class);
+    }
+
+    /*
+     * Grocery List operations
+     */
+
+    // Get grocery list details by grocery list ID
+    public GroceryList getGroceryList(String mealPlanId) {
+        return groceryListTarget
+                .path(mealPlanId)
+                .request(MediaType.APPLICATION_JSON)
+                .get(GroceryList.class);
+    }
+
+    public GroceryList addGroceryList(GroceryList groceryList) {
+        groceryList.setGroceryListId(null);
+        var response = groceryListTarget
+                .request(MediaType.APPLICATION_JSON)
+                .post(Entity.entity(groceryList, MediaType.APPLICATION_JSON));
+        if (response.getStatus() == 200 && response.hasEntity()) {
+            var newlyCreatedGroceryList = response.readEntity(GroceryList.class);
+            groceryList.setGroceryListId(newlyCreatedGroceryList.getGroceryListId());
+            return newlyCreatedGroceryList;
+        } else {
+            throw new WebApplicationException(response.getStatus());
+        }
+    }
+
+    public GroceryList updateGroceryList(String groceryListId, GroceryList groceryList) {
+        groceryList.setGroceryListId(null);
+        var response = groceryListTarget
+                .path(groceryListId)
+                .request(MediaType.APPLICATION_JSON)
+                .put(Entity.entity(groceryList, MediaType.APPLICATION_JSON));
+        if (response.getStatus() == 200 && response.hasEntity()) {
+            var updatedGroceryList = response.readEntity(GroceryList.class);
+            groceryList.setGroceryListId(updatedGroceryList.getGroceryListId());
+            return updatedGroceryList;
+        } else {
+            throw new WebApplicationException(response.getStatus());
+        }
+    }
+
+    public boolean removeGroceryList(String groceryListId) {
+        return groceryListTarget
+                .path(groceryListId)
+                .request(MediaType.APPLICATION_JSON)
+                .delete(boolean.class);
+    }
+
+    /*
+    Service operations
+     */
+    public MealPlan getMealPlanByUserId(String userId) {
+        return serviceTarget
+                .path("mealplan")
+                .path(userId)
+                .request(MediaType.APPLICATION_JSON)
+                .get(MealPlan.class);
+    }
+
+    public GroceryList getGroceryListByUserId(String userId) {
+        return serviceTarget
+                .path("grocerylist")
+                .path(userId)
+                .request(MediaType.APPLICATION_JSON)
+                .get(GroceryList.class);
+    }
+
+    // Generate a meal plan for a specific userId
+    public MealPlan generateMealPlan(String userId) {
+        return serviceTarget
+                .path("mealplan/generate")
+                .path(userId)
+                .request(MediaType.APPLICATION_JSON)
+                .post(null, MealPlan.class);
+    }
+
+    public MealPlan regenerateMealPlan(String userId) {
+        return serviceTarget
+                .path("mealplan/generate")
+                .path(userId)
+                .request(MediaType.APPLICATION_JSON)
+                .put(null, MealPlan.class);
+    }
+
+    // Generate a grocery list for a specific userId
+    public GroceryList generateGroceryList(String userId) {
+        return serviceTarget
+                .path("grocerylist/generate")
+                .path(userId)
+                .request(MediaType.APPLICATION_JSON)
+                .post(null, GroceryList.class);
+    }
+
+    public GroceryList regenerateGroceryList(String userId) {
+        return serviceTarget
+                .path("grocerylist/generate")
+                .path(userId)
+                .request(MediaType.APPLICATION_JSON)
+                .put(null, GroceryList.class);
+    }
+
 
     /**
      * Authenticate a user with the given email and password.

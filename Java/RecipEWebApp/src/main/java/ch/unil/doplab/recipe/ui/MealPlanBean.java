@@ -70,24 +70,10 @@ public class MealPlanBean implements Serializable {
         if (this.mealPlan != null && this.mealPlan.getDailyMeals() != null) {
             flattenDailyMeals();
             System.out.println("Successfully fetched meal plan: " + this.mealPlan.getDailyMeals());
-            this.groceryList = generateGroceryList();
         } else {
             System.out.println("Failed to fetch meal plan or meal plan is empty.");
             this.mealPlan = null; // Reset in case of failure
         }
-    }
-
-    // Helper method to create and initialize a UserProfile
-    private UserProfile createUserProfile() {
-        UserProfile userProfile = new UserProfile();
-        userProfile.setMealPlanPreference(UserProfile.MealPlanPreference.WEEK);
-        userProfile.setDesiredServings(2);
-
-        // Initialize disliked ingredients if null
-        if (userProfile.getDislikedIngredients() == null) {
-            userProfile.setDislikedIngredients(new HashSet<>());
-        }
-        return userProfile;
     }
 
     // Mock method to generate a meal plan
@@ -307,17 +293,6 @@ public class MealPlanBean implements Serializable {
             System.err.println("Cannot generate grocery list: Meal plan is null or empty.");
             return new GroceryList(); // Return an empty grocery list if there's no valid meal plan
         }
-    }
-
-    private GroceryList groceryList;
-
-    public GroceryList getGroceryList() {
-        if (groceryList == null) {
-            System.err.println("Grocery list in MealPlanBean is null.");
-        } else if (groceryList.getIngredientsByAisle().isEmpty()) {
-            System.err.println("Grocery list in MealPlanBean has no ingredients.");
-        }
-        return groceryList;
     }
 
 }

@@ -40,8 +40,8 @@ public class UserProfileTest {
     @Test
     public void testSetAndGetDailyCalorieTarget() {
         userProfile.setDailyCalorieTarget(2000);
-        assertTrue(userProfile.getDailyCalorieTarget().isPresent(), "Daily calorie target should be present");
-        assertEquals(2000, userProfile.getDailyCalorieTarget().get(), "Daily calorie target should be 2000");
+        assertTrue(userProfile.getDailyCalorieTarget() != 0, "Daily calorie target should be present");
+        assertEquals(2000, userProfile.getDailyCalorieTarget(), "Daily calorie target should be 2000");
     }
 
     @Test
@@ -83,8 +83,8 @@ public class UserProfileTest {
         assertEquals("newUser", userProfile.getUsername(), "Username should be replaced with newUser");
         assertEquals(newUserProfile.getPassword(), userProfile.getPassword(), "Password should be replaced with new password hash");
         assertEquals(DietType.PALEO, userProfile.getDietType(), "Diet type should be replaced with PALEO");
-        assertTrue(userProfile.getDailyCalorieTarget().isPresent(), "Daily calorie target should be present after replacement");
-        assertEquals(1800, userProfile.getDailyCalorieTarget().get(), "Daily calorie target should be replaced with 1800");
+        assertTrue(userProfile.getDailyCalorieTarget() != 0, "Daily calorie target should be present after replacement");
+        assertEquals(1800, userProfile.getDailyCalorieTarget(), "Daily calorie target should be replaced with 1800");
         assertTrue(userProfile.getAllergies().contains("Gluten"), "Allergies should include 'Gluten' after replacement");
         assertTrue(userProfile.getDislikedIngredients().contains("Mushrooms"), "Disliked ingredients should include 'Mushrooms' after replacement");
         assertEquals(MealPlanPreference.DAY, userProfile.getMealPlanPreference(), "Meal plan preference should be replaced with DAILY");

@@ -4,6 +4,9 @@ import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 import jakarta.annotation.PostConstruct;
 import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
+import jakarta.transaction.Transactional;
 
 import java.nio.file.attribute.UserPrincipal;
 import java.util.*;
@@ -29,6 +32,9 @@ public class ApplicationState {
     // To generate random users
     private Random RANDOM = new Random();
 
+    @PersistenceContext
+    private EntityManager em;
+
     @PostConstruct
     public void init() {
         userProfiles = new TreeMap<>();
@@ -50,6 +56,7 @@ public class ApplicationState {
 
     public Map<UUID, UserProfile> getAllUserProfiles() {return userProfiles;}
 
+    @Transactional
     public UserProfile addUserProfile(UserProfile userProfile) {
         if (userProfile.getUserId() != null) {
             return addUserProfile(userProfile.getUserId(), userProfile);
@@ -57,6 +64,7 @@ public class ApplicationState {
         return addUserProfile(UUID.randomUUID(), userProfile);
     }
 
+    @Transactional
     public UserProfile addUserProfile(UUID id, UserProfile userProfile) {
         if (userProfile.getUsername() == null) {
             throw new IllegalArgumentException("Username cannot be null.");
@@ -73,6 +81,7 @@ public class ApplicationState {
         return userProfile;
     }
 
+    @Transactional
     public UserProfile setUserProfile(UUID id, UserProfile userProfile) {
         // This function changes the data to whatever userProfile is saved at UUID id to whatever data
         // is in userProfile
@@ -95,10 +104,12 @@ public class ApplicationState {
         return userProfiles.get(id);
     }
 
+    @Transactional
     public void removeUserProfile(String username){
         removeUserProfile(usernames.get(username));
     }
 
+    @Transactional
     public boolean removeUserProfile(UUID userId) {
         UserProfile userProfile = userProfiles.get(userId);
         UUID mealPlanId = usersMealPlans.get(userId);
@@ -254,6 +265,13 @@ public class ApplicationState {
         }
     }
 
+    @Transactional
+    private void populateDb() {
+        for (UserProfile user : userProfiles.values()) {
+            em.persist(user);
+        }
+    }
+
     private void populateApplication() {
         // Create 20 fake user profiles
         for (int i = 1; i <= 20; i++) {
@@ -263,7 +281,6 @@ public class ApplicationState {
                     new HashSet<>(), new HashSet<>(), RANDOM.nextInt(500) + 1500, Utils.getRandomMealPlanPreference());
             addUserProfile(user);
         }
-
     }
 
 }
