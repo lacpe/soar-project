@@ -12,9 +12,9 @@ import org.json.JSONObject;
 
 public class APIHandler {
     // Free access API, we have multiple in case we reach the limit by testing
-    private static final String API_KEY = "d5f32705bfb64f0992a6786d1d98062d";
+    private static final String API_KEY = "855c7cae4e6f4ff69c586bb42b97e0c7";
+        // "d5f32705bfb64f0992a6786d1d98062d"
         //"81c42538001c4c6093c593c588bdfb1b" old key
-
     // Cache to store meal details by meal ID because when multiple meals appeared in the meal plan, the details wouldn't get fetched correctly
     private Map<Integer, Meal> mealDetailsCache = new HashMap<>();
 

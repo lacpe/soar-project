@@ -62,10 +62,10 @@ public class MealPlanBean implements Serializable {
         } */
 
         // Log user profile for debugging
-        logUserProfile(userProfileBean.getCurrentUserProfile());
+        logUserProfile(user);
 
         // Use APIHandler to fetch the meal plan
-        this.mealPlan = apiHandler.generateMealPlan(userProfileBean.getCurrentUserProfile());
+        this.mealPlan = apiHandler.generateMealPlan(user);
 //        flattenDailyMeals();
         if (this.mealPlan != null && this.mealPlan.getDailyMeals() != null) {
             flattenDailyMeals();
