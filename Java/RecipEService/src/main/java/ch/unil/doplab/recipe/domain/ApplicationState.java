@@ -48,7 +48,12 @@ public class ApplicationState {
 
         usernames = new TreeMap<>();
 
-        populateApplication();
+        var allUserProfiles = findAllUserProfiles();
+        for (UserProfile userProfile : allUserProfiles) {
+            userProfiles.put(userProfile.getUserId(), userProfile);
+            usernames.put(userProfile.getUsername(), userProfile.getUserId());
+        }
+
     }
 
     // Functions for UserProfileResource
@@ -78,6 +83,7 @@ public class ApplicationState {
         userProfile.setUserId(id);
         userProfiles.put(id, userProfile);
         usernames.put(userProfile.getUsername(), id);
+        em.persist(userProfile);
         return userProfile;
     }
 
@@ -101,6 +107,7 @@ public class ApplicationState {
             throw new IllegalArgumentException("A user with username " + userProfile.getUsername() + " already exists.");
         }
         oldUserProfile.replaceWithUser(userProfile);
+        em.merge(userProfile);
         return userProfiles.get(id);
     }
 
@@ -129,6 +136,10 @@ public class ApplicationState {
         // Removes user
         usernames.remove(userProfile.getUsername());
         userProfiles.remove(userId);
+        if (!em.contains(userProfile)) {
+            userProfile = em.merge(userProfile);
+        }
+        em.remove(userProfile);
         return true;
     }
 
@@ -265,13 +276,55 @@ public class ApplicationState {
         }
     }
 
+    public List<UserProfile> findAllUserProfiles() {
+        return em.createQuery("SELECT u FROM UserProfile u", UserProfile.class).getResultList();
+    }
+
+    public void clearObjects() {
+        userProfiles.clear();
+        mealPlans.clear();
+        groceryLists.clear();
+        usersMealPlans.clear();
+        mealPlansGroceryLists.clear();
+        usernames.clear();
+    }
+
+    public void clearTables() {
+        // Disable foreign key checks
+        em.createNativeQuery("SET FOREIGN_KEY_CHECKS = 0").executeUpdate();
+
+        // Get all table names in the studybuddy schema
+        List<String> tables = (List<String>) em
+                .createNativeQuery("SELECT table_name FROM information_schema.tables WHERE table_schema = 'RecipE'")
+                .getResultList();
+
+        // Avoid removing the sequence table
+        tables.remove("SEQUENCE");
+
+        // Truncate each table
+        for (String table : tables) {
+            em.createNativeQuery("TRUNCATE TABLE " + table).executeUpdate();
+        }
+
+        // Re-enable foreign key checks
+        em.createNativeQuery("SET FOREIGN_KEY_CHECKS = 1").executeUpdate();
+    }
+
     @Transactional
-    private void populateDb() {
+    public void clearDb() {
+        clearTables();
+        clearObjects();
+    }
+
+
+    @Transactional
+    public void populateDb() {
         for (UserProfile user : userProfiles.values()) {
             em.persist(user);
         }
     }
 
+    @Transactional
     private void populateApplication() {
         // Create 20 fake user profiles
         for (int i = 1; i <= 20; i++) {

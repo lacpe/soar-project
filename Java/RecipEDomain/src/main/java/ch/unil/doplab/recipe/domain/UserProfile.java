@@ -18,9 +18,9 @@ public class UserProfile {
     private String username;                         // Username of the user
     private String password;                         // Password, hashed as soon as it is created
     private DietType dietType;                       // User's preferred diet as an enum
-    @Transient
+    @ElementCollection
     private Set<String> allergies = new HashSet<>(); // Set of ingredients the user is allergic to, initialized
-    @Transient
+    @ElementCollection
     private Set<String> dislikedIngredients = new HashSet<>(); // Ingredients the user dislikes, initialized
     private int dailyCalorieTarget = 0; // Daily calorie goal, initialized
     private MealPlanPreference mealPlanPreference = MealPlanPreference.DAY; // Default to DAY
