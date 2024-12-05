@@ -17,7 +17,7 @@
       <change afterPath="$PROJECT_DIR$/src/main/java/ch/unil/doplab/recipe/rest/RecipEService.java" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/src/main/java/ch/unil/doplab/recipe/rest/ServiceResource.java" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/src/main/resources/META-INF/persistence.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../RecipEDomain/src/main/java/ch/unil/doplab/recipe/domain/UserProfile.java" beforeDir="false" afterPath="$PROJECT_DIR$/../RecipEDomain/src/main/java/ch/unil/doplab/recipe/domain/UserProfile.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../RecipEDomain/src/main/java/ch/unil/doplab/recipe/domain/MealPlan.java" beforeDir="false" afterPath="$PROJECT_DIR$/../RecipEDomain/src/main/java/ch/unil/doplab/recipe/domain/MealPlan.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/ch/unil/doplab/recipe/domain/ApplicationState.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ch/unil/doplab/recipe/domain/ApplicationState.java" afterDir="false" />

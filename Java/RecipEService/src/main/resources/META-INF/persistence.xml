@@ -6,6 +6,7 @@
     <persistence-unit name="RecipEPU" transaction-type="JTA">
         <jta-data-source>jdbc/RecipE</jta-data-source>
         <class>ch.unil.doplab.recipe.domain.UserProfile</class>
+        <class>ch.unil.doplab.recipe.domain.MealPlan</class>
         <properties>
             <property name="jakarta.persistence.schema-generation.database.action" value="create"/>
             <property name="eclipselink.logging.level" value="FINEST"/>

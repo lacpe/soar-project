@@ -1,9 +1,16 @@
 package ch.unil.doplab.recipe.domain;
 
+import jakarta.persistence.*;
+
 import java.util.*;
 
+@Entity
 public class MealPlan {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "UUID", updatable = false, nullable = false)
     private UUID mealPlanId;
+    @Transient
     private Map<String, List<Meal>> dailyMeals; // Key: Day, Value: List of Meals (breakfast, lunch, dinner)
     private int calorieTarget;
     private int desiredServings;

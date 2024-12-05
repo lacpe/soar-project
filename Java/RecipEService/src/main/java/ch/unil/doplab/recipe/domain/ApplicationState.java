@@ -153,6 +153,7 @@ public class ApplicationState {
         return mealPlans;
     }
 
+    @Transactional
     public MealPlan addMealPlan(MealPlan mealPlan) {
         if (mealPlan.getMealPlanId() != null) {
             return addMealPlan(mealPlan.getMealPlanId(), mealPlan);
@@ -160,20 +161,25 @@ public class ApplicationState {
         return addMealPlan(UUID.randomUUID(), mealPlan);
     }
 
+    @Transactional
     public MealPlan addMealPlan(UUID id, MealPlan mealPlan) {
         mealPlan.setMealPlanId(id);
         if (mealPlans.containsKey(id)) {
             throw new IllegalArgumentException("A meal plan with id " + id + " already exists.");
         }
         mealPlans.put(id, mealPlan);
+        em.persist(mealPlan);
         return mealPlan;
     }
 
+    @Transactional
     public MealPlan setMealPlan(UUID id, MealPlan mealPlan) {
         mealPlans.replace(id, mealPlan);
+        em.merge(mealPlan);
         return mealPlans.get(id);
     }
 
+    @Transactional
     public boolean removeMealPlan(UUID id) {
         MealPlan mealPlan = mealPlans.get(id);
         UUID groceryListId = mealPlansGroceryLists.get(id);
@@ -187,6 +193,10 @@ public class ApplicationState {
         mealPlansGroceryLists.remove(id);
         // Removes meal plan
         mealPlans.remove(id);
+        if (!em.contains(mealPlan)) {
+            mealPlan = em.merge(mealPlan);
+        }
+        em.remove(mealPlan);
         return true;
     }
 
@@ -227,6 +237,7 @@ public class ApplicationState {
     }
 
     //Functions for ServiceResource
+    @Transactional
     public MealPlan generateMealPlan(UUID userId) {
         UserProfile userProfile = userProfiles.get(userId);
         if (userProfile == null) {
