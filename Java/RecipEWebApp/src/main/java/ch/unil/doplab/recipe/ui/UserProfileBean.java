@@ -109,8 +109,8 @@ public class UserProfileBean extends UserProfile implements Serializable {
     }
 
     // Getter for calorieLimit (unwrap dailyCalorieTarget)
-    public Integer getCalorieLimit() {
-        return getDailyCalorieTarget().orElse(null);
+    public int getCalorieLimit() {
+        return getDailyCalorieTarget();
     }
 
     // Setter for calorieLimit (wrap value into dailyCalorieTarget)
@@ -145,8 +145,18 @@ public class UserProfileBean extends UserProfile implements Serializable {
                 recipEService.updateUserProfile(this.getUserId().toString(), this);
                 dialogMessage = "User profile updated successfully.";
                 changed = false;
-                mealPlanBean.setMealPlan(recipEService.generateMealPlan(this.getUserId().toString()));
-                groceryListBean.setGroceryList(recipEService.generateGroceryList(this.getUserId().toString()));
+                if (mealPlanBean.getMealPlan() == null) {
+                    mealPlanBean.setMealPlan(recipEService.generateMealPlan(this.getUserId().toString()));
+                }
+                else {
+                    mealPlanBean.setMealPlan(recipEService.regenerateMealPlan(this.getUserId().toString()));
+                }
+                if (groceryListBean.getGroceryList() == null) {
+                    groceryListBean.setGroceryList(recipEService.generateGroceryList(this.getUserId().toString()));
+                }
+                else {
+                    groceryListBean.setGroceryList(recipEService.regenerateGroceryList(this.getUserId().toString()));
+                }
             } else {
                 dialogMessage = "Error: User ID is missing.";
             }
@@ -163,7 +173,7 @@ public class UserProfileBean extends UserProfile implements Serializable {
         this.setDietType(newUserProfile.getDietType());
         this.setAllergies(newUserProfile.getAllergies());
         this.setDislikedIngredients(newUserProfile.getDislikedIngredients());
-        this.setDailyCalorieTarget(newUserProfile.getDailyCalorieTarget().orElse(0));
+        this.setDailyCalorieTarget(newUserProfile.getDailyCalorieTarget());
         this.setMealPlanPreference(newUserProfile.getMealPlanPreference());
     }
 
