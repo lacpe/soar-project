@@ -1,15 +1,24 @@
 package ch.unil.doplab.recipe.domain;
 
-import jakarta.persistence.Entity;
+import jakarta.persistence.*;
 
 import java.util.List;
+import java.util.UUID;
 
+@Entity
 public class Meal {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "UUID", updatable = true, nullable = false)
+    private UUID uuid;
     private int id;
     private String title;
     private String imageUrl;
     private NutritionalInfo nutritionalInfo;
+    @ElementCollection
     private List<Ingredient> ingredients;
+    @ElementCollection
+    @Column(name="Instructions", columnDefinition = "LONGTEXT")
     private List<String> instructions;      // List of step-by-step cooking instructions
 
     public Meal() {

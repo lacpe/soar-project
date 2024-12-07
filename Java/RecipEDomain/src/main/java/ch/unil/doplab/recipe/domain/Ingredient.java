@@ -2,6 +2,7 @@ package ch.unil.doplab.recipe.domain;
 import jakarta.persistence.*;
 
 // Class representing an Ingredient with properties like name, quantity, unit, and additional metadata.
+@Embeddable
 public class Ingredient {
     // Basic attributes for the ingredient's identity and quantity
     private String name; // Name of the ingredient

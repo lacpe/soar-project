@@ -35,15 +35,15 @@ public class MealPlanTest {
         // Create dummy meals and add them to daily meals
         Meal breakfast = new Meal(1, "Pancakes", "https://example.com/pancakes.jpg", null);
         Meal lunch = new Meal(2, "Salad", "https://example.com/salad.jpg", null);
-        Map<String, List<Meal>> dailyMeals = new LinkedHashMap<>();
-        dailyMeals.put("Monday", List.of(breakfast, lunch));
+        Map<String, DailyMealSet> dailyMeals = new LinkedHashMap<>();
+        dailyMeals.put("Monday", new DailyMealSet(List.of(breakfast, lunch)));
 
         mealPlan.setDailyMeals(dailyMeals);
 
-        Map<String, List<Meal>> retrievedMeals = mealPlan.getDailyMeals();
+        Map<String, DailyMealSet> retrievedMeals = mealPlan.getDailyMeals();
         assertEquals(1, retrievedMeals.size(), "Daily meals should contain one day of meals");
         assertTrue(retrievedMeals.containsKey("Monday"), "Daily meals should contain meals for Monday");
-        assertEquals(2, retrievedMeals.get("Monday").size(), "Monday should contain two meals");
+        assertEquals(2, retrievedMeals.get("Monday").getMeals().size(), "Monday should contain two meals");
     }
 
     @Test

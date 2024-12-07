@@ -1,5 +1,11 @@
 package ch.unil.doplab.recipe.domain;
 
+import jakarta.persistence.Embeddable;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
+
+@Embeddable
 public class NutritionalInfo {
     private int calories, protein, fat, carbs;
     private double saturatedFat, fiber, sugar, sodium, vitaminC, calcium, iron, potassium, vitaminA, vitaminK, magnesium;

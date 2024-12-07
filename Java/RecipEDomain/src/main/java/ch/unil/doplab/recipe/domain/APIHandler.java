@@ -25,7 +25,7 @@ public class APIHandler {
     public MealPlan generateMealPlan(UserProfile userProfile) {
         String timeFrame = userProfile.getMealPlanPreference().toString().toLowerCase(); // Get time frame preference (e.g., day or week)
         String url = buildMealPlanUrl(userProfile, timeFrame); // Construct URL for API request
-        Map<String, List<Meal>> dailyMeals = new LinkedHashMap<>(); // Store meals ordered by day
+        Map<String, DailyMealSet> dailyMeals = new LinkedHashMap<>(); // Store meals ordered by day
         List<Integer> mealIds = new ArrayList<>(); // Collect meal IDs for bulk data requests
         int desiredServings = userProfile.getDesiredServings(); // Get user's desired servings
 
@@ -43,7 +43,7 @@ public class APIHandler {
             if (timeFrame.equals("day")) {
                 // For daily meal plans, directly retrieve meals array, not need for more
                 JSONArray mealsArray = jsonResponse.getJSONArray("meals");
-                dailyMeals.put("Day 1", parseMeals(mealsArray, mealIds)); // Parse meals and store in map
+                dailyMeals.put("Day 1", new DailyMealSet(parseMeals(mealsArray, mealIds))); // Parse meals and store in map
             } else {
                 // For weekly meal plans, process meals for each day
                 JSONObject weekObject = jsonResponse.getJSONObject("week");
@@ -51,7 +51,7 @@ public class APIHandler {
                 for (String day : daysOfWeek) {
                     if (weekObject.has(day)) { // Check if day exists in the response
                         JSONArray mealsArray = weekObject.getJSONObject(day).getJSONArray("meals");
-                        dailyMeals.put(capitalize(day), parseMeals(mealsArray, mealIds)); // Parse and add meals for each day
+                        dailyMeals.put(capitalize(day), new DailyMealSet(parseMeals(mealsArray, mealIds))); // Parse and add meals for each day
                     }
                 }
             }
@@ -132,7 +132,7 @@ public class APIHandler {
     //dailyMeals Map of meals organized by day
     //mealIds    List of meal IDs to fetch details for in bulk
     //desiredServings Number of servings the user wants for each meal
-    public void populateMealDetailsBulk(Map<String, List<Meal>> dailyMeals, List<Integer> mealIds, int desiredServings) {
+    public void populateMealDetailsBulk(Map<String, DailyMealSet> dailyMeals, List<Integer> mealIds, int desiredServings) {
         if (mealIds.isEmpty()) return; // Exit if no meal IDs
 
         // Construct URL for bulk meal details endpoint
@@ -170,8 +170,8 @@ public class APIHandler {
             }
 
             // Update each meal in dailyMeals with cached details
-            for (List<Meal> meals : dailyMeals.values()) {
-                for (Meal meal : meals) {
+            for (DailyMealSet dailyMealSet : dailyMeals.values()) {
+                for (Meal meal : dailyMealSet.getMeals()) {
                     Meal cachedMeal = mealDetailsCache.get(meal.getId());
                     // For every meal in meals and for every cachedMeals, if meal is in cachedMeal then sets the already existing details for this meal
                     if (cachedMeal != null) {

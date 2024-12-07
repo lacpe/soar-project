@@ -10,8 +10,9 @@ public class MealPlan {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "UUID", updatable = false, nullable = false)
     private UUID mealPlanId;
-    @Transient
-    private Map<String, List<Meal>> dailyMeals; // Key: Day, Value: List of Meals (breakfast, lunch, dinner)
+    private UUID userId;
+    @OneToMany(cascade = CascadeType.PERSIST)
+    private Map<String, DailyMealSet> dailyMeals; // Key: Day, Value: List of Meals (breakfast, lunch, dinner)
     private int calorieTarget;
     private int desiredServings;
 
@@ -19,16 +20,16 @@ public class MealPlan {
         this(null, null, 0);
     }
 
-    public MealPlan(Map<String, List<Meal>> dailyMeals) {
+    public MealPlan(Map<String, DailyMealSet> dailyMeals) {
         this(null, dailyMeals, 0);
     }
 
-    public MealPlan(Map<String, List<Meal>> dailyMeals, int desiredServings) {
+    public MealPlan(Map<String, DailyMealSet> dailyMeals, int desiredServings) {
         this(null, dailyMeals, desiredServings);
     }
 
     // Updated constructor to include UserProfile
-    public MealPlan(UUID mealPlanId, Map<String, List<Meal>> dailyMeals, int desiredServings) {
+    public MealPlan(UUID mealPlanId, Map<String, DailyMealSet> dailyMeals, int desiredServings) {
         this.mealPlanId = mealPlanId;
         this.dailyMeals = dailyMeals != null ? dailyMeals : new LinkedHashMap<>();
         this.desiredServings = desiredServings;
@@ -41,7 +42,7 @@ public class MealPlan {
 
         for (String day : dailyMeals.keySet()) {
             System.out.println("Day: " + day);
-            for (Meal meal : dailyMeals.get(day)) {
+            for (Meal meal : dailyMeals.get(day).getMeals()) {
                 meal.displayMealInfo();
                 meal.displayInstructions();
                 meal.displayMealIngredients();
@@ -58,11 +59,11 @@ public class MealPlan {
         this.calorieTarget = calorieTarget;
     }
 
-    public Map<String, List<Meal>> getDailyMeals() {
+    public Map<String, DailyMealSet> getDailyMeals() {
         return dailyMeals;
     }
 
-    public void setDailyMeals(Map<String, List<Meal>> dailyMeals) {
+    public void setDailyMeals(Map<String, DailyMealSet> dailyMeals) {
         this.dailyMeals = dailyMeals;
     }
 
@@ -72,6 +73,14 @@ public class MealPlan {
 
     public void setMealPlanId(UUID mealPlanId) {
         this.mealPlanId = mealPlanId;
+    }
+
+    public UUID getUserId() {
+        return userId;
+    }
+
+    public void setUserId(UUID userId) {
+        this.userId = userId;
     }
 
     public int getDesiredServings() {
@@ -85,7 +94,7 @@ public class MealPlan {
     public List<Meal> getAllMeals() {
         List<Meal> allMeals = new ArrayList<>();
         for (String day : dailyMeals.keySet()) {
-            allMeals.addAll(dailyMeals.get(day));
+            allMeals.addAll(dailyMeals.get(day).getMeals());
         }
         return allMeals;
     }

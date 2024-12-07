@@ -53,6 +53,11 @@ public class ApplicationState {
             userProfiles.put(userProfile.getUserId(), userProfile);
             usernames.put(userProfile.getUsername(), userProfile.getUserId());
         }
+        var allMealPlans = findAllMealPlans();
+        for (MealPlan mealPlan : allMealPlans) {
+            mealPlans.put(mealPlan.getMealPlanId(), mealPlan);
+            usersMealPlans.put(mealPlan.getUserId(), mealPlan.getMealPlanId());
+        }
 
     }
 
@@ -247,6 +252,7 @@ public class ApplicationState {
             throw new IllegalArgumentException("Another meal plan for user " + userProfile.getUsername() + " already exists.");
         }
         MealPlan mealPlan = apiHandler.generateMealPlan(userProfile);
+        mealPlan.setUserId(userId);
         addMealPlan(mealPlan);
         usersMealPlans.put(userId, mealPlan.getMealPlanId());
         return mealPlan;
@@ -289,6 +295,10 @@ public class ApplicationState {
 
     public List<UserProfile> findAllUserProfiles() {
         return em.createQuery("SELECT u FROM UserProfile u", UserProfile.class).getResultList();
+    }
+
+    public List<MealPlan> findAllMealPlans() {
+        return em.createQuery("SELECT m FROM MealPlan m", MealPlan.class).getResultList();
     }
 
     public void clearObjects() {
