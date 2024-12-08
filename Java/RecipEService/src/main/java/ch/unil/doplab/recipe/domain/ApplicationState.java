@@ -58,7 +58,11 @@ public class ApplicationState {
             mealPlans.put(mealPlan.getMealPlanId(), mealPlan);
             usersMealPlans.put(mealPlan.getUserId(), mealPlan.getMealPlanId());
         }
-
+        var allGroceryLists = findAllGroceryLists();
+        for (GroceryList groceryList : allGroceryLists) {
+            groceryLists.put(groceryList.getGroceryListId(), groceryList);
+            mealPlansGroceryLists.put(groceryList.getMealPlanId(), groceryList.getGroceryListId());
+        }
     }
 
     // Functions for UserProfileResource
@@ -210,6 +214,7 @@ public class ApplicationState {
 
     public Map<UUID, GroceryList> getAllGroceryLists() {return groceryLists;}
 
+    @Transactional
     public GroceryList addGroceryList(GroceryList groceryList) {
         if (groceryList.getGroceryListId() != null) {
             return addGroceryList(groceryList.getGroceryListId(), groceryList);
@@ -217,20 +222,24 @@ public class ApplicationState {
         return addGroceryList(UUID.randomUUID(), groceryList);
     }
 
+    @Transactional
     public GroceryList addGroceryList(UUID id, GroceryList groceryList) {
         groceryList.setGroceryListId(id);
         if (groceryLists.containsKey(id)) {
             throw new IllegalArgumentException("A grocery list with id " + id + " already exists.");
         }
         groceryLists.put(id, groceryList);
+        em.persist(groceryList);
         return groceryList;
     }
 
     public GroceryList setGroceryList(UUID id, GroceryList groceryList) {
         groceryLists.replace(id, groceryList);
+        em.merge(groceryList);
         return groceryList;
     }
 
+    @Transactional
     public boolean removeGroceryList(UUID id) {
         GroceryList groceryList = groceryLists.get(id);
         if (groceryList == null) {
@@ -238,6 +247,11 @@ public class ApplicationState {
         }
         mealPlansGroceryLists.inverse().remove(id);
         groceryLists.remove(id);
+        mealPlans.remove(id);
+        if (!em.contains(groceryList)) {
+            groceryList = em.merge(groceryList);
+        }
+        em.remove(groceryList);
         return true;
     }
 
@@ -258,12 +272,14 @@ public class ApplicationState {
         return mealPlan;
     }
 
+    @Transactional
     public GroceryList generateGroceryList(UUID userId) {
         MealPlan mealPlan = mealPlans.get(usersMealPlans.get(userId));
         if (mealPlan == null) {
             throw new IllegalArgumentException("User with ID " + userId + " does not have a registered meal plan.");
         }
         GroceryList groceryList = apiHandler.generateConsolidatedShoppingList(mealPlan.getAllMeals());
+        groceryList.setMealPlanId(mealPlan.getMealPlanId());
         addGroceryList(groceryList);
         mealPlansGroceryLists.put(usersMealPlans.get(userId), groceryList.getGroceryListId());
         return groceryList;
@@ -299,6 +315,10 @@ public class ApplicationState {
 
     public List<MealPlan> findAllMealPlans() {
         return em.createQuery("SELECT m FROM MealPlan m", MealPlan.class).getResultList();
+    }
+
+    public List<GroceryList> findAllGroceryLists() {
+        return em.createQuery("SELECT m FROM GroceryList m", GroceryList.class).getResultList();
     }
 
     public void clearObjects() {

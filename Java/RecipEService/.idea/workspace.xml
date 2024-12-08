@@ -10,7 +10,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="2b0e7e59-a39e-497c-9255-1e031f6c1224" name="Changes" comment="It works... better?">
-      <change afterPath="$PROJECT_DIR$/../RecipEDomain/src/main/java/ch/unil/doplab/recipe/domain/DailyMealSet.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../RecipEDomain/src/main/java/ch/unil/doplab/recipe/domain/Aisle.java" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/.idea/dataSources.xml" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/.idea/uiDesigner.xml" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/src/main/java/ch/unil/doplab/recipe/rest/GroceryListResource.java" afterDir="false" />
@@ -19,11 +19,8 @@
       <change afterPath="$PROJECT_DIR$/src/main/java/ch/unil/doplab/recipe/rest/ServiceResource.java" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/src/main/resources/META-INF/persistence.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../RecipEDomain/src/main/java/ch/unil/doplab/recipe/domain/APIHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/../RecipEDomain/src/main/java/ch/unil/doplab/recipe/domain/APIHandler.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../RecipEDomain/src/main/java/ch/unil/doplab/recipe/domain/Ingredient.java" beforeDir="false" afterPath="$PROJECT_DIR$/../RecipEDomain/src/main/java/ch/unil/doplab/recipe/domain/Ingredient.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../RecipEDomain/src/main/java/ch/unil/doplab/recipe/domain/Meal.java" beforeDir="false" afterPath="$PROJECT_DIR$/../RecipEDomain/src/main/java/ch/unil/doplab/recipe/domain/Meal.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../RecipEDomain/src/main/java/ch/unil/doplab/recipe/domain/MealPlan.java" beforeDir="false" afterPath="$PROJECT_DIR$/../RecipEDomain/src/main/java/ch/unil/doplab/recipe/domain/MealPlan.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../RecipEDomain/src/main/java/ch/unil/doplab/recipe/domain/NutritionalInfo.java" beforeDir="false" afterPath="$PROJECT_DIR$/../RecipEDomain/src/main/java/ch/unil/doplab/recipe/domain/NutritionalInfo.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../RecipEDomain/src/test/java/ch/unil/doplab/recipe/domain/MealPlanTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/../RecipEDomain/src/test/java/ch/unil/doplab/recipe/domain/MealPlanTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../RecipEDomain/src/main/java/ch/unil/doplab/recipe/domain/GroceryList.java" beforeDir="false" afterPath="$PROJECT_DIR$/../RecipEDomain/src/main/java/ch/unil/doplab/recipe/domain/GroceryList.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../RecipEDomain/src/test/java/ch/unil/doplab/recipe/domain/GroceryListTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/../RecipEDomain/src/test/java/ch/unil/doplab/recipe/domain/GroceryListTest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/ch/unil/doplab/recipe/domain/ApplicationState.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ch/unil/doplab/recipe/domain/ApplicationState.java" afterDir="false" />
@@ -331,7 +328,7 @@
       <workItem from="1733212650185" duration="2265000" />
       <workItem from="1733416858895" duration="126000" />
       <workItem from="1733498655239" duration="2398000" />
-      <workItem from="1733575243861" duration="2236000" />
+      <workItem from="1733575243861" duration="4535000" />
     </task>
     <task id="LOCAL-00001" summary="It works... better?">
       <option name="closed" value="true" />

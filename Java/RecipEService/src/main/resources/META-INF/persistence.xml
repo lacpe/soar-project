@@ -9,6 +9,8 @@
         <class>ch.unil.doplab.recipe.domain.MealPlan</class>
         <class>ch.unil.doplab.recipe.domain.DailyMealSet</class>
         <class>ch.unil.doplab.recipe.domain.Meal</class>
+        <class>ch.unil.doplab.recipe.domain.GroceryList</class>
+        <class>ch.unil.doplab.recipe.domain.Aisle</class>
         <properties>
             <property name="jakarta.persistence.schema-generation.database.action" value="create"/>
             <property name="eclipselink.logging.level" value="FINEST"/>

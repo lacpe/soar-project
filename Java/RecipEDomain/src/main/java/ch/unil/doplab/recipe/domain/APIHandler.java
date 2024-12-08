@@ -230,7 +230,7 @@ public class APIHandler {
 
             // Parse the response to get the organized grocery list by aisle
             // Since the shopping list returns an aisle and ingredients, we create a map where aisle:ingredient
-            Map<String, List<Ingredient>> groceryListByAisle = parseShoppingListResponse(jsonResponse);
+            Map<String, Aisle> groceryListByAisle = parseShoppingListResponse(jsonResponse);
 
             // Create a new GroceryList object and populate it with the organized grocery list
             GroceryList groceryList = new GroceryList();
@@ -324,8 +324,8 @@ public class APIHandler {
     //Parses JSON response from the Compute Shopping List API into a grocery list by aisle.
     //jsonResponse JSON object containing the shopping list response
     //returns Map of aisles with a list of consolidated ingredients
-    private Map<String, List<Ingredient>> parseShoppingListResponse(JSONObject jsonResponse) {
-        Map<String, List<Ingredient>> groceryListByAisle = new LinkedHashMap<>();
+    private Map<String, Aisle> parseShoppingListResponse(JSONObject jsonResponse) {
+        Map<String, Aisle> groceryListByAisle = new LinkedHashMap<>();
 
         JSONArray aislesArray = jsonResponse.getJSONArray("aisles");  // The API organizes items by aisle
         for (int i = 0; i < aislesArray.length(); i++) {
@@ -335,7 +335,7 @@ public class APIHandler {
 
             // Get items in this aisle
             JSONArray aisleItems = aisleObject.getJSONArray("items"); // Get items in the aisle from every json object
-            List<Ingredient> ingredientsInAisle = new ArrayList<>();
+            Aisle ingredientsInAisle = new Aisle();
 
             // Loop through items and add each to ingredientsInAisle
             // For each ingredient of each aisle check for measures object to get the amount and unit in metric
@@ -354,7 +354,7 @@ public class APIHandler {
                     unit = metricMeasure.optString("unit", "");
                 }
                 // Add item to the list for this aisle
-                ingredientsInAisle.add(new Ingredient(name, amount, unit));
+                ingredientsInAisle.getAisle().add(new Ingredient(name, amount, unit));
             }
             groceryListByAisle.put(aisleName, ingredientsInAisle); // Add aisle to map
         }

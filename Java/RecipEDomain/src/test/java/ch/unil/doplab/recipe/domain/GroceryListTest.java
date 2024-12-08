@@ -24,8 +24,9 @@ public class GroceryListTest {
         groceryList.addIngredient("Generic", flour);
 
         // Verify the ingredient was added
-        Map<String, List<Ingredient>> ingredientsByAisle = groceryList.getIngredientsByAisle();
-        for (List<Ingredient> ingredients : ingredientsByAisle.values()) {
+        Map<String, Aisle> ingredientsByAisle = groceryList.getIngredientsByAisle();
+        for (Aisle aisle : ingredientsByAisle.values()) {
+            List<Ingredient> ingredients = aisle.getAisle();
             assertEquals(1, ingredients.size(), "Grocery list should contain one ingredient");
             assertTrue(ingredients.get(0).getName().equals("Flour") & ingredients.get(0).getUnit().equals("cups"), "Grocery list should contain 'Flour' with unit 'cups'");
             assertEquals(2.0, ingredients.get(0).getQuantity(), "Quantity of flour should be 2.0 cups");
@@ -42,8 +43,9 @@ public class GroceryListTest {
         groceryList.addIngredient("Generic", moreFlour);
 
         // Verify quantities were consolidated
-        Map<String, List<Ingredient>> ingredientsByAisle = groceryList.getIngredientsByAisle();
-        for (List<Ingredient> ingredients : ingredientsByAisle.values()) {
+        Map<String, Aisle> ingredientsByAisle = groceryList.getIngredientsByAisle();
+        for (Aisle aisle : ingredientsByAisle.values()) {
+            List<Ingredient> ingredients = aisle.getAisle();
             assertEquals(1, ingredients.size(), "Grocery list should contain one consolidated ingredient");
             assertTrue(ingredients.get(0).getName().equals("Flour") & ingredients.get(0).getUnit().equals("cups"), "Grocery list should contain 'Flour' with unit 'cups'");
             assertEquals(3.5, ingredients.get(0).getQuantity(), "Quantity of flour should be consolidated to 3.5 cups");
@@ -59,8 +61,9 @@ public class GroceryListTest {
         groceryList.addIngredient("Generic", flourGrams);
 
         // Verify both ingredients exist in the map separately
-        Map<String, List<Ingredient>> ingredientsByAisle = groceryList.getIngredientsByAisle();
-        for (List<Ingredient> ingredients : ingredientsByAisle.values()) {
+        Map<String, Aisle> ingredientsByAisle = groceryList.getIngredientsByAisle();
+        for (Aisle aisle : ingredientsByAisle.values()) {
+            List<Ingredient> ingredients = aisle.getAisle();
             assertEquals(2, ingredients.size(), "Grocery list should contain two separate entries for flour with different units");
             assertTrue(ingredients.get(0).getName().equals("Flour") & ingredients.get(0).getUnit().equals("cups"), "Grocery list should contain 'Flour' with unit 'cups'");
             assertTrue(ingredients.get(1).getName().equals("Flour") & ingredients.get(1).getUnit().equals("grams"), "Grocery list should contain 'Flour' with unit 'grams'");
@@ -75,14 +78,15 @@ public class GroceryListTest {
         Ingredient flour = new Ingredient("Flour", 2.0, "cups");
         Ingredient sugar = new Ingredient("Sugar", 1.0, "cups");
         List<Ingredient> newIngredients = List.of(flour, sugar);
-        Map<String, List<Ingredient>> newIngredientsByAisle = Map.of("Generic", newIngredients);
+        Map<String, Aisle> newIngredientsByAisle = Map.of("Generic", new Aisle(newIngredients));
 
         // Set the ingredients map in groceryList
         groceryList.setIngredientsByAisle(newIngredientsByAisle);
 
         // Verify that the new ingredients map was set correctly
-        Map<String, List<Ingredient>> ingredientsByAisle = groceryList.getIngredientsByAisle();
-        for (List<Ingredient> ingredients : ingredientsByAisle.values()) {
+        Map<String, Aisle> ingredientsByAisle = groceryList.getIngredientsByAisle();
+        for (Aisle aisle : ingredientsByAisle.values()) {
+            List<Ingredient> ingredients = aisle.getAisle();
             assertEquals(2, ingredients.size(), "Grocery list should contain two ingredients after setting");
             assertTrue(ingredients.get(0).getName().equals("Flour") & ingredients.get(0).getUnit().equals("cups"), "Grocery list should contain 'Flour' with unit 'cups'");
             assertTrue(ingredients.get(1).getName().equals("Sugar") & ingredients.get(1).getUnit().equals("cups"), "Grocery list should contain 'Sugar' with unit 'cups'");
