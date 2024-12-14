@@ -47,6 +47,15 @@ public class Meal {
     }
 
     // Getters for retrieving meal information
+
+    public UUID getUuid() {
+        return uuid;
+    }
+
+    public void setUuid(UUID uuid) {
+        this.uuid = uuid;
+    }
+
     public int getId() {
         return id;
     }
@@ -104,6 +113,10 @@ public class Meal {
         }
         System.out.println("Image: " + imageUrl);  // Only if you want to display the meal image
         System.out.println();
+    }
+
+    public Meal getNewMeal() {
+        return new Meal(this.id, this.title, this.imageUrl, this.nutritionalInfo);
     }
 
     // Method to display instructions, useful for testing or debugging

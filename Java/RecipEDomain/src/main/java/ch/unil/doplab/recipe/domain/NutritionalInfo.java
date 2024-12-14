@@ -37,60 +37,120 @@ public class NutritionalInfo {
         return calories;
     }
 
+    public void setCalories(int calories) {
+        this.calories = calories;
+    }
+
     public int getProtein() {
         return protein;
+    }
+
+    public void setProtein(int protein) {
+        this.protein = protein;
     }
 
     public int getFat() {
         return fat;
     }
 
+    public void setFat(int fat) {
+        this.fat = fat;
+    }
+
     public int getCarbs() {
         return carbs;
+    }
+
+    public void setCarbs(int carbs) {
+        this.carbs = carbs;
     }
 
     public double getSaturatedFat() {
         return saturatedFat;
     }
 
+    public void setSaturatedFat(double saturatedFat) {
+        this.saturatedFat = saturatedFat;
+    }
+
     public double getFiber() {
         return fiber;
+    }
+
+    public void setFiber(double fiber) {
+        this.fiber = fiber;
     }
 
     public double getSugar() {
         return sugar;
     }
 
+    public void setSugar(double sugar) {
+        this.sugar = sugar;
+    }
+
     public double getSodium() {
         return sodium;
+    }
+
+    public void setSodium(double sodium) {
+        this.sodium = sodium;
     }
 
     public double getVitaminC() {
         return vitaminC;
     }
 
+    public void setVitaminC(double vitaminC) {
+        this.vitaminC = vitaminC;
+    }
+
     public double getCalcium() {
         return calcium;
+    }
+
+    public void setCalcium(double calcium) {
+        this.calcium = calcium;
     }
 
     public double getIron() {
         return iron;
     }
 
+    public void setIron(double iron) {
+        this.iron = iron;
+    }
+
     public double getPotassium() {
         return potassium;
+    }
+
+    public void setPotassium(double potassium) {
+        this.potassium = potassium;
     }
 
     public double getVitaminA() {
         return vitaminA;
     }
 
+    public void setVitaminA(double vitaminA) {
+        this.vitaminA = vitaminA;
+    }
+
     public double getVitaminK() {
         return vitaminK;
     }
 
+    public void setVitaminK(double vitaminK) {
+        this.vitaminK = vitaminK;
+    }
+
     public double getMagnesium() {
         return magnesium;
+    }
+
+    public void setMagnesium(double magnesium) {
+        this.magnesium = magnesium;
     }
 
     // Method to display nutritional information for debugging or presentation

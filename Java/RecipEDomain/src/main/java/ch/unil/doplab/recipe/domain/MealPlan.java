@@ -99,6 +99,13 @@ public class MealPlan {
         return allMeals;
     }
 
+    public Meal getRandomMeal() {
+        Random RANDOM = new Random();
+        Object[] dailyMealsArray = dailyMeals.values().toArray();
+        DailyMealSet dailyMealSet = (DailyMealSet) dailyMealsArray[RANDOM.nextInt(dailyMealsArray.length)];
+        return dailyMealSet.getMeals().get(RANDOM.nextInt(3));
+    }
+
     public Meal getMealById(int mealId) {
         System.out.println("Searching for Meal with ID: " + mealId);
         Meal foundMeal = getAllMeals().stream()

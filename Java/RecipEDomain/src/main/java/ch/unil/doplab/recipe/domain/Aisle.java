@@ -38,4 +38,8 @@ public class Aisle {
     public void setAisle(List<Ingredient> aisle) {
         this.aisle = aisle;
     }
+
+    public Aisle getNewAisle() {
+        return new Aisle(this.aisle);
+    }
 }

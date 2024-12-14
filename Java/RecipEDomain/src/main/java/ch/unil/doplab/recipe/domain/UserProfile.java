@@ -48,7 +48,7 @@ public class UserProfile {
     }
 
     public UserProfile() {
-        this(null, null, null, null, null, null, 0, null);
+        this(null, null, null, null, new HashSet<>(), new HashSet<>(), 0, null);
     }
 
     public UserProfile(String username, String password, DietType dietType, Set<String> allergies,

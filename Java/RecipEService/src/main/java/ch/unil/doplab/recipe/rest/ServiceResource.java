@@ -38,6 +38,14 @@ public class ServiceResource {
     }
 
     @GET
+    @Produces(MediaType.TEXT_PLAIN)
+    @Path("/populateApp")
+    public Response populateApp() {
+        state.populateApplication();
+        return Response.ok("Application was populated at " + LocalDateTime.now()).build();
+    }
+
+    @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/mealplan/{userId}")
     public MealPlan getUserMealPlan(@PathParam("userId") UUID userId) {
