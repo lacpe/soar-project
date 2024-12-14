@@ -14,7 +14,7 @@
                     <ui:repeat value="#{groceryListBean.groceryList.ingredientsByAisle}" var="aisle" rendered="#{not empty groceryListBean.groceryList.ingredientsByAisle}">
                         <p:accordionPanel>
                             <p:tab title="#{aisle.key}">
-                                <ui:repeat value="#{aisle.value}" var="ingredient">
+                                <ui:repeat value="#{aisle.getAisle()}" var="ingredient">
                                     <div class="ingredient-card">
                                         <div class="ingredient-container">
                                             <h3>#{ingredient.name}</h3>

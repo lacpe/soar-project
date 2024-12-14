@@ -25,7 +25,7 @@
                 <h:outputLabel value="Diet Type:" />
                 <h:outputText value="#{userProfileBean.dietType}" />
                 <h:outputLabel value="Calorie Limit:" />
-                <h:outputText value="#{userProfileBean.calorieLimit}" />
+                <h:outputText value="#{userProfileBean.dailyCalorieTarget}" />
                 <h:outputLabel value="Meal Plan Preference:" />
                 <h:outputText value="#{userProfileBean.mealPlanPreference}" />
                 <h:outputLabel value="Allergies:" />
@@ -45,12 +45,9 @@
                 <h:outputLabel for="updatePassword" value="Password:" />
                 <h:inputSecret id="updatePassword" value="#{userProfileBean.password}"
                                style="font-family: 'Quicksand', sans-serif;" />
-                <h:outputLabel for="updateDietType" value="Diet Type:" />
-                <h:selectOneMenu id="updateDietType" value="#{userProfileBean.dietType}">
-                    <f:selectItems value="#{userProfileBean.dietTypes}" />
-                </h:selectOneMenu>
+
                 <h:outputLabel for="updateCalorieLimit" value="Calorie Limit:" />
-                <h:inputText id="updateCalorieLimit" value="#{userProfileBean.calorieLimit}"
+                <h:inputText id="updateCalorieLimit" value="#{userProfileBean.dailyCalorieTarget}"
                              style="font-family: 'Quicksand', sans-serif;" />
                 <h:outputLabel for="updateMealPlanPreference" value="Meal Plan Preference:" />
                 <h:selectOneMenu id="updateMealPlanPreference" value="#{userProfileBean.mealPlanPreference}"

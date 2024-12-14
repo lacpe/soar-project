@@ -1,23 +1,20 @@
 package ch.unil.doplab.recipe.ui;
 
 import ch.unil.doplab.recipe.RecipEService;
+import ch.unil.doplab.recipe.domain.*;
+import jakarta.annotation.PostConstruct;
+import jakarta.enterprise.context.SessionScoped;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
-import jakarta.enterprise.context.SessionScoped;
-import jakarta.annotation.PostConstruct;
-import jakarta.faces.context.FacesContext;
-import java.io.Serializable;
+
 import java.io.IOException;
+import java.io.Serializable;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.*;
-import ch.unil.doplab.recipe.domain.MealPlan;
-import ch.unil.doplab.recipe.domain.GroceryList;
-import ch.unil.doplab.recipe.domain.Meal;
-import ch.unil.doplab.recipe.domain.NutritionalInfo;
-import ch.unil.doplab.recipe.domain.APIHandler;
-import ch.unil.doplab.recipe.domain.UserProfile;
-import ch.unil.doplab.recipe.domain.UserProfile.MealPlanPreference;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 
 @Named
 @SessionScoped
@@ -79,7 +76,7 @@ public class MealPlanBean implements Serializable {
     // Mock method to generate a meal plan
     public void generateMockMealPlan() {
         System.out.println("Generating mock meal plan...");
-        Map<String, List<Meal>> dailyMeals = new LinkedHashMap<>();
+        Map<String, DailyMealSet> dailyMeals = new LinkedHashMap<>();
 
 
         // Mock meals for Monday
@@ -123,15 +120,21 @@ public class MealPlanBean implements Serializable {
         sundayMeals.add(new Meal(19, "Granola and Yogurt", "/images/mockmeals/granola-yogurt.png", null));
         sundayMeals.add(new Meal(20, "Greek Salad", null, null));
         sundayMeals.add(new Meal(21, "Roast Turkey", null, null));
-
+        DailyMealSet mondayMealSet = new DailyMealSet(mondayMeals);
+        DailyMealSet tuesdayMealSet = new DailyMealSet(tuesdayMeals);
+        DailyMealSet wednesdayMealSet = new DailyMealSet(wednesdayMeals);
+        DailyMealSet thursdayMealSet = new DailyMealSet(thursdayMeals);
+        DailyMealSet fridayMealSet = new DailyMealSet(fridayMeals);
+        DailyMealSet saturdayMealSet = new DailyMealSet(saturdayMeals);
+        DailyMealSet sundayMealSet = new DailyMealSet(sundayMeals);
         // Adding all the meals to dailyMeals
-        dailyMeals.put("Monday", mondayMeals);
-        dailyMeals.put("Tuesday", tuesdayMeals);
-        dailyMeals.put("Wednesday", wednesdayMeals);
-        dailyMeals.put("Thursday", thursdayMeals);
-        dailyMeals.put("Friday", fridayMeals);
-        dailyMeals.put("Saturday", saturdayMeals);
-        dailyMeals.put("Sunday", sundayMeals);
+        dailyMeals.put("Monday", mondayMealSet);
+        dailyMeals.put("Tuesday", tuesdayMealSet);
+        dailyMeals.put("Wednesday", wednesdayMealSet);
+        dailyMeals.put("Thursday", thursdayMealSet);
+        dailyMeals.put("Friday", fridayMealSet);
+        dailyMeals.put("Saturday", saturdayMealSet);
+        dailyMeals.put("Sunday", sundayMealSet);
 
         // Assign dailyMeals to the mealPlan
         this.mealPlan = new MealPlan(dailyMeals, 2); // Assume 2 servings as default
@@ -142,8 +145,8 @@ public class MealPlanBean implements Serializable {
     private void flattenDailyMeals() {
         allMeals = new ArrayList<>();
         if (mealPlan != null && mealPlan.getDailyMeals() != null) {
-            for (List<Meal> meals : mealPlan.getDailyMeals().values()) {
-                allMeals.addAll(meals);
+            for (DailyMealSet dailyMealSet : mealPlan.getDailyMeals().values()) {
+                allMeals.addAll(dailyMealSet.getMeals());
             }
         }
     }

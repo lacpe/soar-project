@@ -115,10 +115,6 @@ public class Meal {
         System.out.println();
     }
 
-    public Meal getNewMeal() {
-        return new Meal(this.id, this.title, this.imageUrl, this.nutritionalInfo);
-    }
-
     // Method to display instructions, useful for testing or debugging
     public void displayInstructions() {
         System.out.println("Instructions for " + title + ":");

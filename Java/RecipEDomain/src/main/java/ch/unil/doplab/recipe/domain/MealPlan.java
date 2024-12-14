@@ -17,7 +17,7 @@ public class MealPlan {
     private int desiredServings;
 
     public MealPlan() {
-        this(null, null, 0);
+        this(null, new LinkedHashMap<>(), 0);
     }
 
     public MealPlan(Map<String, DailyMealSet> dailyMeals) {
@@ -31,7 +31,7 @@ public class MealPlan {
     // Updated constructor to include UserProfile
     public MealPlan(UUID mealPlanId, Map<String, DailyMealSet> dailyMeals, int desiredServings) {
         this.mealPlanId = mealPlanId;
-        this.dailyMeals = dailyMeals != null ? dailyMeals : new LinkedHashMap<>();
+        this.dailyMeals = dailyMeals;
         this.desiredServings = desiredServings;
     }
 
@@ -97,13 +97,6 @@ public class MealPlan {
             allMeals.addAll(dailyMeals.get(day).getMeals());
         }
         return allMeals;
-    }
-
-    public Meal getRandomMeal() {
-        Random RANDOM = new Random();
-        Object[] dailyMealsArray = dailyMeals.values().toArray();
-        DailyMealSet dailyMealSet = (DailyMealSet) dailyMealsArray[RANDOM.nextInt(dailyMealsArray.length)];
-        return dailyMealSet.getMeals().get(RANDOM.nextInt(3));
     }
 
     public Meal getMealById(int mealId) {
