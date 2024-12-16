@@ -87,18 +87,6 @@ public class GroceryList {
         ingredientsByAisle.put(aisle, ingredientsInAisle);
     }
 
-    public GroceryList shuffleWith(GroceryList groceryList) {
-        Random RANDOM = new Random();
-        Object[] currentAisleNames = this.ingredientsByAisle.keySet().toArray();
-        Object[] currentAisles = this.ingredientsByAisle.values().toArray();
-        Object[] otherAisleNames = groceryList.getIngredientsByAisle().keySet().toArray();
-        Object[] otherAisles = groceryList.getIngredientsByAisle().values().toArray();
-        Map<String, Aisle> newIngredientsByAisle = new HashMap<>();
-        newIngredientsByAisle.put((String) currentAisleNames[RANDOM.nextInt(currentAisleNames.length)], ((Aisle) currentAisles[RANDOM.nextInt(currentAisles.length)]).getNewAisle());
-        newIngredientsByAisle.put((String) otherAisleNames[RANDOM.nextInt(otherAisleNames.length)], ((Aisle) otherAisles[RANDOM.nextInt(otherAisles.length)]).getNewAisle());
-        return new GroceryList(newIngredientsByAisle);
-    }
-
     //Displays the consolidated grocery list organized by aisle.
     public void displayGroceryList() {
         System.out.println("\nGenerated Grocery List (Organized by Aisle):");

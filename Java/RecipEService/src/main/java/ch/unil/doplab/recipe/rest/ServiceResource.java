@@ -92,6 +92,20 @@ public class ServiceResource {
     }
 
     @GET
+    @Produces(MediaType.TEXT_PLAIN)
+    @Path("/mealplan/check/{userId}")
+    public boolean checkMealPlan(@PathParam("userId") UUID userId) {
+        return state.checkUserMealPlan(userId);
+    }
+
+    @GET
+    @Produces(MediaType.TEXT_PLAIN)
+    @Path("/grocerylist/check/{userId}")
+    public boolean checkGroceryList(@PathParam("userId") UUID userId) {
+        return state.checkUserGroceryList(userId);
+    }
+
+    @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     @Path("/authenticate/{user}/{password}")

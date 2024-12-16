@@ -3,8 +3,6 @@ package ch.unil.doplab.recipe;
 import ch.unil.doplab.recipe.domain.GroceryList;
 import ch.unil.doplab.recipe.domain.MealPlan;
 import ch.unil.doplab.recipe.domain.UserProfile;
-import ch.unil.doplab.recipe.domain.Utils;
-import ch.unil.doplab.recipe.ui.GroceryListBean;
 import jakarta.annotation.PostConstruct;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.ws.rs.WebApplicationException;
@@ -15,10 +13,7 @@ import jakarta.ws.rs.client.WebTarget;
 import jakarta.ws.rs.core.GenericType;
 import jakarta.ws.rs.core.MediaType;
 
-import javax.print.attribute.standard.Media;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.UUID;
 
 @ApplicationScoped
@@ -242,10 +237,20 @@ public class RecipEService {
                 .get(GroceryList.class);
     }
 
+    public boolean checkMealPlan(String userId) {
+        return serviceTarget
+                .path("meaplan")
+                .path("check")
+                .path(userId)
+                .request(MediaType.TEXT_PLAIN)
+                .get(boolean.class);
+    }
+
     // Generate a meal plan for a specific userId
     public MealPlan generateMealPlan(String userId) {
         return serviceTarget
-                .path("mealplan/generate")
+                .path("mealplan")
+                .path("generate")
                 .path(userId)
                 .request(MediaType.APPLICATION_JSON)
                 .post(null, MealPlan.class);
@@ -253,16 +258,27 @@ public class RecipEService {
 
     public MealPlan regenerateMealPlan(String userId) {
         return serviceTarget
-                .path("mealplan/generate")
+                .path("mealplan")
+                .path("generate")
                 .path(userId)
                 .request(MediaType.APPLICATION_JSON)
-                .put(null, MealPlan.class);
+                .put(Entity.entity(userId, MediaType.TEXT_PLAIN), MealPlan.class);
+    }
+
+    public boolean checkGroceryList(String userId) {
+        return serviceTarget
+                .path("grocerylist")
+                .path("check")
+                .path(userId)
+                .request(MediaType.TEXT_PLAIN)
+                .get(boolean.class);
     }
 
     // Generate a grocery list for a specific userId
     public GroceryList generateGroceryList(String userId) {
         return serviceTarget
-                .path("grocerylist/generate")
+                .path("grocerylist")
+                .path("generate")
                 .path(userId)
                 .request(MediaType.APPLICATION_JSON)
                 .post(null, GroceryList.class);
@@ -273,7 +289,7 @@ public class RecipEService {
                 .path("grocerylist/generate")
                 .path(userId)
                 .request(MediaType.APPLICATION_JSON)
-                .put(null, GroceryList.class);
+                .put(Entity.entity(userId, MediaType.TEXT_PLAIN), GroceryList.class);
     }
 
 

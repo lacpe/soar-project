@@ -21,13 +21,6 @@ public class GroceryListBean implements Serializable {
 
     // Fetch the grocery list directly from MealPlanBean
     public GroceryList getGroceryList() {
-        if (this.groceryList == null) {
-            System.err.println("Grocery list is null in GroceryListBean.");
-        } else if (this.groceryList.getIngredientsByAisle() == null || this.groceryList.getIngredientsByAisle().isEmpty()) {
-            System.err.println("Grocery list ingredients are empty.");
-        } else {
-            System.out.println("Grocery list successfully fetched with " + this.groceryList.getIngredientsByAisle().size() + " aisles.");
-        }
         return this.groceryList;
     }
 }

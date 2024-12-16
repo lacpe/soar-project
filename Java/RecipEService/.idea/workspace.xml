@@ -18,14 +18,16 @@
       <change afterPath="$PROJECT_DIR$/src/main/java/ch/unil/doplab/recipe/rest/RecipEService.java" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/src/main/java/ch/unil/doplab/recipe/rest/ServiceResource.java" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/src/main/resources/META-INF/persistence.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../RecipEDomain/src/main/java/ch/unil/doplab/recipe/domain/Meal.java" beforeDir="false" afterPath="$PROJECT_DIR$/../RecipEDomain/src/main/java/ch/unil/doplab/recipe/domain/Meal.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../RecipEDomain/src/main/java/ch/unil/doplab/recipe/domain/MealPlan.java" beforeDir="false" afterPath="$PROJECT_DIR$/../RecipEDomain/src/main/java/ch/unil/doplab/recipe/domain/MealPlan.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../RecipEDomain/src/main/java/ch/unil/doplab/recipe/domain/Aisle.java" beforeDir="false" afterPath="$PROJECT_DIR$/../RecipEDomain/src/main/java/ch/unil/doplab/recipe/domain/Aisle.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../RecipEDomain/src/main/java/ch/unil/doplab/recipe/domain/GroceryList.java" beforeDir="false" afterPath="$PROJECT_DIR$/../RecipEDomain/src/main/java/ch/unil/doplab/recipe/domain/GroceryList.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/ch/unil/doplab/recipe/domain/ApplicationState.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ch/unil/doplab/recipe/domain/ApplicationState.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/ch/unil/doplab/recipe/rest/TestResource.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ch/unil/doplab/recipe/rest/TestResource.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/ch/unil/doplab/recipe/rest/UserProfileResource.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ch/unil/doplab/recipe/rest/UserProfileResource.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../RecipEWebApp/src/main/java/ch/unil/doplab/recipe/ui/MealPlanBean.java" beforeDir="false" afterPath="$PROJECT_DIR$/../RecipEWebApp/src/main/java/ch/unil/doplab/recipe/ui/MealPlanBean.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../RecipEWebApp/src/main/java/ch/unil/doplab/recipe/RecipEService.java" beforeDir="false" afterPath="$PROJECT_DIR$/../RecipEWebApp/src/main/java/ch/unil/doplab/recipe/RecipEService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../RecipEWebApp/src/main/java/ch/unil/doplab/recipe/ui/GroceryListBean.java" beforeDir="false" afterPath="$PROJECT_DIR$/../RecipEWebApp/src/main/java/ch/unil/doplab/recipe/ui/GroceryListBean.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../RecipEWebApp/src/main/java/ch/unil/doplab/recipe/ui/UserProfileBean.java" beforeDir="false" afterPath="$PROJECT_DIR$/../RecipEWebApp/src/main/java/ch/unil/doplab/recipe/ui/UserProfileBean.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../RecipEWebApp/src/main/webapp/GroceryList.xhtml" beforeDir="false" afterPath="$PROJECT_DIR$/../RecipEWebApp/src/main/webapp/GroceryList.xhtml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../RecipEWebApp/src/main/webapp/MealPlan.xhtml" beforeDir="false" afterPath="$PROJECT_DIR$/../RecipEWebApp/src/main/webapp/MealPlan.xhtml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../RecipEWebApp/src/main/webapp/UserProfile.xhtml" beforeDir="false" afterPath="$PROJECT_DIR$/../RecipEWebApp/src/main/webapp/UserProfile.xhtml" afterDir="false" />
@@ -337,7 +339,12 @@
       <workItem from="1734167045928" duration="2353000" />
       <workItem from="1734207696301" duration="507000" />
       <workItem from="1734208217648" duration="597000" />
-      <workItem from="1734216654389" duration="1225000" />
+      <workItem from="1734216654389" duration="1389000" />
+      <workItem from="1734283038005" duration="2509000" />
+      <workItem from="1734290845109" duration="1207000" />
+      <workItem from="1734295573506" duration="1788000" />
+      <workItem from="1734333144770" duration="1707000" />
+      <workItem from="1734334889757" duration="4582000" />
     </task>
     <task id="LOCAL-00001" summary="It works... better?">
       <option name="closed" value="true" />

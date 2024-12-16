@@ -1301,18 +1301,42 @@ public class ApplicationState {
         GroceryList groceryList = apiHandler.generateConsolidatedShoppingList(mealPlan.getAllMeals());
         groceryList.setMealPlanId(mealPlan.getMealPlanId());
         addGroceryList(groceryList);
-        mealPlansGroceryLists.put(usersMealPlans.get(userId), groceryList.getGroceryListId());
+        mealPlansGroceryLists.put(mealPlan.getMealPlanId(), groceryList.getGroceryListId());
         return groceryList;
+    }
+
+    public boolean checkUserMealPlan(UUID userId) {
+        return usersMealPlans.get(userId) != null;
+    }
+
+    public boolean checkUserGroceryList(UUID userId) {
+        boolean exists = false;
+        if (usersMealPlans.containsKey(userId)) {
+            exists = mealPlansGroceryLists.containsKey(usersMealPlans.get(userId));
+        }
+        else {
+            exists = false;
+        }
+        return exists;
     }
 
     public MealPlan getUserMealPlan(UUID userId) {
         // Returns a given user's current meal plan
-        return mealPlans.get(usersMealPlans.get(userId));
+        try {
+            return mealPlans.get(usersMealPlans.get(userId));
+        } catch (NullPointerException e) {
+            return null;
+        }
     }
 
     public GroceryList getUserGroceryList(UUID userId) {
         // Looks up a user's current meal plan, and returns the corresponding grocery list
-        return groceryLists.get(mealPlansGroceryLists.get(usersMealPlans.get(userId)));
+        try {
+            return groceryLists.get(mealPlansGroceryLists.get(usersMealPlans.get(userId)));
+        }
+        catch (NullPointerException e) {
+            return null;
+        }
     }
 
     public UUID authenticateUser(String username, String password) {

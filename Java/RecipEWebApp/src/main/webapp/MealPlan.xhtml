@@ -15,7 +15,7 @@
                         <h2>#{day.key}</h2> <!-- Day name (e.g., Monday) -->
 
                         <!-- Iterate through meals of the day -->
-                        <ui:repeat var="meal" value="#{day.getMeals()}" varStatus="status">
+                        <ui:repeat var="meal" value="#{day.value.getMeals()}" varStatus="status">
                             <div class="meal-card">
                                 <!-- Meal Type (e.g., Breakfast, Lunch, Dinner) -->
                                 <h3>#{mealPlanBean.getMealType(status.index)}</h3>

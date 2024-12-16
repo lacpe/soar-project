@@ -1,8 +1,7 @@
 package ch.unil.doplab.recipe.ui;
 
-import ch.unil.doplab.recipe.domain.MealPlan;
-import ch.unil.doplab.recipe.domain.UserProfile;
 import ch.unil.doplab.recipe.RecipEService;
+import ch.unil.doplab.recipe.domain.UserProfile;
 import jakarta.annotation.PostConstruct;
 import jakarta.enterprise.context.SessionScoped;
 import jakarta.inject.Inject;
@@ -31,22 +30,7 @@ public class UserProfileBean extends UserProfile implements Serializable {
 
     @PostConstruct
     public void init() {
-        // Create a dummy user for testing
-        UserProfile dummyUser = new UserProfile(
-                UUID.randomUUID(),
-                "testuser",
-                "password123",
-                DietType.VEGETARIAN,
-                new HashSet<>(List.of("Peanuts", "Shellfish")),
-                new HashSet<>(List.of("Broccoli", "Spinach")),
-                2000,
-                MealPlanPreference.DAY
-        );
 
-        // Set it as the current user profile
-        this.replaceWithUser(dummyUser);
-        this.setUserId(dummyUser.getUserId());
-        dialogMessage = "User preferences loaded.";
     }
 
     public UserProfileBean() {
@@ -133,7 +117,7 @@ public class UserProfileBean extends UserProfile implements Serializable {
             this.replaceWithUser(currentUserProfile);
             changed = false;
         } catch (Exception e) {
-            dialogMessage = "Error loading user profile: " + e.getMessage();
+            dialogMessage = "Error loading user profile: " + e.getMessage() + " user ID: " + userId.toString();
         }
     }
 
@@ -145,23 +129,23 @@ public class UserProfileBean extends UserProfile implements Serializable {
                 recipEService.updateUserProfile(this.getUserId().toString(), this);
                 dialogMessage = "User profile updated successfully.";
                 changed = false;
-                if (mealPlanBean.getMealPlan() == null) {
-                    mealPlanBean.setMealPlan(recipEService.generateMealPlan(this.getUserId().toString()));
+                if (recipEService.getMealPlanByUserId(currentUserProfile.getUserId().toString()) == null) {
+                    mealPlanBean.setMealPlan(recipEService.generateMealPlan(currentUserProfile.getUserId().toString()));
                 }
                 else {
-                    mealPlanBean.setMealPlan(recipEService.regenerateMealPlan(this.getUserId().toString()));
+                    mealPlanBean.setMealPlan(recipEService.regenerateMealPlan(currentUserProfile.getUserId().toString()));
                 }
-                if (groceryListBean.getGroceryList() == null) {
-                    groceryListBean.setGroceryList(recipEService.generateGroceryList(this.getUserId().toString()));
+                if (recipEService.getGroceryListByUserId(currentUserProfile.getUserId().toString()) == null) {
+                    groceryListBean.setGroceryList(recipEService.generateGroceryList(currentUserProfile.getUserId().toString()));
                 }
                 else {
-                    groceryListBean.setGroceryList(recipEService.regenerateGroceryList(this.getUserId().toString()));
+                    groceryListBean.setGroceryList(recipEService.regenerateGroceryList(currentUserProfile.getUserId().toString()));
                 }
             } else {
                 dialogMessage = "Error: User ID is missing.";
             }
         } catch (Exception e) {
-            dialogMessage = "Error saving user profile: " + e.getMessage();
+            dialogMessage = "Error saving user profile: " + e.getMessage() + " user ID: " + currentUserProfile.getUserId().toString();
         }
     }
 

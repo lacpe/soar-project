@@ -39,7 +39,4 @@ public class Aisle {
         this.aisle = aisle;
     }
 
-    public Aisle getNewAisle() {
-        return new Aisle(this.aisle);
-    }
 }
